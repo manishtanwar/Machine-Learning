@@ -51,7 +51,6 @@ def train(X_in, Y, tau):
         Y_pred[i] = np.matmul(X[i],theta)
     return Y_pred
 
-
 # In[398]:
 
 
