@@ -1,13 +1,13 @@
 
 # coding: utf-8
 
-# In[85]:
+# In[141]:
 
 
 import numpy as np
 
 
-# In[86]:
+# In[142]:
 
 
 def train_lin(X_in, Y):
@@ -31,8 +31,8 @@ def train_lin(X_in, Y):
     for i in range(n):
         mean[i] = X_in[:,i].mean()
         std[i]  = np.std(X_in[:,i])
-        X[:,i] = X_in[:,i]
-#         X[:,i] = (X_in[:,i] - mean[i])/std[i]
+#         X[:,i] = X_in[:,i]
+        X[:,i] = (X_in[:,i] - mean[i])/std[i]
 
     X_T = np.transpose(X)
     theta = np.zeros(n)
@@ -63,7 +63,7 @@ def train_lin(X_in, Y):
     plt.show()
 
 
-# In[87]:
+# In[143]:
 
 
 def train_qua(X_in, Y):
@@ -87,7 +87,8 @@ def train_qua(X_in, Y):
     for i in range(n):
         mean[i] = X_in[:,i].mean()
         std[i]  = np.std(X_in[:,i])
-        X[:,i] = X_in[:,i]
+#         X[:,i] = X_in[:,i]
+        X[:,i] = (X_in[:,i] - mean[i])/std[i]
 
     X_T = np.transpose(X)
     theta = np.zeros(n)
@@ -116,6 +117,8 @@ def train_qua(X_in, Y):
     inv_sigma_1 = np.linalg.inv(sigma_1)
     
     def fun(a,b):
+        a = (a-mean[0]) / std[0]
+        b = (b-mean[1]) / std[1]
         X = np.array([a,b])
         res = 0.
         for i in range(n):
@@ -124,7 +127,7 @@ def train_qua(X_in, Y):
                 res -= (X[i]-m0[0][i]) * (X[j]-m0[0][j]) * inv_sigma_0[i][j]
         res += np.log(np.linalg.det(sigma_1)/np.linalg.det(sigma_0))
         return res;
-
+    
     def draw_figure():
         import matplotlib.pyplot as plt
 
@@ -156,7 +159,7 @@ def train_qua(X_in, Y):
 #     plt.show()
 
 
-# In[88]:
+# In[144]:
 
 
 x_in = np.genfromtxt('../ass1_data/q4x.dat')

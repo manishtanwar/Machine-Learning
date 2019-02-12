@@ -1,21 +1,21 @@
 
 # coding: utf-8
 
-# In[301]:
+# In[404]:
 
 
 import numpy as np
 import math
 
 
-# In[302]:
+# In[405]:
 
 
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
 
-# In[303]:
+# In[406]:
 
 
 def train(X_in, Y):
@@ -26,7 +26,7 @@ def train(X_in, Y):
     Ouput :
 
     """
-    n = 3
+    n = X_in.shape[1] + 1
     m = X_in.shape[0]
     
     np.set_printoptions(precision=3,suppress=True)
@@ -60,7 +60,6 @@ def train(X_in, Y):
         H = -np.matmul(X_T, np.matmul(W, X))
         change_amt = -np.matmul(np.linalg.inv(H), grad_LL)
         
-        # print(theta)
         theta = theta + change_amt
         
         max_change = abs(max(change_amt, key=abs))
@@ -84,25 +83,22 @@ def train(X_in, Y):
     theta_req = np.zeros(n)
     theta_req[0] = theta[0] / std[0]
     theta_req[1] = theta[1] / std[1]
-    theta_req[2] = theta[2] - mean[0]/std[0] - mean[1]/std[1]
+    theta_req[2] = theta[2] - (theta[0]*mean[0])/std[0] - (theta[1]*mean[1])/std[1]
     
     import matplotlib.pyplot as plt
-    x_axis = np.linspace(0,10,400)
-    y_axis = -(theta[0]/theta[1]) * x_axis - (theta[2]/theta[1])
-    plt.plot(x_axis, y_axis, '-r')
-#     plt.title('Graph of y=2x+1')
-#     plt.xlabel('x', color='#1C2833')
-#     plt.ylabel('y', color='#1C2833')
-#     plt.legend(loc='upper left')
     
-    plt.scatter(X_in[:,0],X_in[:,1],c=y_pred)
+#     ((X1_boundary-mean[1])/std[1])*theta[1] + ((X_in[:,0] - mean[0])/std[0])*theta[0] + theta[2] = 0;
+#     X1_boundary = mean[1] + (((-((X_in[:,0] - mean[0])/std[0])*theta[0] - theta[2]) * std[1]) / theta[1])
+    X1_boundary = (-(theta_req[0]/theta_req[1]) * X_in[:,0]) - (theta_req[2] / theta_req[1])
+    
+    
     plt.scatter(X_in[:,0],X_in[:,1],c=y_in)
-    plt.show()
+    plt.plot(X_in[:,0],X1_boundary,color='red')
     
     return y_pred
 
 
-# In[304]:
+# In[407]:
 
 
 x_in = np.genfromtxt('../ass1_data/logisticX.csv',delimiter=',')
