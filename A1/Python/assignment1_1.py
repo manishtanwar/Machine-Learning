@@ -52,11 +52,11 @@ x_in = np.genfromtxt('../ass1_data/linearX.csv',delimiter=',')
 y_in = np.genfromtxt('../ass1_data/linearY.csv',delimiter=',')
 
 m = x_in.shape[0]
-print(m)
-X = np.ones((m,2))
-X[:,0] = x_in
-Y = np.zeros((m,1))
-Y[:,0] = y_in
+
+X_mat = np.ones((m,2))
+X_mat[:,0] = x_in
+Y_mat = np.zeros((m,1))
+Y_mat[:,0] = y_in
 
 theta_array = train(x_in, y_in)
 
@@ -66,15 +66,16 @@ def draw_mesh():
 	def fun(a, b):
 		theta = np.array([a,b])
 		theta = theta[:,np.newaxis]
-		return np.matmul((Y - np.matmul(X,theta)).T, (Y - np.matmul(X,theta))) / (2. * m)
-	print(fun(1,1))
-	# fig = plt.figure()
-	# ax = fig.add_subplot(111, projection='3d')
-	# x = y = np.arange(-3.0, 3.0, 0.05)
-	# X, Y = np.meshgrid(x, y)
-	# zs = np.array([fun(x,y) for x,y in zip(np.ravel(X), np.ravel(Y))])
-	# Z = zs.reshape(X.shape)
+		res = np.matmul((Y_mat - np.matmul(X_mat,theta)).T, (Y_mat - np.matmul(X_mat,theta))) / (2. * m)
+		return res
+	# print(fun(1,1))
+	fig = plt.figure()
+	ax = fig.add_subplot(111, projection='3d')
+	x = y = np.arange(-10.0, 10.0, 0.05)
+	X, Y = np.meshgrid(x, y)
+	zs = np.array([fun(x,y) for x,y in zip(np.ravel(X), np.ravel(Y))])
+	Z = zs.reshape(X.shape)
 
-	# ax.plot_surface(X, Y, Z)
-	# plt.show()
+	ax.plot_surface(X, Y, Z)
+	plt.show()
 draw_mesh()
