@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D # This import has side effects required for the kwarg projection='3d' in the call to fig.add_subplot
 
 def train(x_in,y):
-	theta = np.zeros(2)
+	theta = np.zeros((2,1))
 	theta_list = []
 
 	# x_un : unnormalized data
@@ -17,14 +17,15 @@ def train(x_in,y):
 
 	X = np.ones((m,n))
 	X[:,0] = x_in
+	y = y[:,np.newaxis]
 
 	iter = 0
 	while True:
 	    iter+=1
 	    theta_list.append(theta)
-	    print(X.T.shape, y.shape, np.matmul(X.T,y).shape)
+	    # print(X.T.shape, y.shape, np.matmul(X.T,y).shape)
 	    delta_J = (np.matmul(np.matmul(X.T,X), theta) - np.matmul(X.T,y))
-	    print(delta_J.shape)
+	    # print(delta_J.shape)
 	    theta = theta - (rate/m) * delta_J
 	    max_change = abs(max(delta_J, key=abs))
 	    if(max_change < 1e-8):
@@ -64,13 +65,7 @@ np.set_printoptions(precision=3,suppress=True)
 def draw_mesh():
 	def fun(a, b):
 		theta = np.array([a,b])
-		print(Y.shape, X.shape, theta.shape)
-		theta1 = np.zeros((2,1))
-		print(type(theta1))
-		theta1[:,0] = theta
 		theta = theta[:,np.newaxis]
-		print(np.matmul(X,theta).shape, (Y-np.matmul(X,theta)).shape)
-		print(np.matmul(X,theta1).shape, (Y-np.matmul(X,theta1)).shape)
 		return np.matmul((Y - np.matmul(X,theta)).T, (Y - np.matmul(X,theta))) / (2. * m)
 	print(fun(1,1))
 	# fig = plt.figure()
