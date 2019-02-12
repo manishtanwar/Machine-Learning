@@ -1,17 +1,6 @@
-
-# coding: utf-8
-
-# In[141]:
-
-
 import numpy as np
 
-
-# In[142]:
-
-
 def train_lin(X_in, Y):
-
     """
     Input :
 
@@ -22,6 +11,7 @@ def train_lin(X_in, Y):
     n = X_in.shape[1]
     m = X_in.shape[0]
     one_cnt = np.sum(Y)
+    phi = one_cnt / m
     
     np.set_printoptions(precision=3,suppress=True)
     
@@ -31,8 +21,8 @@ def train_lin(X_in, Y):
     for i in range(n):
         mean[i] = X_in[:,i].mean()
         std[i]  = np.std(X_in[:,i])
-#         X[:,i] = X_in[:,i]
-        X[:,i] = (X_in[:,i] - mean[i])/std[i]
+        X[:,i] = X_in[:,i]
+        # X[:,i] = (X_in[:,i] - mean[i])/std[i]
 
     X_T = np.transpose(X)
     theta = np.zeros(n)
@@ -54,6 +44,7 @@ def train_lin(X_in, Y):
     
     coeff = 2 * (m1-m0).dot(sig_inv)
     intercept = np.matmul(m1, np.matmul(sig_inv,m1.T)) - np.matmul(m0, np.matmul(sig_inv,m0.T))
+    intercept += 2 * np.log((1-phi)/phi)
     X1_boundary = (-(coeff[0][0] * (X_in[:,0])) + intercept[0][0]) / coeff[0][1]
     print(X_in[:,1])
     print(X1_boundary)
@@ -61,9 +52,6 @@ def train_lin(X_in, Y):
     plt.scatter(X_in[:,0],X_in[:,1],c=Y)
     plt.plot(X_in[:,0],X1_boundary,color='red')
     plt.show()
-
-
-# In[143]:
 
 
 def train_qua(X_in, Y):
@@ -74,10 +62,10 @@ def train_qua(X_in, Y):
     Ouput :
 
     """
-    
     n = X_in.shape[1]
     m = X_in.shape[0]
     one_cnt = np.sum(Y)
+    phi = one_cnt / m
     
     np.set_printoptions(precision=3,suppress=True)
     
@@ -125,7 +113,9 @@ def train_qua(X_in, Y):
             for j in range(n):
                 res += (X[i]-m1[0][i]) * (X[j]-m1[0][j]) * inv_sigma_1[i][j]
                 res -= (X[i]-m0[0][i]) * (X[j]-m0[0][j]) * inv_sigma_0[i][j]
-        res += np.log(np.linalg.det(sigma_1)/np.linalg.det(sigma_0))
+        c = (1-phi)/phi
+        c = c*c
+        res += np.log((np.linalg.det(sigma_1)/np.linalg.det(sigma_0)) * c)
         return res;
     
     def draw_figure():
@@ -158,10 +148,6 @@ def train_qua(X_in, Y):
 #     plt.plot(X_in[:,0],X1_boundary,color='red')
 #     plt.show()
 
-
-# In[144]:
-
-
 x_in = np.genfromtxt('../ass1_data/q4x.dat')
 y_in_label = np.genfromtxt('../ass1_data/q4y.dat',delimiter=",",dtype=str)
 
@@ -169,8 +155,8 @@ y_in = np.zeros(y_in_label.shape[0])
 for i in range(y_in_label.shape[0]):
     y_in[i] = 0 if y_in_label[i] == "Alaska" else 1
 
-# train_lin(x_in, y_in)
-train_qua(x_in, y_in)
+train_lin(x_in, y_in)
+# train_qua(x_in, y_in)
     
 # print(x_in.shape, y_in.shape)
 # print(x_in,y_in,y_in_label)
