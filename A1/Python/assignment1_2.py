@@ -21,7 +21,7 @@ def train(X_in, Y, tau):
 
     X_un = np.copy(X_in)
     X_in = (X_in - X_in.mean())/np.std(X_in)
-
+    Y = Y[:, np.newaxis]
     n = 2
     m = X_in.size
 
@@ -33,7 +33,9 @@ def train(X_in, Y, tau):
     for i in range(m):
         W = np.diag(np.exp(-(np.square(X_un-X_un[i]))/(2.*tau*tau)))
 #         W[i][i] = 0. ******************
+        print(W.shape, X_T.shape, X.shape, Y.shape)
         theta = np.matmul(np.linalg.inv(np.matmul(X_T, np.matmul(W, X))), np.matmul(X_T, np.matmul(W, Y)))
+        print(theta.shape)
         Y_pred[i] = np.matmul(X[i],theta)
 
     return Y_pred

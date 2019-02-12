@@ -40,7 +40,8 @@ def train(X_in, Y):
         X[:,i] = (X_in[:,i] - mean[i])/std[i]
 
     X_T = np.transpose(X)
-    theta = np.zeros(n)
+    theta = np.zeros((n,1))
+    Y = Y[:,np.newaxis]
 #     print(X,X_T)
     
 #     theta_(t+1) = theta_(t) - inv(H)*grad(LL(theta_t))
@@ -51,11 +52,12 @@ def train(X_in, Y):
 #     H = - X_T * W * X
     
     iter = 0
-    sig = 0
+    sig = np.zeros((n,1))
+
     while(True):
         iter+=1
         sig = sigmoid(np.matmul(X,theta))
-        W = np.diag(np.multiply(sig, 1-sig))
+        W = np.diag(np.multiply(sig, 1-sig)[:,0])
         grad_LL = np.matmul(X_T, Y-sig)
         H = -np.matmul(X_T, np.matmul(W, X))
         change_amt = -np.matmul(np.linalg.inv(H), grad_LL)
@@ -67,7 +69,7 @@ def train(X_in, Y):
         if(max_change < 1e-8):
             break;
 
-    print(iter)
+    print(iter, sig.shape, sig)
     y_pred = np.zeros(m)
     for i in range(m):
         y_pred[i] = 0 if sig[i] < 0.5 else 1
@@ -94,7 +96,7 @@ def train(X_in, Y):
     
     plt.scatter(X_in[:,0],X_in[:,1],c=y_in)
     plt.plot(X_in[:,0],X1_boundary,color='red')
-    
+    plt.show()
     return y_pred
 
 

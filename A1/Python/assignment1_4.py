@@ -1,6 +1,6 @@
 import numpy as np
 
-def train_lin(X_in, Y):
+def train_linear(X_in, Y):
     """
     Input :
 
@@ -40,21 +40,21 @@ def train_lin(X_in, Y):
     
     sig = 1/m * np.matmul(W.T, W)
     sig_inv = np.linalg.inv(sig)
-    print(sig)
+    print(sig.shape)
     
     coeff = 2 * (m1-m0).dot(sig_inv)
     intercept = np.matmul(m1, np.matmul(sig_inv,m1.T)) - np.matmul(m0, np.matmul(sig_inv,m0.T))
     intercept += 2 * np.log((1-phi)/phi)
     X1_boundary = (-(coeff[0][0] * (X_in[:,0])) + intercept[0][0]) / coeff[0][1]
-    print(X_in[:,1])
-    print(X1_boundary)
+    # print(X_in[:,1])
+    # print(X1_boundary)
     import matplotlib.pyplot as plt
     plt.scatter(X_in[:,0],X_in[:,1],c=Y)
     plt.plot(X_in[:,0],X1_boundary,color='red')
     plt.show()
 
 
-def train_qua(X_in, Y):
+def train_quadratic(X_in, Y):
 
     """
     Input :
@@ -130,23 +130,6 @@ def train_qua(X_in, Y):
         plt.show()
         
     draw_figure()
-    
-#     print(sigma_0, sigma_1, m0, m1)
-    
-#     sig = 1/m * np.matmul(W.T, W)
-#     sig_inv = np.linalg.inv(sig)
-    
-#     coeff = 2 * (m1-m0).dot(sig_inv)
-#     intercept = np.matmul(m1, np.matmul(sig_inv,m1.T)) - np.matmul(m0, np.matmul(sig_inv,m0.T))
-#     intercept = intercept[0][0]
-    
-#     X1_boundary = (-(coeff[0][0] * (X_in[:,0])) + intercept) / coeff[0][1]
-#     print(X_in[:,1])
-#     print(X1_boundary)
-#     import matplotlib.pyplot as plt
-#     plt.scatter(X_in[:,0],X_in[:,1],c=Y)
-#     plt.plot(X_in[:,0],X1_boundary,color='red')
-#     plt.show()
 
 x_in = np.genfromtxt('../ass1_data/q4x.dat')
 y_in_label = np.genfromtxt('../ass1_data/q4y.dat',delimiter=",",dtype=str)
@@ -155,11 +138,5 @@ y_in = np.zeros(y_in_label.shape[0])
 for i in range(y_in_label.shape[0]):
     y_in[i] = 0 if y_in_label[i] == "Alaska" else 1
 
-train_lin(x_in, y_in)
-# train_qua(x_in, y_in)
-    
-# print(x_in.shape, y_in.shape)
-# print(x_in,y_in,y_in_label)
-# train(x_in, y_in)
-# y_pred = train(x_in, y_in)
-
+# train_linear(x_in, y_in)
+train_quadratic(x_in, y_in)
