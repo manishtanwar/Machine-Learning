@@ -1,113 +1,115 @@
 import numpy as np
+import matplotlib.pyplot as plt
+import sys
 
-def train_linear(X_in, Y):
-    """
-    Input :
-    
-    Ouput :
+def train_linear(X, Y):
+    '''
+    Input : X: An array of shape (m,n) containing the training data provided
+            m : Number of training examples
+            n : Dimension of the input data
+            n = 2 in this problem
 
-    """
+            Y: An array of shape (m,) containing labels {0,1}
+    '''
     
-    n = X_in.shape[1]
-    m = X_in.shape[0]
+    m,n = X.shape
+
+    # one_cnt : number of data points with label 1
     one_cnt = np.sum(Y)
+
+    # phi : Bernoulli Parameter corresponding to label 1
     phi = one_cnt / m
     
+    # setting print option to a fixed precision 
     np.set_printoptions(precision=3,suppress=True)
     
-    X = np.ones((m,n))
-    mean = np.zeros(m)
-    std = np.zeros(m)
-    for i in range(n):
-        mean[i] = X_in[:,i].mean()
-        std[i]  = np.std(X_in[:,i])
-        X[:,i] = X_in[:,i]
-        # X[:,i] = (X_in[:,i] - mean[i])/std[i]
+    # Adding new axis for converting Y's shape : (m,) to (m,1)
+    Y = Y[:,np.newaxis]
 
-    X_T = np.transpose(X)
-    theta = np.zeros(n)
-    
+    # m0 : mean of x(i)'s corresponding to y = 0 labels
+    # m1 : mean of x(i)'s corresponding to y = 1 labels
+    # sig : co-variance matrix
     m0 = np.zeros((1,n))
     m1 = np.zeros((1,n))
     
-    Y_mat = np.zeros((100,1))
-    Y_mat[:,0] = np.copy(Y)
-    
-    m0 = np.matmul((1-Y_mat).T, X) / (m - one_cnt)
-    m1 = np.matmul(Y_mat.T, X) / one_cnt
+    m0 = np.matmul((1-Y).T, X) / (m - one_cnt)
+    m1 = np.matmul(Y.T, X) / one_cnt
 
-    W = X - np.matmul((1-Y_mat), m0) - np.matmul(Y_mat, m1)
+    # sig = (W.T * W)/m
+    # where W = X - m_y(i) = X - Y*m1 - (1-Y)*m0
+    W = X - np.matmul((1-Y), m0) - np.matmul(Y, m1)
     
     sig = 1/m * np.matmul(W.T, W)
     sig_inv = np.linalg.inv(sig)
-    print(sig.shape)
     
+    # coeff and intercepts for linear separator equations
     coeff = 2 * (m1-m0).dot(sig_inv)
     intercept = np.matmul(m1, np.matmul(sig_inv,m1.T)) - np.matmul(m0, np.matmul(sig_inv,m0.T))
     intercept += 2 * np.log((1-phi)/phi)
-    X1_boundary = (-(coeff[0][0] * (X_in[:,0])) + intercept[0][0]) / coeff[0][1]
-    # print(X_in[:,1])
-    # print(X1_boundary)
-    import matplotlib.pyplot as plt
-    plt.scatter(X_in[:,0],X_in[:,1],c=Y)
-    plt.plot(X_in[:,0],X1_boundary,color='red')
+
+    # Determining Boundary Points
+    X1_boundary = (-(coeff[0][0] * (X[:,0])) + intercept[0][0]) / coeff[0][1]
+    
+    # Ploting linear separator
+    plt.plot(X[:,0],X1_boundary,color='red')
     plt.show()
 
+def train_quadratic(X, Y):
+    '''
+    Input : X: An array of shape (m,n) containing the training data provided
+            m : Number of training examples
+            n : Dimension of the input data
+            n = 2 in this problem
 
-def train_quadratic(X_in, Y):
+            Y: An array of shape (m,) containing labels {0,1}
+    '''
+    
+    m,n = X.shape
 
-    """
-    Input :
-
-    Ouput :
-
-    """
-    n = X_in.shape[1]
-    m = X_in.shape[0]
+    # one_cnt : number of data points with label 1
     one_cnt = np.sum(Y)
+
+    # phi : Bernoulli Parameter corresponding to label 1
     phi = one_cnt / m
     
+    # setting print option to a fixed precision 
     np.set_printoptions(precision=3,suppress=True)
     
-    X = np.ones((m,n))
-    mean = np.zeros(m)
-    std = np.zeros(m)
-    for i in range(n):
-        mean[i] = X_in[:,i].mean()
-        std[i]  = np.std(X_in[:,i])
-#         X[:,i] = X_in[:,i]
-        X[:,i] = (X_in[:,i] - mean[i])/std[i]
+    # Adding new axis for converting Y's shape : (m,) to (m,1)
+    Y = Y[:,np.newaxis]
 
-    X_T = np.transpose(X)
-    theta = np.zeros(n)
-    
+    # m0 : mean of x(i)'s corresponding to y = 0 labels
+    # m1 : mean of x(i)'s corresponding to y = 1 labels
+    # sig : co-variance matrix
     m0 = np.zeros((1,n))
     m1 = np.zeros((1,n))
-    Y_mat = np.zeros((100,1))
-    Y_mat[:,0] = np.copy(Y)
     
-    m0 = np.matmul((1-Y_mat).T, X) / (m - one_cnt)
-    m1 = np.matmul(Y_mat.T, X) / one_cnt
-    
+    m0 = np.matmul((1-Y).T, X) / (m - one_cnt)
+    m1 = np.matmul(Y.T, X) / one_cnt
+
     M0 = np.zeros(X.shape)
     M1 = np.zeros(X.shape)
     M0[:,] = m0
     M1[:,] = m1
+
+    # computing sigma_0
+    # sigma_0 = (X-M0).T * diag(1-Y) * (X-M0)
     W = X - M0
-    D = np.diag(1-Y)
+    D = np.diag(1-Y[:,0])
     sigma_0 = (W.T @ D @ W) / (m-one_cnt)
     
+    # computing sigma_1
+    # sigma_1 = (X-M1).T * diag(Y) * (X-M1)
     W = X - M1
-    D = np.diag(Y)
+    D = np.diag(Y[:,0])
     sigma_1 = (W.T @ D @ W) / one_cnt
     
     inv_sigma_0 = np.linalg.inv(sigma_0)
     inv_sigma_1 = np.linalg.inv(sigma_1)
     
-    def fun(a,b):
-        a = (a-mean[0]) / std[0]
-        b = (b-mean[1]) / std[1]
-        X = np.array([a,b])
+    # function to compute value of quadratic equation at (x,y) 
+    def quad_eqn(x,y):
+        X = np.array([x,y])
         res = 0.
         for i in range(n):
             for j in range(n):
@@ -118,29 +120,46 @@ def train_quadratic(X_in, Y):
         res += np.log((np.linalg.det(sigma_1)/np.linalg.det(sigma_0)) * c)
         return res;
     
-    def draw_figure():
-        import matplotlib.pyplot as plt
-
-        x = np.linspace(-100, 400, 4000)
-        y = np.linspace(-100, 1000, 4000)
+    def draw_quadratic_separator():
+        # generate x and y for drawing the quadratice separator
+        x = np.linspace(-10, 250, 1000)
+        y = np.linspace(100, 800, 1000)
         x, y = np.meshgrid(x, y)
 
-        plt.contour(x,y,fun(x,y),[0])
-        plt.scatter(X_in[:,0],X_in[:,1],c=Y)
+        # drawing quadratic separator by setting eqaution = 0
+        plt.contour(x, y, quad_eqn(x,y), [0], colors = "red")
         plt.show()
-        
-    draw_figure()
+
+    draw_quadratic_separator()
 
 # Input
-x_in = np.genfromtxt('../ass1_data/q4x.dat')
-y_in_label = np.genfromtxt('../ass1_data/q4y.dat',delimiter=",",dtype=str)
+# '../ass1_data/q4x.dat'
+X = np.genfromtxt(sys.argv[1])
+# '../ass1_data/q4y.dat'
+Y_label = np.genfromtxt(sys.argv[2],delimiter=",",dtype=str)
+
 
 # Convert lables to {0,1}
 # Alaska : '0'
 # Canada : '1'
-y_in = np.zeros(y_in_label.shape[0])
-for i in range(y_in_label.shape[0]):
-    y_in[i] = 0 if y_in_label[i] == "Alaska" else 1
+Y = np.zeros(Y_label.shape[0])
+for i in range(Y_label.shape[0]):
+    Y[i] = 0 if Y_label[i] == "Alaska" else 1
 
-# train_linear(x_in, y_in)
-train_quadratic(x_in, y_in)
+
+# List of indices with label 0 in Y
+Ind_0 = [index for index, ele in enumerate(Y) if ele == 0]
+
+# List of indices with label 1 in Y
+Ind_1 = [index for index, ele in enumerate(Y) if ele == 1]
+
+# Ploting input data with provided labels
+plt.scatter(X[Ind_0,0], X[Ind_0,1], color = "green", marker = "o", s = 25, label = "Alaska")
+plt.scatter(X[Ind_1,0], X[Ind_1,1], color = "blue", marker = "*", s = 30, label = "Canada")
+plt.legend()
+
+
+if sys.argv[3] == "0":
+    train_linear(X, Y)
+else:
+    train_quadratic(X, Y)
