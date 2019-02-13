@@ -1,7 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import time
-from mpl_toolkits.mplot3d import Axes3D # This import has side effects required for the kwarg projection='3d' in the call to fig.add_subplot
+from mpl_toolkits.mplot3d import Axes3D
+import sys
 
 def train(x_in,y):
 	theta = np.zeros((2,1))

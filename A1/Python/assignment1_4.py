@@ -20,9 +20,6 @@ def train_linear(X, Y):
     # phi : Bernoulli Parameter corresponding to label 1
     phi = one_cnt / m
     
-    # setting print option to a fixed precision 
-    np.set_printoptions(precision=3,suppress=True)
-    
     # Adding new axis for converting Y's shape : (m,) to (m,1)
     Y = Y[:,np.newaxis]
 
@@ -54,6 +51,13 @@ def train_linear(X, Y):
     plt.plot(X[:,0],X1_boundary,color='red')
     plt.show()
 
+    print("mean0:")
+    print(m0)
+    print("mean1:")
+    print(m1)
+    print("sigma:")
+    print(sig)
+
 def train_quadratic(X, Y):
     '''
     Input : X: An array of shape (m,n) containing the training data provided
@@ -71,9 +75,6 @@ def train_quadratic(X, Y):
 
     # phi : Bernoulli Parameter corresponding to label 1
     phi = one_cnt / m
-    
-    # setting print option to a fixed precision 
-    np.set_printoptions(precision=3,suppress=True)
     
     # Adding new axis for converting Y's shape : (m,) to (m,1)
     Y = Y[:,np.newaxis]
@@ -131,6 +132,19 @@ def train_quadratic(X, Y):
         plt.show()
 
     draw_quadratic_separator()
+
+    print("mean0:")
+    print(m0)
+    print("mean1:")
+    print(m1)
+    print("sigma0:")
+    print(sigma_0)
+    print("sigma1:")
+    print(sigma_1)
+
+
+# setting print option to a fixed precision 
+np.set_printoptions(precision=3,suppress=True)
 
 # Input
 # '../ass1_data/q4x.dat'
