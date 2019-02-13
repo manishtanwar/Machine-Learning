@@ -1,109 +1,117 @@
 import numpy as np
+import matplotlib.pyplot as plt
+import sys
 import math
 
+# sigmoid function
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
 def train(X_in, Y):
+    '''
+    Input : X_in: An array of shape (m,n-1) containing the training data provided
+            m : Number of training examples
+            n : Dimension of the input data(including intercept data)
+            n = 2 in this problem
 
-    """
-    Input :
+            Y: An array of shape (m,) containing labels {0,1}
+    '''
 
-    Ouput :
-
-    """
     n = X_in.shape[1] + 1
     m = X_in.shape[0]
-    
-    np.set_printoptions(precision=3,suppress=True)
-    
+
+    # X : An array of shape (m,n) containing noramlized data with(intercept term 1)
     X = np.ones((m,n))
-    mean = np.zeros(m)
-    std = np.zeros(m)
+
+    # mean and standerd deviation of each column of X
+    mean = np.zeros(n-1)
+    std = np.zeros(n-1)
+
     for i in range(n-1):
         mean[i] = X_in[:,i].mean()
         std[i]  = np.std(X_in[:,i])
         X[:,i] = (X_in[:,i] - mean[i])/std[i]
 
-    X_T = np.transpose(X)
+    # theta : parameter of the model
     theta = np.zeros((n,1))
     Y = Y[:,np.newaxis]
-#     print(X,X_T)
-    
-#     theta_(t+1) = theta_(t) - inv(H)*grad(LL(theta_t))
 
-#     grad(LL(theta_t)) = X_T * (y - g(X*theta_t))
-#     let pi(i) = g(x(i)_T * theta_t)
-#     W = diag(pi(i) * (1-pi(i)))
-#     H = - X_T * W * X
-    
+    '''
+    theta_(t+1) = theta_(t) - inv(H)*grad(LL(theta_t))
+
+    grad(LL(theta_t)) = X.T * (y - g(X*theta_t))
+    let pi(i) = g(x(i)_T * theta_t)
+    W = diag(pi(i) * (1-pi(i)))
+    H = - X.T * W * X
+
+    H : Hessian matrix of LL(theta)
+    grad : Gradient of LL(theta)
+    '''
+
     iter = 0
+    # sig : array for storing sigmoid of (X*theta)
     sig = np.zeros((n,1))
+    # termination condition variable
+    EPS = 1e-8
 
     while(True):
         iter+=1
+
+        # calculate sigmoid of (X*theta)
         sig = sigmoid(np.matmul(X,theta))
-        print(sig.shape, (1-sig).shape)
 
         W = np.diag(np.multiply(sig, 1-sig)[:,0])
-        grad_LL = np.matmul(X_T, Y-sig)
-        H = -np.matmul(X_T, np.matmul(W, X))
+        grad_LL = np.matmul(X.T, Y-sig)
+        H = -np.matmul(X.T, np.matmul(W, X))
+
         change_amt = -np.matmul(np.linalg.pinv(H), grad_LL)
         
         theta = theta + change_amt
-        # print(theta)
+
+        # max_change in any dimension of theta
         max_change = abs(max(change_amt, key=abs))
         
-        if(max_change < 1e-8):
+        # termination condition
+        if(max_change < EPS):
             break;
 
-    # print(iter, sig.shape, sig)
-    y_pred = np.zeros(m)
-    for i in range(m):
-        y_pred[i] = 0 if sig[i] < 0.5 else 1
-    
-#     from mpl_toolkits.mplot3d import Axes3D
-#     import matplotlib.pyplot as plt 
-#     fig = plt.figure()
-#     ax = fig.add_subplot(111, projection='3d')
-#     fg = np.zeros(m)
-#     ax.scatter(X[:,0],X[:,1],fg,c=y_pred)
-#     plt.show()
-
+    # theta_req : 
     theta_req = np.zeros(n)
     theta_req[0] = theta[0] / std[0]
     theta_req[1] = theta[1] / std[1]
     theta_req[2] = theta[2] - (theta[0]*mean[0])/std[0] - (theta[1]*mean[1])/std[1]
     
-    print(theta, theta_req)
-
-    import matplotlib.pyplot as plt
+    print("Theta parameter:")
+    print(theta_req)
     
-#     ((X1_boundary-mean[1])/std[1])*theta[1] + ((X_in[:,0] - mean[0])/std[0])*theta[0] + theta[2] = 0;
-#     X1_boundary = mean[1] + (((-((X_in[:,0] - mean[0])/std[0])*theta[0] - theta[2]) * std[1]) / theta[1])
+    # Separator eqn : ((X1_boundary-mean[1])/std[1])*theta[1] + ((X_in[:,0] - mean[0])/std[0])*theta[0] + theta[2] = 0;
+    # Determining boundary points
     X1_boundary = (-(theta_req[0]/theta_req[1]) * X_in[:,0]) - (theta_req[2] / theta_req[1])
     
-    print(-(theta_req[0]/theta_req[1]), - (theta_req[2] / theta_req[1]))
-    plt.scatter(X_in[:,0],X_in[:,1],c=y_in)
+    # Plotting the separator
     plt.plot(X_in[:,0],X1_boundary,color='red')
     plt.show()
-    return y_pred
 
-x_in = np.genfromtxt('../ass1_data/logisticX.csv',delimiter=',')
-y_in = np.genfromtxt('../ass1_data/logisticY.csv',delimiter=',')
 
-# print(x_in.shape, y_in.shape)
-# train(x_in, y_in)
-y_pred = train(x_in, y_in)
+# input
+X = np.genfromtxt(sys.argv[1],delimiter=',')
+Y = np.genfromtxt(sys.argv[2],delimiter=',')
 
-# print(y_pred,y_in)
-# for i in range(x_in.size):
-#     print(x_in[i],y_pred[i],y_in[i])
+# List of indices with label 0 in Y
+Ind_0 = [index for index, ele in enumerate(Y) if ele == 0]
 
-# import matplotlib.pyplot as plt
-# plt.plot(x_in,y_in,'ro',color='blue')
-# plt.plot(x_in,y_pred,'ro',color='red')
-# # plt.scatter(x,y,color='red')
-# # plt.scatter(x,y1,color='blue')
-# plt.show()
+# List of indices with label 1 in Y
+Ind_1 = [index for index, ele in enumerate(Y) if ele == 1]
 
+# Ploting input data with provided labels
+plt.scatter(X[Ind_0,0], X[Ind_0,1], color = "green", marker = "o", s = 25, label = "y = 0")
+plt.scatter(X[Ind_1,0], X[Ind_1,1], color = "blue", marker = "*", s = 30, label = "y = 1")
+plt.xlabel("x1")
+plt.ylabel("x2")
+plt.legend()
+
+
+# setting print option to a fixed precision 
+np.set_printoptions(precision=3,suppress=True)
+
+train(X, Y)

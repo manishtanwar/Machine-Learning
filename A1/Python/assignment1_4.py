@@ -47,16 +47,16 @@ def train_linear(X, Y):
     # Determining Boundary Points
     X1_boundary = (-(coeff[0][0] * (X[:,0])) + intercept[0][0]) / coeff[0][1]
     
-    # Ploting linear separator
-    plt.plot(X[:,0],X1_boundary,color='red')
-    plt.show()
-
     print("mean0:")
     print(m0)
     print("mean1:")
     print(m1)
     print("sigma:")
     print(sig)
+
+    # Ploting linear separator
+    plt.plot(X[:,0],X1_boundary,color='red')
+    plt.show()
 
 def train_quadratic(X, Y):
     '''
@@ -131,8 +131,6 @@ def train_quadratic(X, Y):
         plt.contour(x, y, quad_eqn(x,y), [0], colors = "red")
         plt.show()
 
-    draw_quadratic_separator()
-
     print("mean0:")
     print(m0)
     print("mean1:")
@@ -142,14 +140,14 @@ def train_quadratic(X, Y):
     print("sigma1:")
     print(sigma_1)
 
+    draw_quadratic_separator()
+
 
 # setting print option to a fixed precision 
 np.set_printoptions(precision=3,suppress=True)
 
 # Input
-# '../ass1_data/q4x.dat'
 X = np.genfromtxt(sys.argv[1])
-# '../ass1_data/q4y.dat'
 Y_label = np.genfromtxt(sys.argv[2],delimiter=",",dtype=str)
 
 
@@ -170,8 +168,10 @@ Ind_1 = [index for index, ele in enumerate(Y) if ele == 1]
 # Ploting input data with provided labels
 plt.scatter(X[Ind_0,0], X[Ind_0,1], color = "green", marker = "o", s = 25, label = "Alaska")
 plt.scatter(X[Ind_1,0], X[Ind_1,1], color = "blue", marker = "*", s = 30, label = "Canada")
-plt.legend()
+plt.xlabel("x1 - fresh water")
+plt.ylabel("x2 - marine water")
 
+plt.legend()
 
 if sys.argv[3] == "0":
     train_linear(X, Y)
