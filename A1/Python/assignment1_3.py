@@ -16,7 +16,7 @@ def train(X_in, Y):
             n : Dimension of the input data(including the intercept term)
             n = 3 in this problem
     '''
-    
+
     n = X_in.shape[1] + 1
     m = X_in.shape[0]
 
@@ -51,6 +51,7 @@ def train(X_in, Y):
     iter = 0
     # sig : array for storing sigmoid of (X*theta)
     sig = np.zeros((n,1))
+    
     # termination condition variable
     EPS = 1e-8
 
@@ -75,7 +76,7 @@ def train(X_in, Y):
         if(max_change < EPS):
             break;
 
-    # theta_req : 
+    # theta_req : theta for un-normalized data
     theta_req = np.zeros(n)
     theta_req[2] = theta[2] / std[2]
     theta_req[1] = theta[1] / std[1]
@@ -105,12 +106,12 @@ Ind_1 = [index for index, ele in enumerate(Y) if ele == 1]
 # Ploting input data with provided labels
 plt.scatter(X[Ind_0,0], X[Ind_0,1], color = "green", marker = "o", s = 25, label = "y = 0")
 plt.scatter(X[Ind_1,0], X[Ind_1,1], color = "blue", marker = "*", s = 30, label = "y = 1")
-plt.xlabel("x1")
-plt.ylabel("x2")
+plt.xlabel("x1 - axis")
+plt.ylabel("x2 - axis")
 plt.legend()
 
 
 # setting print option to a fixed precision 
-np.set_printoptions(precision=3,suppress=True)
+np.set_printoptions(precision = 6, suppress = True)
 
 train(X, Y)

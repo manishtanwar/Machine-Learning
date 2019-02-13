@@ -49,11 +49,11 @@ Y = np.genfromtxt(sys.argv[2],delimiter=',')
 tau = float(sys.argv[3])
 
 # setting print option to a fixed precision 
-np.set_printoptions(precision=3,suppress=True)
+np.set_printoptions(precision = 6, suppress = True)
 
 # Drawing the given data
-plt.scatter(X, Y, color='red', label = "Given Data")
-plt.xlabel("x")
-plt.ylabel("y")
+plt.scatter(X, Y, color='red', label = "Given Data", s = 20)
+plt.xlabel("x - axis")
+plt.ylabel("y - axis")
 
 train(X, Y, tau)

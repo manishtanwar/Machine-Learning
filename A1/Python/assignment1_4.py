@@ -144,7 +144,7 @@ def train_quadratic(X, Y):
 
 
 # setting print option to a fixed precision 
-np.set_printoptions(precision=3,suppress=True)
+np.set_printoptions(precision = 6, suppress = True)
 
 # Input
 X = np.genfromtxt(sys.argv[1])
@@ -168,8 +168,8 @@ Ind_1 = [index for index, ele in enumerate(Y) if ele == 1]
 # Ploting input data with provided labels
 plt.scatter(X[Ind_0,0], X[Ind_0,1], color = "green", marker = "o", s = 25, label = "Alaska")
 plt.scatter(X[Ind_1,0], X[Ind_1,1], color = "blue", marker = "*", s = 30, label = "Canada")
-plt.xlabel("x1 - fresh water")
-plt.ylabel("x2 - marine water")
+plt.xlabel("x1 - axis")
+plt.ylabel("x2 - axis")
 
 plt.legend()
 
