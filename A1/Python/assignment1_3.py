@@ -24,13 +24,13 @@ def train(X_in, Y):
     X = np.ones((m,n))
 
     # mean and standerd deviation of each column of X
-    mean = np.zeros(n-1)
-    std = np.zeros(n-1)
+    mean = np.zeros(n)
+    std = np.zeros(n)
 
     for i in range(n-1):
-        mean[i] = X_in[:,i].mean()
-        std[i]  = np.std(X_in[:,i])
-        X[:,i] = (X_in[:,i] - mean[i])/std[i]
+        mean[i+1] = X_in[:,i].mean()
+        std[i+1]  = np.std(X_in[:,i])
+        X[:,i+1] = (X_in[:,i] - mean[i+1])/std[i+1]
 
     # theta : parameter of the model
     theta = np.zeros((n,1))
@@ -77,21 +77,20 @@ def train(X_in, Y):
 
     # theta_req : 
     theta_req = np.zeros(n)
-    theta_req[0] = theta[0] / std[0]
+    theta_req[2] = theta[2] / std[2]
     theta_req[1] = theta[1] / std[1]
-    theta_req[2] = theta[2] - (theta[0]*mean[0])/std[0] - (theta[1]*mean[1])/std[1]
+    theta_req[0] = theta[0] - (theta[2]*mean[2])/std[2] - (theta[1]*mean[1])/std[1]
     
     print("Theta parameter:")
     print(theta_req)
     
-    # Separator eqn : ((X1_boundary-mean[1])/std[1])*theta[1] + ((X_in[:,0] - mean[0])/std[0])*theta[0] + theta[2] = 0;
+    # Separator eqn : ((X1_boundary-mean[1])/std[1])*theta[1] + ((X_in[:,2] - mean[2])/std[2])*theta[2] + theta[0] = 0;
     # Determining boundary points
-    X1_boundary = (-(theta_req[0]/theta_req[1]) * X_in[:,0]) - (theta_req[2] / theta_req[1])
+    X2_boundary = (-(theta_req[1]/theta_req[2]) * X_in[:,1]) - (theta_req[0] / theta_req[2])
     
     # Plotting the separator
-    plt.plot(X_in[:,0],X1_boundary,color='red')
+    plt.plot(X_in[:,1],X2_boundary,color='red')
     plt.show()
-
 
 # input
 X = np.genfromtxt(sys.argv[1],delimiter=',')
