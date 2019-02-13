@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import time
 from mpl_toolkits.mplot3d import Axes3D
 import sys
+from multiprocessing import Process
 
 def train(X_in, Y, learning_rate):
 	'''
@@ -32,14 +33,14 @@ def train(X_in, Y, learning_rate):
 
 	# X : An array of shape (m,n) containing normalized data including the intercept term
 	X = np.ones((m,n))
-	X[:,0] = (X_in[:,0] - mean)/std_dev
+	X[:,1] = (X_in[:,0] - mean)/std_dev
 
 	# X_un : An array of shape (m,n) containing original(un-normalized) data including the intercept term
 	X_un = np.ones((m,n))
-	X_un[:,0] = X_in[:,0]
+	X_un[:,1] = X_in[:,0]
 
 	# termination condition variable
-	EPS = 1e-6
+	EPS = 1e-4
 	# number of iterations
 	no_iter = 0
 	
@@ -62,7 +63,7 @@ def train(X_in, Y, learning_rate):
 			break
 
 	# theta_req : theta for un-normalized data
-	theta_req = np.array([theta[0]/std_dev, theta[1] - theta[0] * (mean / std_dev)])
+	theta_req = np.array([theta[0] - theta[1] * (mean / std_dev), theta[1]/std_dev])
 	
 	print("Theta parameter:")
 	print(theta_req)
@@ -79,9 +80,8 @@ def train(X_in, Y, learning_rate):
 	plt.ylabel("y-axis")
 
 	# Plot curve
-	sub_plot.plot(X_un[:,0], y_pred, color='red', label = "Predicted Curve")
+	sub_plot.plot(X_un[:,1], y_pred, color='red', label = "Predicted Curve")
 	plt.legend()
-	plt.show()
 	plt.pause(1)
 	return (theta_list,X,Y)
 
@@ -105,14 +105,10 @@ def errorFun(theta_0, theta_1):
 	res = np.matmul((Y_mat - np.matmul(X_mat,theta)).T, (Y_mat - np.matmul(X_mat,theta))) / (2. * m)
 	return res
 
-def draw_mesh(halt_time):
-	# plt.ion()
-	fig = plt.figure(2)
-	# ax = fig.gca(projection = '3d')
-	ax = fig.add_subplot(1,1,1,projection = '3d')
+def draw_mesh():
+	figure2 = plt.figure(2)
+	sub_plot = figure2.add_subplot(1,1,1,projection = '3d')
 
-	# x = np.arange(-10.0, 10.0, 0.05)
-	# y = np.arange(-10.0, 10.0, 0.05)
 	x = np.linspace(-3.0, 3.0, 100)
 	y = np.linspace(-3.0, 3.0, 100)
 	X,Y = np.meshgrid(x, y)
@@ -120,28 +116,23 @@ def draw_mesh(halt_time):
 	z_arr = np.array([errorFun(x,y) for x, y in zip(np.ravel(X), np.ravel(Y))])
 	Z = z_arr.reshape(X.shape)
 
-	ax.plot_surface(X, Y, Z, rstride=1, cstride=1, alpha=0.5, color='blue')
+	sub_plot.plot_surface(X, Y, Z, rstride=1, cstride=1, alpha=0.5, color='blue')
 
 	print(theta_array.shape, theta_array.size)
 	for i in range(theta_array.shape[0]):
-		ax.scatter(theta_array[i][0], theta_array[i][1], errorFun(theta_array[i][0], theta_array[i][1]), s = 10)
-		ax.set_xlabel('theta_0')
-		ax.set_ylabel('theta_1')
-		ax.set_zlabel('J(theta)')
-		ax.view_init(40, 50)
+		p = sub_plot.scatter(theta_array[i][0], theta_array[i][1], errorFun(theta_array[i][0], theta_array[i][1]), s = 10)
+		sub_plot.set_xlabel('theta_0')
+		sub_plot.set_ylabel('theta_1')
+		sub_plot.set_zlabel('J(theta)')
+		sub_plot.view_init(40, 50)
 		plt.pause(halt_time)
 		plt.draw()
 		# p.remove()
-	# plt.draw()
-	# plt.show()
 	
-def draw_contours(halt_time):
-	# plt.ion()
-	fig = plt.figure(3)
-	ax = fig.add_subplot(1,1,1)
+def draw_contours():
+	figure3 = plt.figure(3)
+	sub_plot = figure3.add_subplot(1,1,1)
 
-	# x = np.arange(-10.0, 10.0, 0.05)
-	# y = np.arange(-10.0, 10.0, 0.05)
 	x = np.linspace(-5.0, 5.0, 200)
 	y = np.linspace(-4.0, 6.0, 200)
 	X,Y = np.meshgrid(x, y)
@@ -149,20 +140,17 @@ def draw_contours(halt_time):
 	z_arr = np.array([errorFun(x,y) for x, y in zip(np.ravel(X), np.ravel(Y))])
 	Z = z_arr.reshape(X.shape)
 
-	ax.contour(X, Y, Z)
+	sub_plot.contour(X, Y, Z)
 
 	print(theta_array.shape, theta_array.size)
 	for i in range(theta_array.shape[0]):
-		# ax.remove()
-		p = ax.scatter(theta_array[i][0], theta_array[i][1], s = 10)
-		ax.set_xlabel('a')
-		ax.set_ylabel('b')
+		p = sub_plot.scatter(theta_array[i][0], theta_array[i][1], s = 10)
+		sub_plot.set_xlabel('theta_0')
+		sub_plot.set_ylabel('theta_1')
 		plt.pause(halt_time)
 		plt.draw()
 		# p.remove()
-	# plt.draw()
 	plt.show()
 
-draw_mesh(halt_time)
-draw_contours(halt_time)
-
+draw_mesh()
+draw_contours()
