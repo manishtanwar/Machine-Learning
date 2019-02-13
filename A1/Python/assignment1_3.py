@@ -10,13 +10,13 @@ def sigmoid(x):
 def train(X_in, Y):
     '''
     Input : X_in: An array of shape (m,n-1) containing the training data provided
-            m : Number of training examples
-            n : Dimension of the input data(including intercept data)
-            n = 2 in this problem
-
             Y: An array of shape (m,) containing labels {0,1}
+        where
+            m : Number of training examples
+            n : Dimension of the input data(including the intercept term)
+            n = 3 in this problem
     '''
-
+    
     n = X_in.shape[1] + 1
     m = X_in.shape[0]
 

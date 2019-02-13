@@ -5,11 +5,11 @@ import sys
 def train_linear(X, Y):
     '''
     Input : X: An array of shape (m,n) containing the training data provided
+            Y: An array of shape (m,) containing labels {0,1}
+        where
             m : Number of training examples
             n : Dimension of the input data
             n = 2 in this problem
-
-            Y: An array of shape (m,) containing labels {0,1}
     '''
     
     m,n = X.shape

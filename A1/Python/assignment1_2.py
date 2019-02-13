@@ -1,68 +1,59 @@
-
-# coding: utf-8
-
-# In[15]:
-
-
 import numpy as np
-
-
-# In[16]:
-
+import matplotlib.pyplot as plt
+import sys
 
 def train(X_in, Y, tau):
-
-    """
-    Input :
-
-    Ouput :
-
-    """
-
-    X_un = np.copy(X_in)
-    X_in = (X_in - X_in.mean())/np.std(X_in)
+    '''
+    Input : X_in:   An array of shape (m,n-1) containing the training data provided
+            Y:      An array of shape (m,) containing labels {0,1}
+            tau:    Bandwidth Parameter
+        where
+            m : Number of training examples
+            n : Dimension of the input data(including the intercept term)
+            n = 2 in this problem
+    '''
+    
+    # adding new axis in X_in and Y
     Y = Y[:, np.newaxis]
-    n = 2
-    m = X_in.size
+    X_in = X_in[:, np.newaxis]
 
+    n = X_in.shape[1] + 1
+    m = X_in.shape[0]
+
+    # X : An array of shape (m,n) containing input data including the intercept term (X[:,0]=1)
     X = np.ones((m,n))
-    X[:,0] = X_in
-    Y_pred = np.zeros(m)
-    X_T = np.transpose(X)
+    X[:,1] = X_in[:,0]
 
-    for i in range(m):
-        W = np.diag(np.exp(-(np.square(X_un-X_un[i]))/(2.*tau*tau)))
-#         W[i][i] = 0. ******************
-        print(W.shape, X_T.shape, X.shape, Y.shape)
-        theta = np.matmul(np.linalg.inv(np.matmul(X_T, np.matmul(W, X))), np.matmul(X_T, np.matmul(W, Y)))
-        print(theta.shape)
-        Y_pred[i] = np.matmul(X[i],theta)
+    # Generating x data (1000 points) to draw the curve
+    X_line = np.linspace(min(X_in[:,0]), max(X_in[:,0]), 1000)
+    Y_pred = np.zeros(X_line.shape)
 
-    return Y_pred
+    for i in range(X_line.shape[0]):
+        # W = diag(w(i)) where w(i) = weight of i_th training example
+        # Theta = inv(X.T * W * X) * (X.T * W * Y)
+        W = np.diag(np.exp(-(np.square(X_in - X_line[i]))/(2.*tau*tau))[:,0])
+        theta = np.matmul(np.linalg.inv(np.matmul(X.T, np.matmul(W, X))), np.matmul(X.T, np.matmul(W, Y)))
 
+        # Prediction value of X_line[i]
+        Y_pred[i] = theta[1][0]*X_line[i] + theta[0][0]
 
-# In[17]:
+    # Plotting Curve resulting from the fit 
+    plt.plot(X_line, Y_pred, color='blue', label="Predicted Curve")
 
+    plt.legend()
+    plt.show()
 
-x_in = np.genfromtxt('../ass1_data/weightedX.csv',delimiter=',')
-y_in = np.genfromtxt('../ass1_data/weightedY.csv',delimiter=',')
-tau = 0.8
-y_pred = train(x_in, y_in, tau)
+# input
+X = np.genfromtxt(sys.argv[1],delimiter=',')
+Y = np.genfromtxt(sys.argv[2],delimiter=',')
+tau = float(sys.argv[3])
 
-import matplotlib.pyplot as plt
-plt.plot(x_in,y_in,'ro',color='blue')
-plt.plot(x_in,y_pred,'ro',color='red')
-# plt.scatter(x,y,color='red')
-# plt.scatter(x,y1,color='blue')
-plt.show()
+# setting print option to a fixed precision 
+np.set_printoptions(precision=3,suppress=True)
 
+# Drawing the given data
+plt.scatter(X, Y, color='red', label = "Given Data")
+plt.xlabel("x")
+plt.ylabel("y")
 
-# In[18]:
-
-
-A1 = np.array([[1.,4.35,1.], [4.375, 1.,1.], [4., 1.,1.]])
-print(A1)
-B1 = np.linalg.inv(A1)
-print(B1)
-print(A1.dot(B1))
-
+train(X, Y, tau)
