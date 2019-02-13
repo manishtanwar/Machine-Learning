@@ -112,8 +112,8 @@ def draw_contours():
 
 	# x = np.arange(-10.0, 10.0, 0.05)
 	# y = np.arange(-10.0, 10.0, 0.05)
-	x = np.linspace(-5.0, 5.0, 100)
-	y = np.linspace(-4.0, 6.0, 100)
+	x = np.linspace(-5.0, 5.0, 200)
+	y = np.linspace(-4.0, 6.0, 200)
 	X,Y = np.meshgrid(x, y)
 
 	z_arr = np.array([errorFun(x,y) for x, y in zip(np.ravel(X), np.ravel(Y))])
@@ -134,5 +134,5 @@ def draw_contours():
 	# plt.draw()
 	plt.show()
 
-draw_mesh()
+# draw_mesh()
 draw_contours()

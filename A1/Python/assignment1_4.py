@@ -3,7 +3,7 @@ import numpy as np
 def train_linear(X_in, Y):
     """
     Input :
-
+    
     Ouput :
 
     """
@@ -131,9 +131,13 @@ def train_quadratic(X_in, Y):
         
     draw_figure()
 
+# Input
 x_in = np.genfromtxt('../ass1_data/q4x.dat')
 y_in_label = np.genfromtxt('../ass1_data/q4y.dat',delimiter=",",dtype=str)
 
+# Convert lables to {0,1}
+# Alaska : '0'
+# Canada : '1'
 y_in = np.zeros(y_in_label.shape[0])
 for i in range(y_in_label.shape[0]):
     y_in[i] = 0 if y_in_label[i] == "Alaska" else 1
