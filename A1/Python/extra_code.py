@@ -32,3 +32,34 @@ for i in range(m):
 #         print(cur.shape)
         sig += 1/m * np.matmul(cur.T, cur)
 #     print(m0, m1, sig)
+
+
+
+
+1st problem(mesh):
+# ax.relim()
+	# ax.autoscale_view(True,True,True)
+	# fig.canvas.draw()
+	# plt.show(block = False)
+
+	# while True:
+ #    try:
+ #        y[:-10] = y[10:]
+ #        y[-10:] = np.random.randn(10)
+
+ #        # set the new data
+ #        point_plot.set_ydata([-10])
+
+ #        fig.canvas.draw()
+
+ #        time.sleep(0.01)
+ #    except KeyboardInterrupt:
+ #        break
+	# a = 0
+	# while True:
+	# 	a = 1 - a
+	# 	if(a == 0):
+	# 		plt.scatter(10,10,10)
+	# 	else:
+	# 		plt.scatter(10,-10,10)
+	# 	time.sleep(0.01)

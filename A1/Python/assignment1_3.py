@@ -1,22 +1,8 @@
-
-# coding: utf-8
-
-# In[404]:
-
-
 import numpy as np
 import math
 
-
-# In[405]:
-
-
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
-
-
-# In[406]:
-
 
 def train(X_in, Y):
 
@@ -57,19 +43,21 @@ def train(X_in, Y):
     while(True):
         iter+=1
         sig = sigmoid(np.matmul(X,theta))
+        print(sig.shape, (1-sig).shape)
+
         W = np.diag(np.multiply(sig, 1-sig)[:,0])
         grad_LL = np.matmul(X_T, Y-sig)
         H = -np.matmul(X_T, np.matmul(W, X))
-        change_amt = -np.matmul(np.linalg.inv(H), grad_LL)
+        change_amt = -np.matmul(np.linalg.pinv(H), grad_LL)
         
         theta = theta + change_amt
-        
+        # print(theta)
         max_change = abs(max(change_amt, key=abs))
         
         if(max_change < 1e-8):
             break;
 
-    print(iter, sig.shape, sig)
+    # print(iter, sig.shape, sig)
     y_pred = np.zeros(m)
     for i in range(m):
         y_pred[i] = 0 if sig[i] < 0.5 else 1
@@ -87,21 +75,19 @@ def train(X_in, Y):
     theta_req[1] = theta[1] / std[1]
     theta_req[2] = theta[2] - (theta[0]*mean[0])/std[0] - (theta[1]*mean[1])/std[1]
     
+    print(theta, theta_req)
+
     import matplotlib.pyplot as plt
     
 #     ((X1_boundary-mean[1])/std[1])*theta[1] + ((X_in[:,0] - mean[0])/std[0])*theta[0] + theta[2] = 0;
 #     X1_boundary = mean[1] + (((-((X_in[:,0] - mean[0])/std[0])*theta[0] - theta[2]) * std[1]) / theta[1])
     X1_boundary = (-(theta_req[0]/theta_req[1]) * X_in[:,0]) - (theta_req[2] / theta_req[1])
     
-    
+    print(-(theta_req[0]/theta_req[1]), - (theta_req[2] / theta_req[1]))
     plt.scatter(X_in[:,0],X_in[:,1],c=y_in)
     plt.plot(X_in[:,0],X1_boundary,color='red')
     plt.show()
     return y_pred
-
-
-# In[407]:
-
 
 x_in = np.genfromtxt('../ass1_data/logisticX.csv',delimiter=',')
 y_in = np.genfromtxt('../ass1_data/logisticY.csv',delimiter=',')
