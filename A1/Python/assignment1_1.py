@@ -85,7 +85,7 @@ def train(X_in, Y, learning_rate):
 	plt.pause(1)
 	return (theta_list,X,Y)
 
-plt.ion()
+# plt.ion()
 
 # input
 X = np.genfromtxt(sys.argv[1],delimiter=',')

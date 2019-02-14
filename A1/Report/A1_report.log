@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.2.4)  14 FEB 2019 16:14
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.2.4)  14 FEB 2019 16:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -724,16 +724,32 @@ home/manish/Desktop/6th Sem/COL774 ML/Assignments/A1/Report/A1_report.out)
 Package Fancyhdr Warning: \fancyhead's `E' option without twoside option is use
 less on input line 20.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 33.
+LaTeX Font Info:    Try loading font information for U+msa on input line 29.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 33.
+LaTeX Font Info:    Try loading font information for U+msb on input line 29.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
+<./Plots/2a.png, id=23, 572.1375pt x 441.65pt>
+File: ./Plots/2a.png Graphic file (type png)
+<use ./Plots/2a.png>
+Package pdftex.def Info: ./Plots/2a.png  used on input line 43.
+(pdftex.def)             Requested size: 256.0748pt x 197.66914pt.
+! Extra }, or forgotten \endgroup.
+\@endfloatbox ...pagefalse \outer@nobreak \egroup 
+                                                  \color@endbox 
+l.47 \end{figure}
+                 
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
 ! Undefined control sequence.
-l.33 ...\frac{(x-x^{(i)})^2}{2\tau^2}\right) \qaud
+l.52 ...\frac{(x-x^{(i)})^2}{2\tau^2}\right) \qaud
                                                    \quad \quad (\text{where ...
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -742,56 +758,60 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 41--43
+Underfull \hbox (badness 10000) in paragraph at lines 60--62
 
  []
 
+[1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./Plots/2a.png>]
 ! Double superscript.
-l.56 ...ere } D = diag( \hspace*{0.5mm} g(x^{(i)}^
+l.75 ...ere } D = diag( \hspace*{0.5mm} g(x^{(i)}^
                                                   T\theta) (1 - g(x^{(i)}^T\...
 I treat `x^1^2' essentially like `x^1{}^2'.
 
 ! Double superscript.
-l.56 ...{0.5mm} g(x^{(i)}^T\theta) (1 - g(x^{(i)}^
+l.75 ...{0.5mm} g(x^{(i)}^T\theta) (1 - g(x^{(i)}^
                                                   T\theta)) \hspace*{0.5mm}) $$
 I treat `x^1^2' essentially like `x^1{}^2'.
 
-<./Plots/3.png, id=23, 769.87625pt x 583.17876pt>
+<./Plots/3.png, id=44, 769.87625pt x 583.17876pt>
 File: ./Plots/3.png Graphic file (type png)
 <use ./Plots/3.png>
-Package pdftex.def Info: ./Plots/3.png  used on input line 89.
+Package pdftex.def Info: ./Plots/3.png  used on input line 108.
 (pdftex.def)             Requested size: 256.0748pt x 193.98013pt.
 ! Extra }, or forgotten \endgroup.
 \@endfloatbox ...pagefalse \outer@nobreak \egroup 
                                                   \color@endbox 
-l.91 \end{figure}
-                 
+l.110 \end{figure}
+                  
 I've deleted a group-closing symbol because it seems to be
 spurious, as in `$x}$'. But perhaps the } is legitimate and
 you forgot something else, as in `\hbox{$x}'. In such cases
 the way to recover is to insert both the forgotten and the
 deleted material, e.g., by typing `I$}'.
 
-[1
-
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2 <./Plots/3.png>] [3]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 97.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 97.
+[2 <./Plots/3.png>] [3]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 116.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 116.
 (/home/manish/Desktop/6th Sem/COL774 ML/Assignments/A1/Report/A1_report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 97.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 97.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 116.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 116.
 Package rerunfilecheck Info: File `A1_report.out' has not changed.
 (rerunfilecheck)             Checksum: 48D04B9A87AA4D823A1C60A5677A9E7A;226.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 97.
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 116.
  ) 
 Here is how much of TeX's memory you used:
- 18767 strings out of 494923
- 353059 string characters out of 6180743
- 414323 words of memory out of 5000000
- 21745 multiletter control sequences out of 15000+600000
+ 18784 strings out of 494923
+ 353285 string characters out of 6180743
+ 412375 words of memory out of 5000000
+ 21760 multiletter control sequences out of 15000+600000
  7156 words of font info for 28 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 55i,11n,54p,474b,332s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 55i,11n,77p,474b,369s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texl
@@ -804,10 +824,10 @@ amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
 /cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
 sy7.pfb>
 Output written on "/home/manish/Desktop/6th Sem/COL774 ML/Assignments/A1/Report
-/A1_report.pdf" (3 pages, 140112 bytes).
+/A1_report.pdf" (3 pages, 155126 bytes).
 PDF statistics:
- 93 PDF objects out of 1000 (max. 8388607)
- 74 compressed objects within 1 object stream
- 11 named destinations out of 1000 (max. 500000)
- 50 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 96 PDF objects out of 1000 (max. 8388607)
+ 75 compressed objects within 1 object stream
+ 12 named destinations out of 1000 (max. 500000)
+ 55 words of extra memory for PDF output out of 10000 (max. 10000000)
 
