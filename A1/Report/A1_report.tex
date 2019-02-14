@@ -1,6 +1,6 @@
 \documentclass[a4 paper]{article}
 % Set target color model to RGB
-\usepackage[inner=2.0cm,outer=2.0cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage[inner=2.0cm,outer=2.0cm,top=1.7cm,bottom=1.4cm]{geometry}
 \usepackage{setspace}
 \usepackage[rgb]{xcolor}
 \usepackage{verbatim}
@@ -25,13 +25,69 @@
 \begin{document}
 \homework{Assignment 1 Report}{Date: February 12, 2019}{}{\bf 2016CS10363}{\bf Manish Tanwar}{NetId(s)}
 
-\section{A}
+\section{Linear Regression:}
+\textbf{Note:} I have normalized the data and calculated the parameters back for original data.
+
+\subsubsection*{(a):}
+
+\begin{itemize}
+	\item Learning Rate = 0.5
+	\item \textbf{Stopping Criteria:}
+$$ \hspace*{3.25cm} \big| \theta_j^{(t+1)} - \theta_j^{(t)} \big| < \epsilon \quad \quad \forall j \in {1,2...n} \hspace*{1.65cm} (\text{for a sufficiently small } \epsilon \text{ (took } \epsilon = 10^{-4}))$$
+	\item {Parameters (Calculated for original(unnormalized) data):}
+	$$ \hspace*{-3.75cm} \theta = 
+	\begin{bmatrix}
+		\theta_0 \\  \theta_1 \\
+	\end{bmatrix}
+	= 
+	\begin{bmatrix}
+		0.990289 \\
+		0.000778
+	\end{bmatrix} $$
+
+\end{itemize}
+
+\subsubsection*{(b):}
+\begin{figure}[H]
+	\centering
+	% \hspace*{-0.9in} % width=100mm
+	\includegraphics[width = 90mm]{./Plots/1b.png}
+	\caption{Linear Regression : Data Points and Hypothesis Function Plot}
+  	\label{fig9}
+\end{figure}
+
+\subsubsection*{(c): \hspace*{8.3cm} (d):}
+
+\begin{figure}[H]
+	\centering
+    \begin{floatrow}
+	\hspace*{-0.4in}
+      \ffigbox[\FBwidth]{\caption{Linear Regression : 3D mesh}\label{fig12}}{%
+      \includegraphics[width=90mm]{./Plots/1c.png}
+      }
+      \ffigbox[\FBwidth]{\caption{Linear Regression : Contours}\label{fig13}}{%
+		\includegraphics[width=90mm]{./Plots/1d.png}
+      }
+    \end{floatrow}
+\end{figure}
+
+\subsubsection*{(e) Observations:}
+% η = {0.1, 0.5, 0.9, 1.3, 1.7, 2.1, 2.5}
+On plotting the contours figures for various values of Learning Rate($\eta$), we get the following observations:
+\begin{itemize}
+	\item For $\eta \in \{0.1, 0.5, 0.9\}$, the error function converges to the minima.
+	\item For $\eta \in \{1.3, 1.7\}$, the error function overshoots to the other side of the minima and toggles around the minima and finally converges.
+	\item For $\eta \in \{2.1, 2.5\}$, the error fuction diverges from the minima.
+	\item The number of iterations required decreases as we increase the learning rate($\eta$), but after a certain value when the error function overshoots it takes more iterations to converge and finally the error function diverges on large learning rates. 
+\end{itemize}
 
 % *********** 2 ***************
 \section{Locally Weighted Linear Regression:}
 
-\subsection*{(a) Linear Regression (unweighted):}
+\vspace*{-0.15cm}
 
+\subsection*{(a) Linear Regression (unweighted):}
+\vspace*{-0.1cm}
 $$ \hspace*{-0.75cm} \theta = 
 \begin{bmatrix}
 	\theta_0 \\  \theta_1 \\
@@ -42,8 +98,8 @@ $$ \hspace*{-0.75cm} \theta =
 	0.175316
 \end{bmatrix} $$
 
-\vspace*{-0.5cm}
-\begin{figure}[!htb]
+\vspace*{-0.2cm}
+\begin{figure}[H]
 	\centering
 	% \hspace*{-0.9in} % width=100mm
 	\includegraphics[width = 90mm]{./Plots/2a.png}
@@ -62,11 +118,12 @@ $$ \hspace*{-2.7cm} \text{Error Function: } \hspace*{0.9cm} J(\theta) = \frac{1}
 
 $$ \hspace*{-5.8cm} \text{Minima:} \hspace*{2.3cm} \nabla_{\theta}J(\theta) = 0 \quad \Rightarrow \quad \theta = (X^TWX)^{-1}X^TWY $$
 
-\newpage
+% \newpage
+\vspace*{0.1cm}
 \hspace*{-0.2cm}
 \textbf{Plots:}
 
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
 	% \hspace*{-0.9in} % width=100mm
 	\includegraphics[width = 90mm]{./Plots/2b(08).png}
@@ -110,10 +167,11 @@ $$ \hspace*{-5.8cm} \text{Minima:} \hspace*{2.3cm} \nabla_{\theta}J(\theta) = 0 
 \begin{itemize}
 	\item When Bandwidth Parameter($\tau$) is:
 	\begin{itemize}
-	\item \textbf{Too Small:} the model \textbf{overfits} the training data.
-	\item \textbf{Too Large:} The model tries to \textbf{underfits} the training data.
+	\item \textbf{Too Small:} It results in \textbf{overfitting}.
+	\item \textbf{Too Large:} It results in \textbf{underfitting}.
 	\end{itemize}
-	\item $\tau = 0.8$ works the best.
+	\item If $\tau$ is too small the model looks at really close data-points to the query data point $x$ which results in overfitting and if $\tau$ is too large it predicts the query data point based on giving all the data same weights(overgeneralization) which results in underfitting.
+	\item $\tau = 0.8$ works the best in our case.
 \end{itemize}
 
 % *********** 3 ***************
@@ -134,8 +192,8 @@ $$\hspace*{-2.65cm} \theta^{(t+1)} = \theta^{(t)} - H^{-1}\nabla_{\theta}LL(\the
 
 \vspace*{0.2cm}
 \hspace*{-0.2cm} 
-\textbf{Convergence Condition:}
-$$ \hspace*{3.25cm} \big| \theta_j^{(t+1)} - \theta_j^{(t)} \big| < \epsilon \quad \quad \forall j \in {1,2...n} \hspace*{1.65cm} (\text{for a sufficiently small } \epsilon)$$
+\textbf{Stopping Criteria:}
+$$ \hspace*{3.25cm} \big| \theta_j^{(t+1)} - \theta_j^{(t)} \big| < \epsilon \quad \quad \forall j \in {1,2...n} \hspace*{1.65cm} (\text{for a sufficiently small } \epsilon \text{ (took } \epsilon = 10^{-8}))$$
 
 \hspace*{-0.2cm} 
 \textbf{Resulting Parameters:}
@@ -152,10 +210,11 @@ $$ \hspace*{-3.75cm} \theta =
 Decision Boundary is the straight line boundary separating the region where $h_\theta(x) \geq 0.5 \hspace*{0.5mm} (\text{class } y=1)$ from
 where $h_\theta(x) \leq 0.5 \hspace*{0.5mm} (\text{class } y=0)$.
 
-\vspace*{0.5cm}
+\newpage
+% \vspace*{0.5cm}
 \hspace*{-0.2cm} 
 \textbf{Plot:}
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
 	% \hspace*{-0.9in} % width=100mm
 	  \includegraphics[width = 90mm]{./Plots/3.png}
@@ -196,8 +255,10 @@ $$ \phi = 0.5 \quad \quad
 
 	$$ 2(\mu_1^T - \mu_0^T\Sigma^{-1})x + \mu_0^T \Sigma^{-1} \mu_0 - \mu_1^T \Sigma^{-1} \mu_1 - 2\log\left(\frac{1-\phi}{\phi}\right) = 0$$
 
+\vspace*{-0.5cm}
 \subsubsection*{(ii) Plot:}
-\begin{figure}[!htb]
+\vspace*{-0.7cm}
+\begin{figure}[H]
 	\centering
 	% \hspace*{-0.9in} % width=100mm
 	  \includegraphics[width = 90mm]{./Plots/4a.png}
@@ -251,5 +312,13 @@ $$\Sigma_0 =
 \end{figure}
 
 \subsection*{(f) Analysis:}
-
+\begin{itemize}
+	\item In our case both linear and hyperbolic boundaries separates the data to a fair extend.
+	\item But hyperbola gives 3 classes(Area-1, Area-2, Area-3 as shown in Figure 12) in the graph: \\
+	$$\text{Area-1 and Area-3} \quad \Rightarrow \quad y=0 $$ 
+	$$\text{Area-2} \quad \Rightarrow \quad y=1 $$ 
+	This classifier classifies Area-1 in $y=0$ class, which does not seem to be true in this case. This dataset does not contain any point in Area-1. \\
+	Similarly ellipse and hyperbola are conics which won't be able to classify linearly separated data.  
+	\item As we make stronger assumption in case of linear separator($\Sigma_0 = \Sigma_1$) which could not be true some times, so quadratic separator would perform better than the linear separtor in these type of the cases.
+\end{itemize}
 \end{document}

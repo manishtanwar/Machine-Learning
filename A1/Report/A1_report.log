@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.2.4)  14 FEB 2019 18:45
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.2.4)  14 FEB 2019 23:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -701,14 +701,14 @@ LaTeX Font Info:    ... okay on input line 25.
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
 * modes: 
 * h-part:(L,W,R)=(56.9055pt, 483.69687pt, 56.9055pt)
-* v-part:(T,H,B)=(71.13188pt, 702.78308pt, 71.13188pt)
+* v-part:(T,H,B)=(48.36958pt, 756.84358pt, 39.83368pt)
 * \paperwidth=597.50787pt
 * \paperheight=845.04684pt
 * \textwidth=483.69687pt
-* \textheight=702.78308pt
+* \textheight=756.84358pt
 * \oddsidemargin=-15.36449pt
 * \evensidemargin=-15.36449pt
-* \topmargin=-38.1381pt
+* \topmargin=-60.9004pt
 * \headheight=12.0pt
 * \headsep=25.0pt
 * \topskip=10.0pt
@@ -779,139 +779,186 @@ home/manish/Desktop/6th Sem/COL774 ML/Assignments/A1/Report/A1_report.out)
 \@outlinefile=\write4
 \openout4 = `A1_report.out'.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 35.
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Try loading font information for U+msb on input line 35.
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-<./Plots/2a.png, id=23, 572.1375pt x 441.65pt>
-File: ./Plots/2a.png Graphic file (type png)
-<use ./Plots/2a.png>
-Package pdftex.def Info: ./Plots/2a.png  used on input line 49.
-(pdftex.def)             Requested size: 256.0748pt x 197.66914pt.
-[1
-
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./Plots/2a.png>]
-<./Plots/2b(08).png, id=44, 582.175pt x 436.63126pt>
-File: ./Plots/2b(08).png Graphic file (type png)
-<use ./Plots/2b(08).png>
-Package pdftex.def Info: ./Plots/2b(08).png  used on input line 72.
-(pdftex.def)             Requested size: 256.0748pt x 192.05838pt.
-<./Plots/2b(01).png, id=45, 565.11125pt x 450.68375pt>
-File: ./Plots/2b(01).png Graphic file (type png)
-<use ./Plots/2b(01).png>
-Package pdftex.def Info: ./Plots/2b(01).png  used on input line 87.
-(pdftex.def)             Requested size: 256.0748pt x 204.22244pt.
-File: ./Plots/2b(01).png Graphic file (type png)
-<use ./Plots/2b(01).png>
-Package pdftex.def Info: ./Plots/2b(01).png  used on input line 87.
-(pdftex.def)             Requested size: 256.0748pt x 204.22244pt.
-File: ./Plots/2b(01).png Graphic file (type png)
-<use ./Plots/2b(01).png>
-Package pdftex.def Info: ./Plots/2b(01).png  used on input line 87.
-(pdftex.def)             Requested size: 256.0748pt x 204.22244pt.
-<./Plots/2b(03).png, id=46, 570.13pt x 448.67625pt>
-File: ./Plots/2b(03).png Graphic file (type png)
-<use ./Plots/2b(03).png>
-Package pdftex.def Info: ./Plots/2b(03).png  used on input line 90.
-(pdftex.def)             Requested size: 256.0748pt x 201.51906pt.
-File: ./Plots/2b(03).png Graphic file (type png)
-<use ./Plots/2b(03).png>
-Package pdftex.def Info: ./Plots/2b(03).png  used on input line 90.
-(pdftex.def)             Requested size: 256.0748pt x 201.51906pt.
-File: ./Plots/2b(03).png Graphic file (type png)
-<use ./Plots/2b(03).png>
-Package pdftex.def Info: ./Plots/2b(03).png  used on input line 90.
-(pdftex.def)             Requested size: 256.0748pt x 201.51906pt.
-
-Overfull \hbox (19.54517pt too wide) detected at line 91
- [] 
- []
-
-<./Plots/2b(2).png, id=47, 575.14874pt x 447.6725pt>
-File: ./Plots/2b(2).png Graphic file (type png)
-<use ./Plots/2b(2).png>
-Package pdftex.def Info: ./Plots/2b(2).png  used on input line 101.
-(pdftex.def)             Requested size: 256.0748pt x 199.3195pt.
-File: ./Plots/2b(2).png Graphic file (type png)
-<use ./Plots/2b(2).png>
-Package pdftex.def Info: ./Plots/2b(2).png  used on input line 101.
-(pdftex.def)             Requested size: 256.0748pt x 199.3195pt.
-File: ./Plots/2b(2).png Graphic file (type png)
-<use ./Plots/2b(2).png>
-Package pdftex.def Info: ./Plots/2b(2).png  used on input line 101.
-(pdftex.def)             Requested size: 256.0748pt x 199.3195pt.
-<./Plots/2b(10).png, id=48, 570.13pt x 442.65375pt>
-File: ./Plots/2b(10).png Graphic file (type png)
-<use ./Plots/2b(10).png>
-Package pdftex.def Info: ./Plots/2b(10).png  used on input line 104.
-(pdftex.def)             Requested size: 256.0748pt x 198.81409pt.
-File: ./Plots/2b(10).png Graphic file (type png)
-<use ./Plots/2b(10).png>
-Package pdftex.def Info: ./Plots/2b(10).png  used on input line 104.
-(pdftex.def)             Requested size: 256.0748pt x 198.81409pt.
-File: ./Plots/2b(10).png Graphic file (type png)
-<use ./Plots/2b(10).png>
-Package pdftex.def Info: ./Plots/2b(10).png  used on input line 104.
-(pdftex.def)             Requested size: 256.0748pt x 198.81409pt.
-
-Overfull \hbox (19.54517pt too wide) detected at line 105
- [] 
- []
-
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 111.
-
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 34.
 (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 111.
-[2 <./Plots/2b(08).png> <./Plots/2b(01).png> <./Plots/2b(03).png> <./Plots/2b(2
-).png> <./Plots/2b(10).png>]
-<./Plots/3.png, id=63, 769.87625pt x 583.17876pt>
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 34.
+LaTeX Font Info:    Try loading font information for U+msa on input line 36.
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 36.
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+Overfull \hbox (7.13335pt too wide) detected at line 36
+| []\OML/cmm/m/it/10 ^^R[] \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 ^^R[][] < ^^O 
+ \OMS/cmsy/m/n/10 8\OML/cmm/m/it/10 j \OMS/cmsy/m/n/10 2 []| \OT1/cmr/m/n/10 ([
+]\OML/cmm/m/it/10 ^^O[]^^O \OT1/cmr/m/n/10 = 10[]))
+ []
+
+<./Plots/1b.png, id=23, 589.20125pt x 443.6575pt>
+File: ./Plots/1b.png Graphic file (type png)
+<use ./Plots/1b.png>
+Package pdftex.def Info: ./Plots/1b.png  used on input line 54.
+(pdftex.def)             Requested size: 256.0748pt x 192.8202pt.
+<./Plots/1c.png, id=25, 573.14125pt x 458.71375pt>
+File: ./Plots/1c.png Graphic file (type png)
+<use ./Plots/1c.png>
+Package pdftex.def Info: ./Plots/1c.png  used on input line 67.
+(pdftex.def)             Requested size: 256.0748pt x 204.9494pt.
+File: ./Plots/1c.png Graphic file (type png)
+<use ./Plots/1c.png>
+Package pdftex.def Info: ./Plots/1c.png  used on input line 67.
+(pdftex.def)             Requested size: 256.0748pt x 204.9494pt.
+File: ./Plots/1c.png Graphic file (type png)
+<use ./Plots/1c.png>
+Package pdftex.def Info: ./Plots/1c.png  used on input line 67.
+(pdftex.def)             Requested size: 256.0748pt x 204.9494pt.
+<./Plots/1d.png, id=26, 556.0775pt x 466.74374pt>
+File: ./Plots/1d.png Graphic file (type png)
+<use ./Plots/1d.png>
+Package pdftex.def Info: ./Plots/1d.png  used on input line 70.
+(pdftex.def)             Requested size: 256.0748pt x 214.93974pt.
+File: ./Plots/1d.png Graphic file (type png)
+<use ./Plots/1d.png>
+Package pdftex.def Info: ./Plots/1d.png  used on input line 70.
+(pdftex.def)             Requested size: 256.0748pt x 214.93974pt.
+File: ./Plots/1d.png Graphic file (type png)
+<use ./Plots/1d.png>
+Package pdftex.def Info: ./Plots/1d.png  used on input line 70.
+(pdftex.def)             Requested size: 256.0748pt x 214.93974pt.
+
+Overfull \hbox (19.54517pt too wide) detected at line 71
+ [] 
+ []
+
+[1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./Plots/1b.png>]
+<./Plots/2a.png, id=46, 572.1375pt x 441.65pt>
+File: ./Plots/2a.png Graphic file (type png)
+<use ./Plots/2a.png>
+Package pdftex.def Info: ./Plots/2a.png  used on input line 105.
+(pdftex.def)             Requested size: 256.0748pt x 197.66914pt.
+[2 <./Plots/1c.png> <./Plots/1d.png> <./Plots/2a.png>]
+<./Plots/2b(08).png, id=59, 582.175pt x 436.63126pt>
+File: ./Plots/2b(08).png Graphic file (type png)
+<use ./Plots/2b(08).png>
+Package pdftex.def Info: ./Plots/2b(08).png  used on input line 129.
+(pdftex.def)             Requested size: 256.0748pt x 192.05838pt.
+<./Plots/2b(01).png, id=60, 565.11125pt x 450.68375pt>
+File: ./Plots/2b(01).png Graphic file (type png)
+<use ./Plots/2b(01).png>
+Package pdftex.def Info: ./Plots/2b(01).png  used on input line 144.
+(pdftex.def)             Requested size: 256.0748pt x 204.22244pt.
+File: ./Plots/2b(01).png Graphic file (type png)
+<use ./Plots/2b(01).png>
+Package pdftex.def Info: ./Plots/2b(01).png  used on input line 144.
+(pdftex.def)             Requested size: 256.0748pt x 204.22244pt.
+File: ./Plots/2b(01).png Graphic file (type png)
+<use ./Plots/2b(01).png>
+Package pdftex.def Info: ./Plots/2b(01).png  used on input line 144.
+(pdftex.def)             Requested size: 256.0748pt x 204.22244pt.
+<./Plots/2b(03).png, id=61, 570.13pt x 448.67625pt>
+File: ./Plots/2b(03).png Graphic file (type png)
+<use ./Plots/2b(03).png>
+Package pdftex.def Info: ./Plots/2b(03).png  used on input line 147.
+(pdftex.def)             Requested size: 256.0748pt x 201.51906pt.
+File: ./Plots/2b(03).png Graphic file (type png)
+<use ./Plots/2b(03).png>
+Package pdftex.def Info: ./Plots/2b(03).png  used on input line 147.
+(pdftex.def)             Requested size: 256.0748pt x 201.51906pt.
+File: ./Plots/2b(03).png Graphic file (type png)
+<use ./Plots/2b(03).png>
+Package pdftex.def Info: ./Plots/2b(03).png  used on input line 147.
+(pdftex.def)             Requested size: 256.0748pt x 201.51906pt.
+
+Overfull \hbox (19.54517pt too wide) detected at line 148
+ [] 
+ []
+
+<./Plots/2b(2).png, id=62, 575.14874pt x 447.6725pt>
+File: ./Plots/2b(2).png Graphic file (type png)
+<use ./Plots/2b(2).png>
+Package pdftex.def Info: ./Plots/2b(2).png  used on input line 158.
+(pdftex.def)             Requested size: 256.0748pt x 199.3195pt.
+File: ./Plots/2b(2).png Graphic file (type png)
+<use ./Plots/2b(2).png>
+Package pdftex.def Info: ./Plots/2b(2).png  used on input line 158.
+(pdftex.def)             Requested size: 256.0748pt x 199.3195pt.
+File: ./Plots/2b(2).png Graphic file (type png)
+<use ./Plots/2b(2).png>
+Package pdftex.def Info: ./Plots/2b(2).png  used on input line 158.
+(pdftex.def)             Requested size: 256.0748pt x 199.3195pt.
+<./Plots/2b(10).png, id=63, 570.13pt x 442.65375pt>
+File: ./Plots/2b(10).png Graphic file (type png)
+<use ./Plots/2b(10).png>
+Package pdftex.def Info: ./Plots/2b(10).png  used on input line 161.
+(pdftex.def)             Requested size: 256.0748pt x 198.81409pt.
+File: ./Plots/2b(10).png Graphic file (type png)
+<use ./Plots/2b(10).png>
+Package pdftex.def Info: ./Plots/2b(10).png  used on input line 161.
+(pdftex.def)             Requested size: 256.0748pt x 198.81409pt.
+File: ./Plots/2b(10).png Graphic file (type png)
+<use ./Plots/2b(10).png>
+Package pdftex.def Info: ./Plots/2b(10).png  used on input line 161.
+(pdftex.def)             Requested size: 256.0748pt x 198.81409pt.
+
+Overfull \hbox (19.54517pt too wide) detected at line 162
+ [] 
+ []
+
+[3 <./Plots/2b(08).png> <./Plots/2b(01).png> <./Plots/2b(03).png>] [4 <./Plots/
+2b(2).png> <./Plots/2b(10).png>]
+<./Plots/3.png, id=85, 769.87625pt x 583.17876pt>
 File: ./Plots/3.png Graphic file (type png)
 <use ./Plots/3.png>
-Package pdftex.def Info: ./Plots/3.png  used on input line 161.
+Package pdftex.def Info: ./Plots/3.png  used on input line 220.
 (pdftex.def)             Requested size: 256.0748pt x 193.98013pt.
-LaTeX Font Info:    Try loading font information for U+bbm on input line 170.
+LaTeX Font Info:    Try loading font information for U+bbm on input line 229.
 (/usr/share/texlive/texmf-dist/tex/latex/bbm-macros/ubbm.fd
 File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
-) [3 <./Plots/3.png>]
-<./Plots/4a.png, id=72, 586.19pt x 455.7025pt>
+)
+<./Plots/4a.png, id=86, 586.19pt x 455.7025pt>
 File: ./Plots/4a.png Graphic file (type png)
 <use ./Plots/4a.png>
-Package pdftex.def Info: ./Plots/4a.png  used on input line 203.
+Package pdftex.def Info: ./Plots/4a.png  used on input line 264.
 (pdftex.def)             Requested size: 256.0748pt x 199.07034pt.
-[4 <./Plots/4a.png>]
-<./Plots/4b.png, id=86, 585.18625pt x 445.665pt>
+[5 <./Plots/3.png> <./Plots/4a.png>]
+<./Plots/4b.png, id=101, 605.26125pt x 451.6875pt>
 File: ./Plots/4b.png Graphic file (type png)
 <use ./Plots/4b.png>
-Package pdftex.def Info: ./Plots/4b.png  used on input line 248.
-(pdftex.def)             Requested size: 256.0748pt x 195.02556pt.
-[5 <./Plots/4b.png>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 255.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 255.
+Package pdftex.def Info: ./Plots/4b.png  used on input line 309.
+(pdftex.def)             Requested size: 256.0748pt x 191.09967pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 317--318
+
+ []
+
+[6 <./Plots/4b.png>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 324.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 324.
 (/home/manish/Desktop/6th Sem/COL774 ML/Assignments/A1/Report/A1_report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 255.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 255.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 324.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 324.
 Package rerunfilecheck Info: File `A1_report.out' has not changed.
-(rerunfilecheck)             Checksum: 48D04B9A87AA4D823A1C60A5677A9E7A;226.
+(rerunfilecheck)             Checksum: A5D14903ACA0EAA7BC69CD96A95BE53F;243.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 255.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 324.
  ) 
 Here is how much of TeX's memory you used:
- 19748 strings out of 494923
- 368427 string characters out of 6180743
- 435485 words of memory out of 5000000
- 22668 multiletter control sequences out of 15000+600000
+ 19773 strings out of 494923
+ 368774 string characters out of 6180743
+ 433716 words of memory out of 5000000
+ 22683 multiletter control sequences out of 15000+600000
  11898 words of font info for 48 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 55i,12n,89p,474b,625s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 55i,12n,89p,474b,627s stack positions out of 5000i,500n,10000p,200000b,80000s
  </home/manish/.texlive2017/texmf-var/fonts/pk/ljfour/public/bbm/bbm10.600pk>
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/
 share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/
@@ -926,10 +973,10 @@ msfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
 .pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><
 /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
 Output written on "/home/manish/Desktop/6th Sem/COL774 ML/Assignments/A1/Report
-/A1_report.pdf" (5 pages, 312897 bytes).
+/A1_report.pdf" (6 pages, 485498 bytes).
 PDF statistics:
- 151 PDF objects out of 1000 (max. 8388607)
- 110 compressed objects within 2 object streams
- 30 named destinations out of 1000 (max. 500000)
- 90 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 171 PDF objects out of 1000 (max. 8388607)
+ 123 compressed objects within 2 object streams
+ 37 named destinations out of 1000 (max. 500000)
+ 105 words of extra memory for PDF output out of 10000 (max. 10000000)
 
