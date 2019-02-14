@@ -67,7 +67,7 @@ def train(X_in, Y, learning_rate):
 	
 	print("Theta parameter:")
 	print(theta_req)
-	print(no_iter)
+	# print(no_iter)
 
 	theta_list = np.array(theta_list)
 	# Points for plotting curve 
@@ -86,7 +86,7 @@ def train(X_in, Y, learning_rate):
 	plt.pause(1)
 	return (theta_list,X,Y)
 
-# plt.ion()
+plt.ion()
 
 # input
 X = np.genfromtxt(sys.argv[1],delimiter=',')
@@ -126,7 +126,7 @@ def draw_mesh():
 
 	text_arg = sub_plot.text(-8,-3,12,"")
 
-	print(theta_array.shape)
+	# print(theta_array.shape)
 	for i in range(theta_array.shape[0]):
 		error = errorFun(theta_array[i][0], theta_array[i][1])
 		p = sub_plot.scatter(theta_array[i][0], theta_array[i][1], s = 10)
@@ -170,6 +170,6 @@ def draw_contours():
 	# plt.show()
 
 
-# draw_mesh()
+draw_mesh()
 draw_contours()
 plt.show()
