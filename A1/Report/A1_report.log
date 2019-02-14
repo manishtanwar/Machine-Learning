@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.2.4)  14 FEB 2019 17:06
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.2.4)  14 FEB 2019 18:45
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -635,70 +635,63 @@ Package floatrow Info: Modified rotfloat package code loaded on input line 473.
 \LTleft=\skip73
 \LTright=\skip74
 \flrow@types=\toks40
-) (/usr/share/texlive/texmf-dist/tex/latex/subfig/subfig.sty
-Package: subfig 2005/06/28 ver: 1.3 subfig package
-\c@KVtest=\count156
-\sf@farskip=\skip75
-\sf@captopadj=\dimen192
-\sf@capskip=\skip76
-\sf@nearskip=\skip77
-\sf@top=\skip78
-\sf@bottom=\skip79
+) (/usr/share/texlive/texmf-dist/tex/latex/tools/xspace.sty
+Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
 ) (/usr/share/texlive/texmf-dist/tex/latex/enumitem/enumitem.sty
 Package: enumitem 2011/09/28 v3.5.2 Customized lists
-\labelindent=\skip80
-\enit@outerparindent=\dimen193
+\labelindent=\skip75
+\enit@outerparindent=\dimen192
 \enit@toks=\toks41
 \enit@inbox=\box43
-\enitdp@description=\count157
+\enitdp@description=\count156
+) (/usr/share/texlive/texmf-dist/tex/latex/bbm-macros/bbm.sty
+Package: bbm 1999/03/15 V 1.2 provides fonts for set symbols - TH
+LaTeX Font Info:    Overwriting math alphabet `\mathbbm' in version `bold'
+(Font)                  U/bbm/m/n --> U/bbm/bx/n on input line 33.
+LaTeX Font Info:    Overwriting math alphabet `\mathbbmss' in version `bold'
+(Font)                  U/bbmss/m/n --> U/bbmss/bx/n on input line 35.
 ) (/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty
 Package: booktabs 2016/04/27 v1.618033 publication quality tables
-\heavyrulewidth=\dimen194
-\lightrulewidth=\dimen195
-\cmidrulewidth=\dimen196
-\belowrulesep=\dimen197
-\belowbottomsep=\dimen198
+\heavyrulewidth=\dimen193
+\lightrulewidth=\dimen194
+\cmidrulewidth=\dimen195
+\belowrulesep=\dimen196
+\belowbottomsep=\dimen197
+\aboverulesep=\dimen198
 Normal \dimen register pool exhausted, switching to extended pool.
-\aboverulesep=\dimen256
-\abovetopsep=\dimen257
-\cmidrulesep=\dimen258
-\cmidrulekern=\dimen259
-\defaultaddspace=\dimen260
-\@cmidla=\count158
-\@cmidlb=\count159
-\@aboverulesep=\dimen261
-\@belowrulesep=\dimen262
-\@thisruleclass=\count160
-\@lastruleclass=\count161
-\@thisrulewidth=\dimen263
+\abovetopsep=\dimen256
+\cmidrulesep=\dimen257
+\cmidrulekern=\dimen258
+\defaultaddspace=\dimen259
+\@cmidla=\count157
+\@cmidlb=\count158
+\@aboverulesep=\dimen260
+\@belowrulesep=\dimen261
+\@thisruleclass=\count159
+\@lastruleclass=\count160
+\@thisrulewidth=\dimen262
 ) (/home/manish/Desktop/6th Sem/COL774 ML/Assignments/A1/Report/macros.tex) (/h
 ome/manish/Desktop/6th Sem/COL774 ML/Assignments/A1/Report/A1_report.aux
-
-LaTeX Warning: Label `fig:boat1' multiply defined.
-
-
-LaTeX Warning: Label `fig7' multiply defined.
-
 
 LaTeX Warning: Label `fig8' multiply defined.
 
 )
 \openout1 = `A1_report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -735,16 +728,16 @@ LaTeX Font Info:    ... okay on input line 22.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count162
-\scratchdimen=\dimen264
+\scratchcounter=\count161
+\scratchdimen=\dimen263
 \scratchbox=\box44
-\nofMPsegments=\count163
-\nofMParguments=\count164
+\nofMPsegments=\count162
+\nofMParguments=\count163
 \everyMPshowfont=\toks42
-\MPscratchCnt=\count165
-\MPscratchDim=\dimen265
-\MPnumerator=\count166
-\makeMPintoPDFobject=\count167
+\MPscratchCnt=\count164
+\MPscratchDim=\dimen264
+\MPnumerator=\count165
+\makeMPintoPDFobject=\count166
 \everyMPtoPDFconversion=\toks43
 ) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
@@ -762,254 +755,181 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 Package caption Info: Begin \AtBeginDocument code.
-Package caption Info: subfig package v1.3 is loaded.
 Package caption Info: floatrow package is loaded.
 Package caption Info: float package is loaded.
 Package caption Info: floatrow package is loaded.
 Package caption Info: hyperref package is loaded.
 Package caption Info: rotating package is loaded.
-
-! Package subcaption Error: This package can't be used in cooperation
-(subcaption)                with the subfig package.
-
-See the subcaption package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.22 \begin{document}
-                     
-If you do not understand this error, please take a closer look
-at the documentation of the `subcaption' package, especially the
-section about errors.
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
 Package caption Info: End \AtBeginDocument code.
 ABD: EveryShipout initializing macros
 \AtBeginShipoutBox=\box45
-Package hyperref Info: Link coloring ON on input line 22.
-(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty)
-
-LaTeX Warning: You have requested, on input line 22, version
-               `2012/07/28' of package nameref,
-               but only version
-               `'
-               is available.
-
-LaTeX Info: Redefining \ref on input line 22.
-LaTeX Info: Redefining \pageref on input line 22.
+Package hyperref Info: Link coloring ON on input line 25.
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
+Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
+)
+\c@section@level=\count167
+)
+LaTeX Info: Redefining \ref on input line 25.
+LaTeX Info: Redefining \pageref on input line 25.
+LaTeX Info: Redefining \nameref on input line 25.
 (/home/manish/Desktop/6th Sem/COL774 ML/Assignments/A1/Report/A1_report.out) (/
 home/manish/Desktop/6th Sem/COL774 ML/Assignments/A1/Report/A1_report.out)
 \@outlinefile=\write4
 \openout4 = `A1_report.out'.
 
-(/usr/share/texlive/texmf-dist/tex/latex/floatrow/fr-subfig.sty
-Package: fr-subfig 2007/12/24 v0.1g (beta) floatrow: additions for subfig
-\FBsc@max=\skip81
-\FBso@max=\skip82
-)
-! Undefined control sequence.
-<argument> \sf@counterlist 
-                           
-l.22 \begin{document}
-                     
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-
-Package Fancyhdr Warning: \fancyhead's `E' option without twoside option is use
-less on input line 23.
-
-LaTeX Font Info:    Try loading font information for U+msa on input line 32.
+LaTeX Font Info:    Try loading font information for U+msa on input line 35.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 32.
+LaTeX Font Info:    Try loading font information for U+msb on input line 35.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 <./Plots/2a.png, id=23, 572.1375pt x 441.65pt>
 File: ./Plots/2a.png Graphic file (type png)
 <use ./Plots/2a.png>
-Package pdftex.def Info: ./Plots/2a.png  used on input line 46.
+Package pdftex.def Info: ./Plots/2a.png  used on input line 49.
 (pdftex.def)             Requested size: 256.0748pt x 197.66914pt.
-! Extra }, or forgotten \endgroup.
-\sf@endfloatbox ...gefalse \outer@nobreak \egroup 
-                                                  \color@endbox 
-l.50 \end{figure}
-                 
-I've deleted a group-closing symbol because it seems to be
-spurious, as in `$x}$'. But perhaps the } is legitimate and
-you forgot something else, as in `\hbox{$x}'. In such cases
-the way to recover is to insert both the forgotten and the
-deleted material, e.g., by typing `I$}'.
-
-! Undefined control sequence.
-l.56 ...\frac{(x-x^{(i)})^2}{2\tau^2}\right) \qaud
-                                                   \quad \quad (\text{where ...
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
 [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./Plots/2a.png>]
 <./Plots/2b(08).png, id=44, 582.175pt x 436.63126pt>
 File: ./Plots/2b(08).png Graphic file (type png)
 <use ./Plots/2b(08).png>
-Package pdftex.def Info: ./Plots/2b(08).png  used on input line 69.
+Package pdftex.def Info: ./Plots/2b(08).png  used on input line 72.
 (pdftex.def)             Requested size: 256.0748pt x 192.05838pt.
-! Extra }, or forgotten \endgroup.
-\sf@endfloatbox ...gefalse \outer@nobreak \egroup 
-                                                  \color@endbox 
-l.73 \end{figure}
-                 
-I've deleted a group-closing symbol because it seems to be
-spurious, as in `$x}$'. But perhaps the } is legitimate and
-you forgot something else, as in `\hbox{$x}'. In such cases
-the way to recover is to insert both the forgotten and the
-deleted material, e.g., by typing `I$}'.
-
 <./Plots/2b(01).png, id=45, 565.11125pt x 450.68375pt>
 File: ./Plots/2b(01).png Graphic file (type png)
 <use ./Plots/2b(01).png>
-Package pdftex.def Info: ./Plots/2b(01).png  used on input line 84.
+Package pdftex.def Info: ./Plots/2b(01).png  used on input line 87.
 (pdftex.def)             Requested size: 256.0748pt x 204.22244pt.
 File: ./Plots/2b(01).png Graphic file (type png)
 <use ./Plots/2b(01).png>
-Package pdftex.def Info: ./Plots/2b(01).png  used on input line 84.
+Package pdftex.def Info: ./Plots/2b(01).png  used on input line 87.
 (pdftex.def)             Requested size: 256.0748pt x 204.22244pt.
 File: ./Plots/2b(01).png Graphic file (type png)
 <use ./Plots/2b(01).png>
-Package pdftex.def Info: ./Plots/2b(01).png  used on input line 84.
+Package pdftex.def Info: ./Plots/2b(01).png  used on input line 87.
 (pdftex.def)             Requested size: 256.0748pt x 204.22244pt.
 <./Plots/2b(03).png, id=46, 570.13pt x 448.67625pt>
 File: ./Plots/2b(03).png Graphic file (type png)
 <use ./Plots/2b(03).png>
-Package pdftex.def Info: ./Plots/2b(03).png  used on input line 87.
+Package pdftex.def Info: ./Plots/2b(03).png  used on input line 90.
 (pdftex.def)             Requested size: 256.0748pt x 201.51906pt.
 File: ./Plots/2b(03).png Graphic file (type png)
 <use ./Plots/2b(03).png>
-Package pdftex.def Info: ./Plots/2b(03).png  used on input line 87.
+Package pdftex.def Info: ./Plots/2b(03).png  used on input line 90.
 (pdftex.def)             Requested size: 256.0748pt x 201.51906pt.
 File: ./Plots/2b(03).png Graphic file (type png)
 <use ./Plots/2b(03).png>
-Package pdftex.def Info: ./Plots/2b(03).png  used on input line 87.
+Package pdftex.def Info: ./Plots/2b(03).png  used on input line 90.
 (pdftex.def)             Requested size: 256.0748pt x 201.51906pt.
 
-Overfull \hbox (19.54517pt too wide) detected at line 88
+Overfull \hbox (19.54517pt too wide) detected at line 91
  [] 
  []
 
 <./Plots/2b(2).png, id=47, 575.14874pt x 447.6725pt>
 File: ./Plots/2b(2).png Graphic file (type png)
 <use ./Plots/2b(2).png>
-Package pdftex.def Info: ./Plots/2b(2).png  used on input line 98.
+Package pdftex.def Info: ./Plots/2b(2).png  used on input line 101.
 (pdftex.def)             Requested size: 256.0748pt x 199.3195pt.
 File: ./Plots/2b(2).png Graphic file (type png)
 <use ./Plots/2b(2).png>
-Package pdftex.def Info: ./Plots/2b(2).png  used on input line 98.
+Package pdftex.def Info: ./Plots/2b(2).png  used on input line 101.
 (pdftex.def)             Requested size: 256.0748pt x 199.3195pt.
 File: ./Plots/2b(2).png Graphic file (type png)
 <use ./Plots/2b(2).png>
-Package pdftex.def Info: ./Plots/2b(2).png  used on input line 98.
+Package pdftex.def Info: ./Plots/2b(2).png  used on input line 101.
 (pdftex.def)             Requested size: 256.0748pt x 199.3195pt.
 <./Plots/2b(10).png, id=48, 570.13pt x 442.65375pt>
 File: ./Plots/2b(10).png Graphic file (type png)
 <use ./Plots/2b(10).png>
-Package pdftex.def Info: ./Plots/2b(10).png  used on input line 101.
+Package pdftex.def Info: ./Plots/2b(10).png  used on input line 104.
 (pdftex.def)             Requested size: 256.0748pt x 198.81409pt.
 File: ./Plots/2b(10).png Graphic file (type png)
 <use ./Plots/2b(10).png>
-Package pdftex.def Info: ./Plots/2b(10).png  used on input line 101.
+Package pdftex.def Info: ./Plots/2b(10).png  used on input line 104.
 (pdftex.def)             Requested size: 256.0748pt x 198.81409pt.
 File: ./Plots/2b(10).png Graphic file (type png)
 <use ./Plots/2b(10).png>
-Package pdftex.def Info: ./Plots/2b(10).png  used on input line 101.
+Package pdftex.def Info: ./Plots/2b(10).png  used on input line 104.
 (pdftex.def)             Requested size: 256.0748pt x 198.81409pt.
 
-Overfull \hbox (19.54517pt too wide) detected at line 102
+Overfull \hbox (19.54517pt too wide) detected at line 105
  [] 
  []
 
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 108.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 111.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 108.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 111.
 [2 <./Plots/2b(08).png> <./Plots/2b(01).png> <./Plots/2b(03).png> <./Plots/2b(2
 ).png> <./Plots/2b(10).png>]
-! Double superscript.
-l.125 ...re } D = diag( \hspace*{0.5mm} g(x^{(i)}^
-                                                  T\theta) (1 - g(x^{(i)}^T\...
-I treat `x^1^2' essentially like `x^1{}^2'.
-
-! Double superscript.
-l.125 ...0.5mm} g(x^{(i)}^T\theta) (1 - g(x^{(i)}^
-                                                  T\theta)) \hspace*{0.5mm}) $$
-I treat `x^1^2' essentially like `x^1{}^2'.
-
 <./Plots/3.png, id=63, 769.87625pt x 583.17876pt>
 File: ./Plots/3.png Graphic file (type png)
 <use ./Plots/3.png>
-Package pdftex.def Info: ./Plots/3.png  used on input line 158.
+Package pdftex.def Info: ./Plots/3.png  used on input line 161.
 (pdftex.def)             Requested size: 256.0748pt x 193.98013pt.
-! Extra }, or forgotten \endgroup.
-\sf@endfloatbox ...gefalse \outer@nobreak \egroup 
-                                                  \color@endbox 
-l.160 \end{figure}
-                  
-I've deleted a group-closing symbol because it seems to be
-spurious, as in `$x}$'. But perhaps the } is legitimate and
-you forgot something else, as in `\hbox{$x}'. In such cases
-the way to recover is to insert both the forgotten and the
-deleted material, e.g., by typing `I$}'.
-
-[3 <./Plots/3.png>] [4]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 166.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 166.
+LaTeX Font Info:    Try loading font information for U+bbm on input line 170.
+(/usr/share/texlive/texmf-dist/tex/latex/bbm-macros/ubbm.fd
+File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
+) [3 <./Plots/3.png>]
+<./Plots/4a.png, id=72, 586.19pt x 455.7025pt>
+File: ./Plots/4a.png Graphic file (type png)
+<use ./Plots/4a.png>
+Package pdftex.def Info: ./Plots/4a.png  used on input line 203.
+(pdftex.def)             Requested size: 256.0748pt x 199.07034pt.
+[4 <./Plots/4a.png>]
+<./Plots/4b.png, id=86, 585.18625pt x 445.665pt>
+File: ./Plots/4b.png Graphic file (type png)
+<use ./Plots/4b.png>
+Package pdftex.def Info: ./Plots/4b.png  used on input line 248.
+(pdftex.def)             Requested size: 256.0748pt x 195.02556pt.
+[5 <./Plots/4b.png>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 255.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 255.
 (/home/manish/Desktop/6th Sem/COL774 ML/Assignments/A1/Report/A1_report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 166.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 166.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 255.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 255.
 Package rerunfilecheck Info: File `A1_report.out' has not changed.
 (rerunfilecheck)             Checksum: 48D04B9A87AA4D823A1C60A5677A9E7A;226.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 166.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 255.
  ) 
 Here is how much of TeX's memory you used:
- 19661 strings out of 494923
- 366968 string characters out of 6180743
- 435295 words of memory out of 5000000
- 22603 multiletter control sequences out of 15000+600000
- 11503 words of font info for 45 fonts, out of 8000000 for 9000
+ 19748 strings out of 494923
+ 368427 string characters out of 6180743
+ 435485 words of memory out of 5000000
+ 22668 multiletter control sequences out of 15000+600000
+ 11898 words of font info for 48 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 55i,11n,89p,474b,623s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
-r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
-e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texl
-ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/font
-s/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1
-/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-sy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pf
-b>
+ 55i,12n,89p,474b,625s stack positions out of 5000i,500n,10000p,200000b,80000s
+ </home/manish/.texlive2017/texmf-var/fonts/pk/ljfour/public/bbm/bbm10.600pk>
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/
+texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texliv
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7
+.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
 Output written on "/home/manish/Desktop/6th Sem/COL774 ML/Assignments/A1/Report
-/A1_report.pdf" (4 pages, 258401 bytes).
+/A1_report.pdf" (5 pages, 312897 bytes).
 PDF statistics:
- 120 PDF objects out of 1000 (max. 8388607)
- 87 compressed objects within 1 object stream
- 18 named destinations out of 1000 (max. 500000)
- 80 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 151 PDF objects out of 1000 (max. 8388607)
+ 110 compressed objects within 2 object streams
+ 30 named destinations out of 1000 (max. 500000)
+ 90 words of extra memory for PDF output out of 10000 (max. 10000000)
 

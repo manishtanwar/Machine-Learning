@@ -53,6 +53,7 @@ def train_linear(X, Y):
     print(m1)
     print("sigma:")
     print(sig)
+    # print(phi)
 
     # Ploting linear separator
     plt.plot(X[:,0],X1_boundary,color='red')

@@ -11,8 +11,11 @@
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage{rotating}
 \usepackage{floatrow}
-\usepackage{subfig}
+\usepackage{amsmath}
+\usepackage{xspace}
+% \usepackage{subfig}
 \usepackage{enumitem}
+\usepackage{bbm}
 % for placing picture here
 % \usepackage[section]{placeins}
 
@@ -45,15 +48,14 @@ $$ \hspace*{-0.75cm} \theta =
 	% \hspace*{-0.9in} % width=100mm
 	\includegraphics[width = 90mm]{./Plots/2a.png}
 	\caption{Linear Regressin Plot (Underfitting)}
-  	\label{fig:boat1}
-	}
+  	\label{fig1}
 \end{figure}
 
 Linear Regression(unweighted) is not a good fit for the data as shown in the Figure 1(underfitting).
 
 \subsection*{(b) Locally Weighted Linear Regression:}
 \vspace*{0.3cm}
-$$ \hspace*{-2.5cm}\text{Weights}: \hspace*{1.9cm} w^{(i)} = \exp\left(-\frac{(x-x^{(i)})^2}{2\tau^2}\right) \qaud \quad \quad (\text{where } \tau = \text{Bandwidth Parameter}) $$
+$$ \hspace*{-2.5cm}\text{Weights}: \hspace*{1.9cm} w^{(i)} = \exp\left(-\frac{(x-x^{(i)})^2}{2\tau^2}\right) \quad \quad \quad (\text{where } \tau = \text{Bandwidth Parameter}) $$
 
 $$ \hspace*{-2.7cm} \text{Error Function: } \hspace*{0.9cm} J(\theta) = \frac{1}{2m} (X\theta - Y)^TW(X\theta - Y) \hspace*{1cm} (\text{where } W = diag(w^{(i)}) \hspace*{0.5mm}) $$
 
@@ -63,14 +65,15 @@ $$ \hspace*{-5.8cm} \text{Minima:} \hspace*{2.3cm} \nabla_{\theta}J(\theta) = 0 
 \newpage
 \hspace*{-0.2cm}
 \textbf{Plots:}
+
 \begin{figure}[!htb]
 	\centering
 	% \hspace*{-0.9in} % width=100mm
 	\includegraphics[width = 90mm]{./Plots/2b(08).png}
 	\caption{Locally Weighted Linear Regressin Plot ($\tau = 0.8$)}
-  	\label{fig:boat1}
-	}
+  	\label{fig2}
 \end{figure}
+
 \vspace*{-0.5cm}
 \subsection*{(c) Plots on Varying Bandwidth Parameter($\tau$)}
 
@@ -79,10 +82,10 @@ $$ \hspace*{-5.8cm} \text{Minima:} \hspace*{2.3cm} \nabla_{\theta}J(\theta) = 0 
 	\centering
     \begin{floatrow}
 	\hspace*{-0.4in}
-      \ffigbox[\FBwidth]{\caption{$\tau = 0.1$}\label{fig7}}{%
+      \ffigbox[\FBwidth]{\caption{$\tau = 0.1$}\label{fig3}}{%
       \includegraphics[width=90mm]{./Plots/2b(01).png}
       }
-      \ffigbox[\FBwidth]{\caption{$\tau = 0.3$}\label{fig8}}{%
+      \ffigbox[\FBwidth]{\caption{$\tau = 0.3$}\label{fig4}}{%
 		\includegraphics[width=90mm]{./Plots/2b(03).png}
       }
     \end{floatrow}
@@ -93,10 +96,10 @@ $$ \hspace*{-5.8cm} \text{Minima:} \hspace*{2.3cm} \nabla_{\theta}J(\theta) = 0 
 	\centering
     \begin{floatrow}
 	\hspace*{-0.4in}
-      \ffigbox[\FBwidth]{\caption{$\tau = 2$}\label{fig7}}{%
+      \ffigbox[\FBwidth]{\caption{$\tau = 2$}\label{fig5}}{%
       \includegraphics[width=90mm]{./Plots/2b(2).png}
       }
-      \ffigbox[\FBwidth]{\caption{$\tau = 10$}\label{fig8}}{%
+      \ffigbox[\FBwidth]{\caption{$\tau = 10$}\label{fig6}}{%
 		\includegraphics[width=90mm]{./Plots/2b(10).png}
       }
     \end{floatrow}
@@ -122,7 +125,7 @@ $$ \hspace*{-4.3cm} \text{Log Likelihood:} \hspace*{0.8cm} LL(\theta) = \sum_{i=
 $$ \hspace*{0.7cm} \nabla_{\theta}LL(\theta) = X^T(Y - g(X\theta)) \hspace{2cm} (\text{where } g(x) = \frac{1}{1 + \exp(-x)}) $$
 
 $$ \hspace*{-6.6cm} \text{Hessian Matrix: } \hspace*{0.9cm} H = \nabla_{\theta}^2LL(\theta) = -X^T D X \hspace*{2cm} $$
-$$ \hspace*{4.6cm} (\text{where } D = diag( \hspace*{0.5mm} g(x^{(i)}^T\theta) (1 - g(x^{(i)}^T\theta)) \hspace*{0.5mm}) $$
+$$ \hspace*{4.6cm} (\text{where } D = diag( \hspace*{0.5mm} g(x^{(i)T}\theta) (1 - g(x^{(i)T}\theta)) \hspace*{0.5mm}) $$
 
 \vspace*{0.2cm}
 \hspace*{-0.2cm} 
@@ -132,7 +135,7 @@ $$\hspace*{-2.65cm} \theta^{(t+1)} = \theta^{(t)} - H^{-1}\nabla_{\theta}LL(\the
 \vspace*{0.2cm}
 \hspace*{-0.2cm} 
 \textbf{Convergence Condition:}
-$$ \hspace*{1.75cm} \big| \theta_j^{(t+1)} - \theta_j^{(t)} \big| < \epsilon \hspace*{2.65cm} (\text{for a sufficiently small } \epsilon)$$
+$$ \hspace*{3.25cm} \big| \theta_j^{(t+1)} - \theta_j^{(t)} \big| < \epsilon \quad \quad \forall j \in {1,2...n} \hspace*{1.65cm} (\text{for a sufficiently small } \epsilon)$$
 
 \hspace*{-0.2cm} 
 \textbf{Resulting Parameters:}
@@ -154,13 +157,99 @@ where $h_\theta(x) \leq 0.5 \hspace*{0.5mm} (\text{class } y=0)$.
 \textbf{Plot:}
 \begin{figure}[!htb]
 	\centering
-	\hspace*{-0.9in} % width=100mm
+	% \hspace*{-0.9in} % width=100mm
 	  \includegraphics[width = 90mm]{./Plots/3.png}
-	}
+	  \caption{Logistic Regression : Given data and Linear Separator}
+  	\label{fig7}
 \end{figure}
 
 \section{Gaussian Discrmimant Analysis:}
 
-\newpage 
-a
+\subsection*{(a):}
+
+$$ \phi = \frac{1}{m} \sum_{i=1}^{m} \mathbbm{1}\{y^{(i)}=1\} \hspace*{0.5cm}
+\mu_0 = \frac{\sum_{i=1}^{m} \mathbbm{1}\{y^{(i)}=0\} x^{(i)}}{\sum_{i=1}^{m} \mathbbm{1}\{y^{(i)}=0\}} \hspace*{0.5cm}
+\mu_1 = \frac{\sum_{i=1}^{m} \mathbbm{1}\{y^{(i)}=1\} x^{(i)}}{\sum_{i=1}^{m} \mathbbm{1}\{y^{(i)}=1\}}  $$
+
+$$ \Sigma = \frac{1}{m} \sum_{i=1}^{m} (x^{(i)}-\mu_{y^{(i)}})(x^{(i)}-\mu_{y^{(i)}})^{T}$$
+
+$$ \text{which can be written as:} \hspace*{1cm} \Sigma = \frac{1}{m} W^T W \hspace*{2cm} (\text{where } W = X - Y\mu_1^T - (1-Y)\mu_0^T) $$
+
+\textbf{Resulting Parameters:}
+$$ \phi = 0.5 \quad \quad
+\mu_0 = 
+\begin{bmatrix}
+	98.38 \\ 429.66\\
+\end{bmatrix} \quad \quad
+\mu_1 = 
+\begin{bmatrix}
+	137.46 \\ 366.62 \\ 
+\end{bmatrix} \quad \quad
+\Sigma = 
+\begin{bmatrix}
+	287.482 & -26.748 \\ 
+    -26.748 & 1123.25  \\
+\end{bmatrix} $$
+
+\subsection*{(b) \& (c):}
+\subsubsection*{(i) Linear Boundary Equation:}
+
+	$$ 2(\mu_1^T - \mu_0^T\Sigma^{-1})x + \mu_0^T \Sigma^{-1} \mu_0 - \mu_1^T \Sigma^{-1} \mu_1 - 2\log\left(\frac{1-\phi}{\phi}\right) = 0$$
+
+\subsubsection*{(ii) Plot:}
+\begin{figure}[!htb]
+	\centering
+	% \hspace*{-0.9in} % width=100mm
+	  \includegraphics[width = 90mm]{./Plots/4a.png}
+	  \caption{GDA : Given data and Linear Separator}
+  	\label{fig8}
+\end{figure}
+
+\subsection*{(d):}
+$$ \phi = \frac{1}{m} \sum_{i=1}^{m} \mathbbm{1}\{y^{(i)}=1\} \hspace*{0.5cm}
+\mu_0 = \frac{\sum_{i=1}^{m} \mathbbm{1}\{y^{(i)}=0\} x^{(i)}}{\sum_{i=1}^{m} \mathbbm{1}\{y^{(i)}=0\}} \hspace*{0.5cm}
+\mu_1 = \frac{\sum_{i=1}^{m} \mathbbm{1}\{y^{(i)}=1\} x^{(i)}}{\sum_{i=1}^{m} \mathbbm{1}\{y^{(i)}=1\}}  $$
+
+$$ \hspace*{1cm} \Sigma_0 = (X-\mu_0^{ext})^Tdiag(y^{(i)})(X-\mu_0^{ext}) \hspace*{0.5cm} (\text{where } \mu_0^{ext} \text{ is } m \times n \text{ matrix with each row}= \mu_0^T) $$
+
+\vspace*{0.5cm}
+\textbf{Resulting Parameters:}
+$$ \phi = 0.5 \quad \quad
+\mu_0 = 
+\begin{bmatrix}
+	98.38 \\ 429.66\\
+\end{bmatrix} \quad \quad
+\mu_1 = 
+\begin{bmatrix}
+	137.46 \\ 366.62 \\ 
+\end{bmatrix} $$
+$$\Sigma_0 = 
+\begin{bmatrix}
+	255.3956 & -184.3308 \\ 
+   -184.3308 & 1371.1044 \\
+\end{bmatrix} \quad \quad \quad 
+\Sigma_1 = 
+\begin{bmatrix}
+	319.5684 & 130.8348 \\
+ 	130.8348 & 875.3956 \\
+\end{bmatrix}$$
+
+\subsection*{(e):}
+
+\subsubsection*{(i) Quadratic Boundary Equation:}
+
+	$$ (x-\mu_1)^T \Sigma_1^{-1} (x-\mu_1) - (x-\mu_0)^T \Sigma_0^{-1} (x-\mu_0) + \log \left(\frac{|\Sigma_1|}{|\Sigma_0|} \frac{(1-\phi)^2}{\phi^2} \right) = 0$$
+
+\subsubsection*{(ii) Plot:}
+
+\begin{figure}[H]
+	\centering
+	% \hspace*{-0.9in} % width=100mm
+	  \includegraphics[width = 90mm]{./Plots/4b.png}
+	  \caption{GDA : Given data and Quadratic Separator}
+  	\label{fig8}
+\end{figure}
+
+\subsection*{(f) Analysis:}
+
 \end{document}
