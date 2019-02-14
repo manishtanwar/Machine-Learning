@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.2.4)  14 FEB 2019 15:30
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.2.4)  14 FEB 2019 16:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -598,8 +598,6 @@ Package: rotating 2016/08/11 v2.16d rotated objects in LaTeX
 \rotFPbot=\skip60
 \rot@float@box=\box39
 \rot@mess@toks=\toks37
-) (/usr/share/texlive/texmf-dist/tex/latex/placeins/placeins.sty
-Package: placeins 2005/04/18  v 2.2
 ) (/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty
 Package: booktabs 2016/04/27 v1.618033 publication quality tables
 \heavyrulewidth=\dimen188
@@ -620,9 +618,8 @@ Package: booktabs 2016/04/27 v1.618033 publication quality tables
 \@lastruleclass=\count152
 Normal \dimen register pool exhausted, switching to extended pool.
 \@thisrulewidth=\dimen256
-) (/home/manish/Desktop/6th Sem/COL774 ML/Assignments/A1/Report/macros.tex
-\c@thm=\count153
-) (/home/manish/Desktop/6th Sem/COL774 ML/Assignments/A1/Report/A1_report.aux)
+) (/home/manish/Desktop/6th Sem/COL774 ML/Assignments/A1/Report/macros.tex) (/h
+ome/manish/Desktop/6th Sem/COL774 ML/Assignments/A1/Report/A1_report.aux)
 \openout1 = `A1_report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 19.
@@ -675,16 +672,16 @@ LaTeX Font Info:    ... okay on input line 19.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count154
+\scratchcounter=\count153
 \scratchdimen=\dimen257
 \scratchbox=\box40
-\nofMPsegments=\count155
-\nofMParguments=\count156
+\nofMPsegments=\count154
+\nofMParguments=\count155
 \everyMPshowfont=\toks38
-\MPscratchCnt=\count157
+\MPscratchCnt=\count156
 \MPscratchDim=\dimen258
-\MPnumerator=\count158
-\makeMPintoPDFobject=\count159
+\MPnumerator=\count157
+\makeMPintoPDFobject=\count158
 \everyMPtoPDFconversion=\toks39
 ) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
@@ -713,7 +710,7 @@ Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count160
+\c@section@level=\count159
 )
 LaTeX Info: Redefining \ref on input line 19.
 LaTeX Info: Redefining \pageref on input line 19.
@@ -725,7 +722,7 @@ home/manish/Desktop/6th Sem/COL774 ML/Assignments/A1/Report/A1_report.out)
 
 
 Package Fancyhdr Warning: \fancyhead's `E' option without twoside option is use
-less on input line 23.
+less on input line 20.
 
 LaTeX Font Info:    Try loading font information for U+msa on input line 33.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -735,25 +732,39 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 33.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
+! Undefined control sequence.
+l.33 ...\frac{(x-x^{(i)})^2}{2\tau^2}\right) \qaud
+                                                   \quad \quad (\text{where ...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 41--43
+
+ []
+
 ! Double superscript.
-l.38 ...ere } W = diag( \hspace*{0.5mm} g(x^{(i)}^
+l.56 ...ere } D = diag( \hspace*{0.5mm} g(x^{(i)}^
                                                   T\theta) (1 - g(x^{(i)}^T\...
 I treat `x^1^2' essentially like `x^1{}^2'.
 
 ! Double superscript.
-l.38 ...{0.5mm} g(x^{(i)}^T\theta) (1 - g(x^{(i)}^
+l.56 ...{0.5mm} g(x^{(i)}^T\theta) (1 - g(x^{(i)}^
                                                   T\theta)) \hspace*{0.5mm}) $$
 I treat `x^1^2' essentially like `x^1{}^2'.
 
 <./Plots/3.png, id=23, 769.87625pt x 583.17876pt>
 File: ./Plots/3.png Graphic file (type png)
 <use ./Plots/3.png>
-Package pdftex.def Info: ./Plots/3.png  used on input line 71.
+Package pdftex.def Info: ./Plots/3.png  used on input line 89.
 (pdftex.def)             Requested size: 256.0748pt x 193.98013pt.
 ! Extra }, or forgotten \endgroup.
 \@endfloatbox ...pagefalse \outer@nobreak \egroup 
                                                   \color@endbox 
-l.73 \end{figure}
+l.91 \end{figure}
                  
 I've deleted a group-closing symbol because it seems to be
 spurious, as in `$x}$'. But perhaps the } is legitimate and
@@ -763,22 +774,22 @@ deleted material, e.g., by typing `I$}'.
 
 [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./Plots/3.png>] [2]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 78.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 78.
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2 <./Plots/3.png>] [3]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 97.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 97.
 (/home/manish/Desktop/6th Sem/COL774 ML/Assignments/A1/Report/A1_report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 78.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 78.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 97.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 97.
 Package rerunfilecheck Info: File `A1_report.out' has not changed.
-(rerunfilecheck)             Checksum: 3375824D254C28D2C8C83C70801407AA;192.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 78.
+(rerunfilecheck)             Checksum: 48D04B9A87AA4D823A1C60A5677A9E7A;226.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 97.
  ) 
 Here is how much of TeX's memory you used:
- 18801 strings out of 494923
- 353461 string characters out of 6180743
- 412666 words of memory out of 5000000
- 21777 multiletter control sequences out of 15000+600000
- 6904 words of font info for 27 fonts, out of 8000000 for 9000
+ 18767 strings out of 494923
+ 353059 string characters out of 6180743
+ 414323 words of memory out of 5000000
+ 21745 multiletter control sequences out of 15000+600000
+ 7156 words of font info for 28 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  55i,11n,54p,474b,332s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
@@ -793,10 +804,10 @@ amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
 /cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
 sy7.pfb>
 Output written on "/home/manish/Desktop/6th Sem/COL774 ML/Assignments/A1/Report
-/A1_report.pdf" (2 pages, 134818 bytes).
+/A1_report.pdf" (3 pages, 140112 bytes).
 PDF statistics:
- 87 PDF objects out of 1000 (max. 8388607)
- 69 compressed objects within 1 object stream
- 8 named destinations out of 1000 (max. 500000)
+ 93 PDF objects out of 1000 (max. 8388607)
+ 74 compressed objects within 1 object stream
+ 11 named destinations out of 1000 (max. 500000)
  50 words of extra memory for PDF output out of 10000 (max. 10000000)
 

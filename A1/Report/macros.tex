@@ -1,17 +1,16 @@
 \newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
 
-\newtheorem{thm}{Theorem}[section]
-\newtheorem{prop}[thm]{Proposition}
-\newtheorem{lem}[thm]{Lemma}
-\newtheorem{cor}[thm]{Corollary}
-\newtheorem{defn}[thm]{Definition}
-\newtheorem{rem}[thm]{Remark}
-\numberwithin{equation}{section}
-
 \newcommand{\homework}[6]{
    \pagestyle{myheadings}
    \thispagestyle{plain}
    \newpage
+  
+
+  \pagestyle{fancy}
+  \fancyhead[RO,LE]{\thepage}
+  \fancyhf{} % clear all fields
+
+  
    \setcounter{page}{1}
    \noindent
    \begin{center}
@@ -26,7 +25,10 @@
       \vspace{2mm}}
    }
    \end{center}
-   \markboth{#1}{#1}
+   \lhead{#1}
+   \rhead{Page \thepage}
+   % \markboth{#1}{#1}
+   \cfoot{\thepage}
    \vspace*{4mm}
 }
 

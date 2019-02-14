@@ -11,7 +11,7 @@
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage{rotating}
 % for placing picture here
-\usepackage[section]{placeins}
+% \usepackage[section]{placeins}
 
 \usepackage{booktabs}
 \input{macros.tex}
@@ -19,35 +19,53 @@
 \begin{document}
 \homework{Assignment 1 Report}{Date: February 12, 2019}{}{\bf 2016CS10363}{\bf Manish Tanwar}{NetId(s)}
 
-\pagestyle{fancy}
-\fancyhead[RO,LE]{\thepage}
-
 \section{A}
-\section{B}
 
-\section{Logistic Regression:}
+% *********** 2 ***************
+\section{Locally Weighted Linear Regression:}
+
+\subsection*{(a) Linear Regression (unweighted):}
+
+
+
+\subsection*{(b) Locally Weighted Linear Regression:}
+\vspace*{0.3cm}
+$$ \hspace*{-2.5cm}\text{Weights}: \hspace*{1.9cm} w^{(i)} = \exp\left(-\frac{(x-x^{(i)})^2}{2\tau^2}\right) \qaud \quad \quad (\text{where } \tau = \text{Bandwidth Parameter}) $$
+
+$$ \hspace*{-2.7cm} \text{Error Function: } \hspace*{0.9cm} J(\theta) = \frac{1}{2m} (X\theta - Y)^TW(X\theta - Y) \hspace*{1cm} (\text{where } W = diag(w^{(i)}) \hspace*{0.5mm}) $$
+
+
+$$ \hspace*{-5.8cm} \text{Minima:} \hspace*{2.3cm} \nabla_{\theta}J(\theta) = 0 \quad \Rightarrow \quad \theta = (X^TWX)^{-1}X^TWY $$
 
 \vspace*{0.3cm}
+\hspace*{-0.2cm}
+\textbf{Plots:}\\
 
-Log Likelihood: \hspace*{0.8cm}
-$ LL(\theta) = \sum_{i=1}^{m} y^{(i)} log(h_{\theta}(x^{(i)})) + (1 - y^{(i)}) log(1-h_{\theta}(x^{(i)}))  $
+\hspace*{-0.2cm}
+Linear Regrssion (unweighted):
+
+% *********** 3 ***************
+\section{Logistic Regression:}
+\vspace*{0.3cm}
+
+$$ \hspace*{-4.3cm} \text{Log Likelihood:} \hspace*{0.8cm} LL(\theta) = \sum_{i=1}^{m} y^{(i)} log(h_{\theta}(x^{(i)})) + (1 - y^{(i)}) log(1-h_{\theta}(x^{(i)}))  $$
 
 $$ \hspace*{0.7cm} \nabla_{\theta}LL(\theta) = X^T(Y - g(X\theta)) \hspace{2cm} (\text{where } g(x) = \frac{1}{1 + \exp(-x)}) $$
 
-$$ \hspace*{-7.4cm} \text{Hessian Matrix: } \hspace*{0.9cm} H = \nabla_{\theta}^2LL(\theta) = -X^T W X \hspace*{2cm} $$
-$$ (\text{where } W = diag( \hspace*{0.5mm} g(x^{(i)}^T\theta) (1 - g(x^{(i)}^T\theta)) \hspace*{0.5mm}) $$
+$$ \hspace*{-6.6cm} \text{Hessian Matrix: } \hspace*{0.9cm} H = \nabla_{\theta}^2LL(\theta) = -X^T D X \hspace*{2cm} $$
+$$ \hspace*{4.6cm} (\text{where } D = diag( \hspace*{0.5mm} g(x^{(i)}^T\theta) (1 - g(x^{(i)}^T\theta)) \hspace*{0.5mm}) $$
 
 \vspace*{0.2cm}
-\hspace*{-0.65cm} 
+\hspace*{-0.2cm} 
 \textbf{Newton's Method:}
 $$\hspace*{-2.65cm} \theta^{(t+1)} = \theta^{(t)} - H^{-1}\nabla_{\theta}LL(\theta)\big|_{\theta_{t}}$$
 
 \vspace*{0.2cm}
-\hspace*{-0.65cm}
+\hspace*{-0.2cm} 
 \textbf{Convergence Condition:}
 $$ \hspace*{1.75cm} \big| \theta_j^{(t+1)} - \theta_j^{(t)} \big| < \epsilon \hspace*{2.65cm} (\text{for a sufficiently small } \epsilon)$$
 
-\hspace*{-0.65cm}
+\hspace*{-0.2cm} 
 \textbf{Resulting Parameters:}
 $$ \hspace*{-3.75cm} \theta = 
 \begin{bmatrix}
@@ -58,12 +76,12 @@ $$ \hspace*{-3.75cm} \theta =
 	0.223295 \\  1.962616 \\ -1.964861\\
 \end{bmatrix} $$
 
-\hspace*{-0.5cm}
+\hspace*{-0.2cm} 
 Decision Boundary is the straight line boundary separating the region where $h_\theta(x) \geq 0.5 \hspace*{0.5mm} (\text{class } y=1)$ from
 where $h_\theta(x) \leq 0.5 \hspace*{0.5mm} (\text{class } y=0)$.
 
-\vspace*{0.3cm}
-\hspace*{-0.65cm}
+\vspace*{0.5cm}
+\hspace*{-0.2cm} 
 \textbf{Plot:}
 \begin{figure}[!htb]
 	\centering
@@ -74,5 +92,6 @@ where $h_\theta(x) \leq 0.5 \hspace*{0.5mm} (\text{class } y=0)$.
 
 \section{Gaussian Discrmimant Analysis:}
 
-
+\newpage 
+a
 \end{document}

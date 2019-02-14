@@ -1,6 +1,7 @@
 if [ $1 == "1" ]
 then
-	./run.sh 1 ../ass1_data1/linearX.csv ../ass1_data1/linearY.csv 1.6 0.2
+	./run.sh 1 ../ass1_data1/weightedX.csv ../ass1_data1/weightedY.csv 1.6 0.2
+	# ../ass1_data1/linearX.csv ../ass1_data1/linearY.csv 1.6 0.2
 elif [ $1 == "2" ]
 then
 	./run.sh 2 ../ass1_data1/weightedX.csv ../ass1_data1/weightedY.csv 0.8
