@@ -99,6 +99,7 @@ np.set_printoptions(precision = 6, suppress = True)
 (theta_array, X_mat, Y_mat) = train(X, Y, learning_rate)
 m = X.shape[0]
 
+# Error Function J(theta)
 def errorFun(theta_0, theta_1):
 	theta = np.array([theta_0 ,theta_1])
 	theta = theta[:,np.newaxis]
@@ -116,7 +117,7 @@ def draw_mesh():
 	z_arr = np.array([errorFun(x,y) for x, y in zip(np.ravel(X), np.ravel(Y))])
 	Z = z_arr.reshape(X.shape)
 
-	sub_plot.plot_surface(X, Y, Z, rstride=1, cstride=1, alpha=0.5, color='blue')
+	sub_plot.plot_surface(X, Y, Z, rstride = 1, cstride = 1, alpha = 0.5, color = 'blue')
 
 	print(theta_array.shape, theta_array.size)
 	for i in range(theta_array.shape[0]):
