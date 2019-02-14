@@ -10,6 +10,9 @@
 \usepackage[colorlinks=true, urlcolor=blue,  linkcolor=blue, citecolor=blue]{hyperref}
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage{rotating}
+\usepackage{floatrow}
+\usepackage{subfig}
+\usepackage{enumitem}
 % for placing picture here
 % \usepackage[section]{placeins}
 
@@ -45,6 +48,7 @@ $$ \hspace*{-0.75cm} \theta =
   	\label{fig:boat1}
 	}
 \end{figure}
+
 Linear Regression(unweighted) is not a good fit for the data as shown in the Figure 1(underfitting).
 
 \subsection*{(b) Locally Weighted Linear Regression:}
@@ -56,12 +60,58 @@ $$ \hspace*{-2.7cm} \text{Error Function: } \hspace*{0.9cm} J(\theta) = \frac{1}
 
 $$ \hspace*{-5.8cm} \text{Minima:} \hspace*{2.3cm} \nabla_{\theta}J(\theta) = 0 \quad \Rightarrow \quad \theta = (X^TWX)^{-1}X^TWY $$
 
-\vspace*{0.3cm}
+\newpage
 \hspace*{-0.2cm}
-\textbf{Plots:}\\
+\textbf{Plots:}
+\begin{figure}[!htb]
+	\centering
+	% \hspace*{-0.9in} % width=100mm
+	\includegraphics[width = 90mm]{./Plots/2b(08).png}
+	\caption{Locally Weighted Linear Regressin Plot ($\tau = 0.8$)}
+  	\label{fig:boat1}
+	}
+\end{figure}
+\vspace*{-0.5cm}
+\subsection*{(c) Plots on Varying Bandwidth Parameter($\tau$)}
 
-\hspace*{-0.2cm}
-Linear Regrssion (unweighted):
+\vspace*{-0.7cm}
+\begin{figure}[H]
+	\centering
+    \begin{floatrow}
+	\hspace*{-0.4in}
+      \ffigbox[\FBwidth]{\caption{$\tau = 0.1$}\label{fig7}}{%
+      \includegraphics[width=90mm]{./Plots/2b(01).png}
+      }
+      \ffigbox[\FBwidth]{\caption{$\tau = 0.3$}\label{fig8}}{%
+		\includegraphics[width=90mm]{./Plots/2b(03).png}
+      }
+    \end{floatrow}
+\end{figure}
+
+\vspace*{-0.82cm}
+\begin{figure}[H]
+	\centering
+    \begin{floatrow}
+	\hspace*{-0.4in}
+      \ffigbox[\FBwidth]{\caption{$\tau = 2$}\label{fig7}}{%
+      \includegraphics[width=90mm]{./Plots/2b(2).png}
+      }
+      \ffigbox[\FBwidth]{\caption{$\tau = 10$}\label{fig8}}{%
+		\includegraphics[width=90mm]{./Plots/2b(10).png}
+      }
+    \end{floatrow}
+\end{figure}
+
+\subsection*{Analysis:}
+	
+\begin{itemize}
+	\item When Bandwidth Parameter($\tau$) is:
+	\begin{itemize}
+	\item \textbf{Too Small:} the model \textbf{overfits} the training data.
+	\item \textbf{Too Large:} The model tries to \textbf{underfits} the training data.
+	\end{itemize}
+	\item $\tau = 0.8$ works the best.
+\end{itemize}
 
 % *********** 3 ***************
 \section{Logistic Regression:}
