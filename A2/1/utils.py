@@ -4,7 +4,6 @@ import sys
 from nltk.stem.porter import PorterStemmer
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
-from nltk import bigrams
 
 __author__= 'KD'
 
@@ -32,21 +31,16 @@ def json_reader(fname):
 		yield json.loads(line)
 
 
-def _stem(doc, p_stemmer, en_stop, return_tokens, bigram_flag):
+def _stem(doc, p_stemmer, en_stop, return_tokens):
 	# tokens = word_tokenize(doc.lower())
-	tokens = doc.lower().translate(str.maketrans('', '', string.punctuation)).split()
+	tokens = doc.translate(str.maketrans('', '', string.punctuation)).split()
 	
 	stopped_tokens = filter(lambda token: token not in en_stop, tokens)
 	stemmed_tokens = map(lambda token: p_stemmer.stem(token), stopped_tokens)
 
-	if bigram_flag:
-		new_stemmed_tokens = bigrams(stemmed_tokens)
-	else:
-		new_stemmed_tokens = stemmed_tokens
-
 	if not return_tokens:
-		return ' '.join(new_stemmed_tokens)
-	return list(new_stemmed_tokens)
+		return ' '.join(stemmed_tokens)
+	return list(stemmed_tokens)
 
 def _stem_given(doc, p_stemmer, en_stop, return_tokens):
     tokens = word_tokenize(doc.lower())
@@ -58,7 +52,7 @@ def _stem_given(doc, p_stemmer, en_stop, return_tokens):
     return list(stemmed_tokens)
 
 
-def getStemmedDocuments(docs, return_tokens=True, bigram_flag=False):
+def getStemmedDocuments(docs, return_tokens=True):
 	"""
 		Args:
 			docs: str/list(str): document or list of documents that need to be processed
@@ -76,7 +70,7 @@ def getStemmedDocuments(docs, return_tokens=True, bigram_flag=False):
 	if isinstance(docs, list):
 		output_docs = []
 		for item in docs:
-			output_docs.append(_stem(item, p_stemmer, en_stop, return_tokens, bigram_flag))
+			output_docs.append(_stem(item, p_stemmer, en_stop, return_tokens))
 		return output_docs
 	else:
-		return _stem(docs, p_stemmer, en_stop, return_tokens, bigram_flag)
+		return _stem(docs, p_stemmer, en_stop, return_tokens)

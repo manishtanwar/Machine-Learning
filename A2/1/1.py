@@ -6,6 +6,7 @@ import numpy as np
 import math
 import sklearn
 import time
+from nltk import bigrams
 
 train_file = sys.argv[1]
 test_file = sys.argv[2]
@@ -13,9 +14,14 @@ part_num = sys.argv[3]
 
 #---------------------- Part (a) --------------------------
 
+dict_bigram = dict()
+class_word_count_bi = np.zeros(5)
+class_docu_count_bi = np.zeros(5)
+
 dict = dict()
 class_word_count = np.zeros(5)
 class_docu_count = np.zeros(5)
+
 m_test = 0
 correct_pred = 0
 
@@ -30,18 +36,19 @@ def train(stem_flag=False, bigram_flag=False):
 		m+=1
 		
 		# ---- debug ----
-		# if m == 1000:
-		# 	break;
-		# ---------------
-
+		if m == 1000:
+			break;
 		if (m % 10000 == 0):
 			print("Done:", m/10000.0)
+		# ---------------
+
 		stars = int(item["stars"]) - 1
+		print(stars)
 		if stem_flag:
-			word_list = utils.getStemmedDocuments(item["text"], bigram_flag=bigram_flag)
+			word_list = utils.getStemmedDocuments(item["text"])
 		else:
 			word_list = item["text"].lower().translate(str.maketrans('', '', string.punctuation)).split()
-		
+
 		class_word_count[stars] += len(word_list)
 		class_docu_count[stars] += 1
 
@@ -51,6 +58,19 @@ def train(stem_flag=False, bigram_flag=False):
 			else:
 				dict[word] = np.zeros(5)
 				dict[word][stars] = 1
+
+		# bigrams?
+		if bigram_flag:
+			word_list = list(bigrams(word_list))
+			# print(word_list)
+			class_word_count_bi[stars] += len(word_list)
+
+			for word in word_list:
+				if word in dict_bigram:
+					dict_bigram[word][stars] += 1
+				else:
+					dict_bigram[word] = np.zeros(5)
+					dict_bigram[word][stars] = 1
 
 # Testing:
 def test(stem_flag=False, bigram_flag=False):
@@ -63,15 +83,15 @@ def test(stem_flag=False, bigram_flag=False):
 		stars = int(item["stars"]) - 1
 		
 		if stem_flag:
-			word_list = utils.getStemmedDocuments(item["text"], bigram_flag=bigram_flag)
+			word_list = utils.getStemmedDocuments(item["text"])
 		else:
 			word_list = item["text"].lower().translate(str.maketrans('', '', string.punctuation)).split()
 		
 		# ---- debug ----
-		# if m_test == 100:
+		if m_test == 100:
 		# 	print(item["text"])
 		# 	print(word_list)
-		# 	break;
+			break;
 		# ---------------
 
 		pred_stars = 0
@@ -85,6 +105,14 @@ def test(stem_flag=False, bigram_flag=False):
 				count = dict[word][i] if word in dict else 0
 	            # P(xj/y)
 				prob += math.log((count + 1) / (class_word_count[i] + len(dict)))
+
+			# bigrams?
+			if bigram_flag:
+				word_list = list(bigrams(word_list))
+				for word in word_list:
+					count = dict_bigram[word][i] if word in dict_bigram else 0
+		            # P(xj/y)
+					prob += math.log((count + 1) / (class_word_count_bi[i] + len(dict_bigram)))
 
 	        # print(max_prob, prob, pred_stars)
 			if(max_prob < prob):
@@ -161,9 +189,12 @@ def part_d():
 def part_e():
 	# bi-grams
 	train(stem_flag = True, bigram_flag = True)
+	print("\n\n\n\n\n\n")
 	test(stem_flag = True, bigram_flag = True)
 	accuracy = correct_pred / m_test
 	print("accuracy:",accuracy)
+	print(y_actual)
+	print(y_pred)
 	confusion_mat = sklearn.metrics.confusion_matrix(y_actual, y_pred)
 	print("confusion matrix:\n", confusion_mat)
 	f1_score = sklearn.metrics.f1_score(y_actual, y_pred, average = None)
@@ -171,7 +202,7 @@ def part_e():
 	print("macro_f1_score:", sum(f1_score) / len(f1_score))
 
 	# doc = "Manish, sachin Pranav go JLKJL lkjalksdfj kjlkjasdlf!"
-	# res = utils.getStemmedDocuments(doc,bigram_flag=True)
+	# res = utils.getStemmedDocuments(doc)
 	# print(res)
 
 #---------------------- Part (g) --------------------------
