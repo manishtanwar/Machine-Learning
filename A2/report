@@ -2,4 +2,17 @@
 a. 	Test Data Accuracy: 	0.6081455002318311
    	Train Data Accuracy:	0.6570656156987092
 
-b.	
+b.	random prediction accuracy:		0.19929254101915972
+	majority prediction accuracy:	0.439895900327555
+
+c.
+	Confusion matrix:
+	[[14777  3233  1164   587   408]
+	 [ 2965  2841  3213  1397   422]
+	 [ 1395  1397  4584  6169   986]
+	 [ 1084   527  1918 18481  7348]
+	 [ 2898   233   409 14645 40637]]
+
+d.
+
+words = [word for word in tokens if word.isalpha()]
