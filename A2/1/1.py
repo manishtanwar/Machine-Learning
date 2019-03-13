@@ -23,16 +23,22 @@ y_pred = []
 y_actual = []
 
 # Training:
-def train(stem_flag=False):
+def train(stem_flag=False, bigram_flag=False):
 	itr = utils.json_reader(train_file)
 	m = 0
 	for item in itr:
 		m+=1
+		
+		# ---- debug ----
+		# if m == 1000:
+		# 	break;
+		# ---------------
+
 		if (m % 10000 == 0):
 			print("Done:", m/10000.0)
 		stars = int(item["stars"]) - 1
 		if stem_flag:
-			word_list = utils.getStemmedDocuments(item["text"])
+			word_list = utils.getStemmedDocuments(item["text"], bigram_flag=bigram_flag)
 		else:
 			word_list = item["text"].lower().translate(str.maketrans('', '', string.punctuation)).split()
 		
@@ -47,19 +53,27 @@ def train(stem_flag=False):
 				dict[word][stars] = 1
 
 # Testing:
-def test(stem_flag=False):
+def test(stem_flag=False, bigram_flag=False):
 	itr = utils.json_reader(test_file)
 	global m_test
 	global correct_pred
 	for item in itr:
 		m_test += 1
+
 		stars = int(item["stars"]) - 1
 		
 		if stem_flag:
-			word_list = utils.getStemmedDocuments(item["text"])
+			word_list = utils.getStemmedDocuments(item["text"], bigram_flag=bigram_flag)
 		else:
 			word_list = item["text"].lower().translate(str.maketrans('', '', string.punctuation)).split()
 		
+		# ---- debug ----
+		# if m_test == 100:
+		# 	print(item["text"])
+		# 	print(word_list)
+		# 	break;
+		# ---------------
+
 		pred_stars = 0
 		max_prob = -(1e9)
 
@@ -132,8 +146,8 @@ def part_c():
 #---------------------- Part (d) --------------------------
 
 def part_d():
-	train(True)
-	test(True)
+	train(stem_flag = True)
+	test(stem_flag = True)
 	accuracy = correct_pred / m_test
 	print("accuracy:",accuracy)
 	confusion_mat = sklearn.metrics.confusion_matrix(y_actual, y_pred)
@@ -144,9 +158,21 @@ def part_d():
 
 #---------------------- Part (e) --------------------------
 
-# def part_e():
+def part_e():
 	# bi-grams
-	
+	train(stem_flag = True, bigram_flag = True)
+	test(stem_flag = True, bigram_flag = True)
+	accuracy = correct_pred / m_test
+	print("accuracy:",accuracy)
+	confusion_mat = sklearn.metrics.confusion_matrix(y_actual, y_pred)
+	print("confusion matrix:\n", confusion_mat)
+	f1_score = sklearn.metrics.f1_score(y_actual, y_pred, average = None)
+	print("F1_score:",f1_score)
+	print("macro_f1_score:", sum(f1_score) / len(f1_score))
+
+	# doc = "Manish, sachin Pranav go JLKJL lkjalksdfj kjlkjasdlf!"
+	# res = utils.getStemmedDocuments(doc,bigram_flag=True)
+	# print(res)
 
 #---------------------- Part (g) --------------------------
 
@@ -165,6 +191,8 @@ elif part_num == 'c':
 	part_c()
 elif part_num == 'd':
 	part_d()
+elif part_num == 'e':
+	part_e()
 
 end_time = time.time()
 print("Time taken:", end_time - start_time)
