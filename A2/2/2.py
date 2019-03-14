@@ -17,6 +17,7 @@ n = 28*28
 C = 1.0
 m = 0
 EPS = 1e-8
+gamma = 0.05
 
 def read_input(file):
 	# input
@@ -25,7 +26,15 @@ def read_input(file):
 	with open(file, 'r') as csvfile:
 		reader = csv.reader(csvfile)
 
+		limit = 0
 		for row in reader:
+			limit += 1
+
+			# -------- debug ----------
+			# if limit == 1000:
+			# 	break
+			# -------------------------
+
 			label = int(row[n])
 			if (label == d1 or label == d2):
 				y.append(1 if label == d1 else -1)
@@ -39,7 +48,12 @@ def read_input(file):
 	return (x,y)
 
 def gaussian_kernal(x):
-	print("due")
+	x_g = np.zeros((m,m))
+	
+	for i in range(m):
+		for j in range(m):
+			x_g[i][j] = np.exp(-gamma * np.linalg.norm(x[i] - x[j]))
+	return x_g
 
 def find_matrices(x,y,C,part_num):
 	# print(x.shape, y.shape, C)
@@ -63,40 +77,79 @@ def find_matrices(x,y,C,part_num):
 	# print(P.size, q.size, G.size, h.size, A.size, b.size)
 	return (P,q,G,h,A,b)
 
-def train(part_no,x,y):
+def part_a():
+	# ------------- training: ---------------
+	(x,y) = read_input(train_file)
 	global m
 	m = y.shape[0]
-	(P,q,G,h,A,b) = find_matrices(x,y,C,part_no)
+	(P,q,G,h,A,b) = find_matrices(x,y,C,0)
 	cvxopt.solvers.options['show_progress'] = False
 	sol = cvxopt.solvers.qp(P,q,G,h,A,b)
 	alpha = sol['x']
-	no_sv = 0
+	sc_cnt = 0
 	one_sv = -1
 	w = np.zeros((n,1))
 
-	for i in range(m):
-		if (alpha[i] > EPS):
-			no_sv += 1
-			one_sv = i
-			x_i = x[i].T.reshape((n,1))
-			w += alpha[i] * y[i] * x_i
+	# List of indices of support vectors
+	Ind_SV = [index for index, ele in enumerate(alpha) if alpha[i] > EPS]
+	sc_cnt = len(Ind_SV)
 
-	# print("# of SV:",no_sv)
+	for i in Ind_SV:
+		x_i = x[i].T.reshape((n,1))
+		w += alpha[i] * y[i] * x_i
+		if (alpha[i] < C - EPS):
+			one_sv = i
+			
+	if(one_sv == -1):
+		print("Error!")
+
+	print("# of SV:",sc_cnt)
 	b = y[one_sv] - w.T @ x[one_sv]
 	# print("W:",w)
 	print("b:",b)
 
-def test(x,y):
-	print("Hey!")
+	# ------------- testing: ---------------
+	correct_pred_cnt = 0
+	(x_test,y_test) = read_input(test_file)
+	# y_pred = 1 if w.T @ x_test.T + b > 0 else -1
 
-def part_a():
-	(x,y) = read_input(train_file)
-	train(0,x,y)
-	test(x,y)
+	y_pred = np.zeros(y_test.shape)
+
+	for i in range(y_test.shape[0]):
+		y_pred[i][0] = 1 if w.T @ x_test[i] + b > 0 else -1
+		if(y_pred[i][0] == y_test[i][0]):
+			correct_pred_cnt += 1
+
+	print(y_test.shape[0])
+	print("accuracy:", correct_pred_cnt / y_test.shape[0])
+
 
 def part_b():
-	train(1)
-	test()
+	# ------------- training: ---------------
+	(x,y) = read_input(train_file)
+	global m
+	m = y.shape[0]
+	(P,q,G,h,A,b) = find_matrices(x,y,C,1)
+	cvxopt.solvers.options['show_progress'] = False
+	sol = cvxopt.solvers.qp(P,q,G,h,A,b)
+	alpha = sol['x']
+	sc_cnt = 0
+	one_sv = -1
+
+	# List of indices of support vectors
+	Ind_SV = [index for index, ele in enumerate(alpha) if alpha[i] > EPS]
+
+	# Finding one SV with 0 < alpha < C
+	for i in range(m):
+		if (alpha[i] > EPS and alpha[i] < C - EPS):
+			one_sv = i
+			break
+
+	if(one_sv == -1):
+		print("Error!")
+	# ------------- testing: ---------------
+
+
 
 # setting print option to a fixed precision
 np.set_printoptions(precision = 6, suppress = True)
