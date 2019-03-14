@@ -32,8 +32,8 @@ def json_reader(fname):
 
 
 def _stem(doc, p_stemmer, en_stop, return_tokens):
-	# tokens = word_tokenize(doc.lower())
-	tokens = doc.lower().translate(str.maketrans('', '', string.punctuation)).split()
+	# tokens = word_tokenize(doc.translate(str.maketrans('', '', string.punctuation)))
+	tokens = doc.translate(str.maketrans('', '', string.punctuation)).split()
 	
 	stopped_tokens = filter(lambda token: token not in en_stop, tokens)
 	stemmed_tokens = map(lambda token: p_stemmer.stem(token), stopped_tokens)

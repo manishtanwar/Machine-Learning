@@ -1,4 +1,3 @@
-import utils
 import sys
 import string
 import random
@@ -11,6 +10,41 @@ from nltk import bigrams
 train_file = sys.argv[1]
 test_file = sys.argv[2]
 part_num = sys.argv[3]
+
+#---------------------- Utils(Provided) -------------------
+
+import json
+from nltk.stem.porter import PorterStemmer
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+
+def json_reader(fname):
+	for line in open(fname, mode="r"):
+		yield json.loads(line)
+
+
+def _stem(doc, p_stemmer, en_stop, return_tokens):
+	# tokens = word_tokenize(doc.translate(str.maketrans('', '', string.punctuation)))
+	tokens = doc.translate(str.maketrans('', '', string.punctuation)).split()
+	
+	stopped_tokens = filter(lambda token: token not in en_stop, tokens)
+	stemmed_tokens = map(lambda token: p_stemmer.stem(token), stopped_tokens)
+
+	if not return_tokens:
+		return ' '.join(stemmed_tokens)
+	return list(stemmed_tokens)
+
+def getStemmedDocuments(docs, return_tokens=True):
+	en_stop = set(stopwords.words('english'))
+	p_stemmer = PorterStemmer()
+	if isinstance(docs, list):
+		output_docs = []
+		for item in docs:
+			output_docs.append(_stem(item, p_stemmer, en_stop, return_tokens))
+		return output_docs
+	else:
+		return _stem(docs, p_stemmer, en_stop, return_tokens)
+
 
 #---------------------- Part (a) --------------------------
 
@@ -30,13 +64,13 @@ y_actual = []
 
 # Training:
 def train(stem_flag=False, bigram_flag=False):
-	itr = utils.json_reader(train_file)
+	itr = json_reader(train_file)
 	m = 0
 	for item in itr:
 		m+=1
 		
 		# ---- debug ----
-		# if m == 100:
+		# if m == 20000:
 		# 	break;
 		if (m % 10000 == 0):
 			print("Done:", m/10000.0)
@@ -45,7 +79,7 @@ def train(stem_flag=False, bigram_flag=False):
 		stars = int(item["stars"]) - 1
 
 		if stem_flag:
-			word_list = utils.getStemmedDocuments(item["text"])
+			word_list = getStemmedDocuments(item["text"])
 		else:
 			word_list = item["text"].lower().translate(str.maketrans('', '', string.punctuation)).split()
 
@@ -74,7 +108,7 @@ def train(stem_flag=False, bigram_flag=False):
 
 # Testing:
 def test(stem_flag=False, bigram_flag=False):
-	itr = utils.json_reader(test_file)
+	itr = json_reader(test_file)
 	global m_test
 	global correct_pred
 	for item in itr:
@@ -83,12 +117,12 @@ def test(stem_flag=False, bigram_flag=False):
 		stars = int(item["stars"]) - 1
 		
 		if stem_flag:
-			word_list = utils.getStemmedDocuments(item["text"])
+			word_list = getStemmedDocuments(item["text"])
 		else:
 			word_list = item["text"].lower().translate(str.maketrans('', '', string.punctuation)).split()
 		
 		# ---- debug ----
-		# if m_test == 100:
+		# if m_test == 20000:
 		# 	print(item["text"])
 		# 	print(word_list)
 			# break;
@@ -134,10 +168,9 @@ def part_a():
 	print("accuracy :",accuracy)
 
 #---------------------- Part (b) --------------------------
-
 def part_b():
-	train_itr = utils.json_reader(train_file)
-	test_itr = utils.json_reader(test_file)
+	train_itr = json_reader(train_file)
+	test_itr = json_reader(test_file)
 	
 	counts = np.zeros(5)
 
@@ -201,7 +234,7 @@ def part_e():
 	print("macro_f1_score:", sum(f1_score) / len(f1_score))
 
 	# doc = "Manish, sachin Pranav go JLKJL lkjalksdfj kjlkjasdlf!"
-	# res = utils.getStemmedDocuments(doc)
+	# res = getStemmedDocuments(doc)
 	# print(res)
 
 #---------------------- Part (g) --------------------------
