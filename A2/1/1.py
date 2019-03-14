@@ -50,7 +50,6 @@ def getStemmedDocuments(docs, return_tokens=True):
 
 dict_bigram = dict()
 class_word_count_bi = np.zeros(5)
-class_docu_count_bi = np.zeros(5)
 
 dict = dict()
 class_word_count = np.zeros(5)
@@ -70,8 +69,8 @@ def train(stem_flag=False, bigram_flag=False):
 		m+=1
 		
 		# ---- debug ----
-		# if m == 20000:
-		# 	break;
+		if m == 10000:
+			break;
 		if (m % 10000 == 0):
 			print("Done:", m/10000.0)
 		# ---------------
@@ -122,10 +121,10 @@ def test(stem_flag=False, bigram_flag=False):
 			word_list = item["text"].lower().translate(str.maketrans('', '', string.punctuation)).split()
 		
 		# ---- debug ----
-		# if m_test == 20000:
+		if m_test == 1000:
 		# 	print(item["text"])
 		# 	print(word_list)
-			# break;
+			break;
 		# ---------------
 
 		pred_stars = 0
@@ -232,7 +231,7 @@ def part_e():
 	f1_score = sklearn.metrics.f1_score(y_actual, y_pred, average = None)
 	print("F1_score:",f1_score)
 	print("macro_f1_score:", sum(f1_score) / len(f1_score))
-
+	print(len(dict) ,len(dict_bigram))
 	# doc = "Manish, sachin Pranav go JLKJL lkjalksdfj kjlkjasdlf!"
 	# res = getStemmedDocuments(doc)
 	# print(res)
