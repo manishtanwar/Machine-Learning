@@ -81,9 +81,6 @@ def find_matrices(x,y,C,part_num):
 	# print(P.size, q.size, G.size, h.size, A.size, b.size)
 	return (P,q,G,h,A,b)
 
-
-# ------------ part_a -----------------------
-
 def part_a():
 	# ------------- training: ---------------
 	(x,y) = read_input(train_file)
@@ -130,7 +127,6 @@ def part_a():
 	print("accuracy:", correct_pred_cnt / y_test.shape[0])
 
 
-# ------------ part_b -----------------------
 
 def part_b():
 	# ------------- training: ---------------
@@ -182,24 +178,56 @@ def part_b():
 	print("accuracy:", correct_pred_cnt / y_test.shape[0])
 
 
-# ------------ part_c -----------------------
-# from svmutil import *
-
 def part_c():
 	# ------------- training: ---------------
 	(x,y) = read_input(train_file)
 	global m
 	m = y.shape[0]
-	prob  = svm_problem(y, x)
-	param = svm_parameter('-t 0 -c 4 -b 1')
-	m = svm_train(prob, param)
+	(P,q,G,h,A,b) = find_matrices(x,y,C,1)
+	cvxopt.solvers.options['show_progress'] = False
+	sol = cvxopt.solvers.qp(P,q,G,h,A,b)
+	alpha = sol['x']
+	sc_cnt = 0
+	one_sv = -1
+
+	# List of indices of support vectors
+	Ind_SV = [index for index, ele in enumerate(alpha) if ele > EPS]
+	sc_cnt = len(Ind_SV)
+
+	# Finding one SV with 0 < alpha < C
+	for i in Ind_SV:
+		if (alpha[i] < C - EPS):
+			one_sv = i
+			break
+
+	if(one_sv == -1):
+		print("Error!")
+
+	b = float(y[one_sv])
+	for i in Ind_SV:
+		b -= alpha[i] * y[i] * gauss_K(x[i], x[one_sv])
+	print("b:",b)
 
 	# ------------- testing: ---------------
-	# correct_pred_cnt = 0
-	# (x_test,y_test) = read_input(test_file)
+	correct_pred_cnt = 0
+	(x_test,y_test) = read_input(test_file)
 	# y_pred = 1 if w.T @ x_test.T + b > 0 else -1
 
-	# print("accuracy:", correct_pred_cnt / y_test.shape[0])
+	y_pred = np.zeros(y_test.shape)
+
+	for i in range(y_test.shape[0]):
+		amt = 0
+		for j in Ind_SV:
+			amt += alpha[j] * y[j] * gauss_K(x[j], x_test[i])
+
+		y_pred[i] = 1 if amt > 0 else -1
+		if(y_pred[i] == y_test[i]):
+			correct_pred_cnt += 1
+
+	print("accuracy:", correct_pred_cnt / y_test.shape[0])
+
+def part_c():
+	print("het!")
 
 # setting print option to a fixed precision
 np.set_printoptions(precision = 6, suppress = True)
