@@ -16,7 +16,7 @@ d2 = (d1+1)%10
 n = 28*28
 C = 1.0
 m = 0
-EPS = 1e-8
+EPS = 1e-5
 gamma = 0.05
 
 def read_input(file):
@@ -31,7 +31,7 @@ def read_input(file):
 			limit += 1
 
 			# -------- debug ----------
-			# if limit == 1000:
+			# if limit == 10000:
 			# 	break
 			# -------------------------
 
@@ -40,11 +40,10 @@ def read_input(file):
 				y.append(1 if label == d1 else -1)
 				xl = []
 				for i in range(n):
-					xl.append(int(row[i]) / 255)
+					xl.append(float(row[i]) / 255.0)
 				x.append(xl)
 	x = np.array(x)
 	y = np.array(y)
-	y = y[:,np.newaxis]
 	return (x,y)
 
 def gauss_K(x,z):
@@ -72,7 +71,7 @@ def find_matrices(x,y,C,part_num):
 	h = matrix(h_ar, tc='d')
 	
 	q = matrix(-np.ones(m), tc='d')
-	
+
 	if part_num == 0:
 		P = matrix(np.multiply(x @ x.T, y @ y.T), tc='d')
 	else:
@@ -87,6 +86,7 @@ def find_matrices(x,y,C,part_num):
 def part_a():
 	# ------------- training: ---------------
 	(x,y) = read_input(train_file)
+	y = y[:,np.newaxis]
 	global m
 	m = y.shape[0]
 	(P,q,G,h,A,b) = find_matrices(x,y,C,0)
@@ -135,14 +135,24 @@ def part_a():
 def part_b():
 	# ------------- training: ---------------
 	(x,y) = read_input(train_file)
+	y = y[:,np.newaxis]
 	global m
 	m = y.shape[0]
 	(P,q,G,h,A,b) = find_matrices(x,y,C,1)
+
 	cvxopt.solvers.options['show_progress'] = False
 	sol = cvxopt.solvers.qp(P,q,G,h,A,b)
 	alpha = sol['x']
+	alpha = np.array(alpha)
+	
+	# alnp = np.array(alpha)
+	# np.save("save", alnp)
+	# alpha = np.load("save.npy")
+
 	sc_cnt = 0
 	one_sv = -1
+	print("m:",m)
+	# print(alpha)
 
 	# List of indices of support vectors
 	Ind_SV = [index for index, ele in enumerate(alpha) if ele > EPS]
@@ -155,30 +165,32 @@ def part_b():
 			one_sv = i
 			break
 
+	# print(Ind_SV)
+	# print(alpha)
+
 	if(one_sv == -1):
 		print("Error!")
 
 	b = float(y[one_sv])
 	for i in Ind_SV:
-		b -= alpha[i] * y[i] * gauss_K(x[i], x[one_sv])
+		b -= alpha[i][0] * y[i][0] * gauss_K(x[i], x[one_sv])
 	print("b:",b)
 
 	# ------------- testing: ---------------
 	correct_pred_cnt = 0
 	(x_test,y_test) = read_input(test_file)
 	# y_pred = 1 if w.T @ x_test.T + b > 0 else -1
-
 	y_pred = np.zeros(y_test.shape)
 
 	for i in range(y_test.shape[0]):
-		amt = 0
+		amt = b
 		for j in Ind_SV:
 			amt += alpha[j] * y[j] * gauss_K(x[j], x_test[i])
-
 		y_pred[i] = 1 if amt > 0 else -1
 		if(y_pred[i] == y_test[i]):
 			correct_pred_cnt += 1
 
+	print(y_test.shape[0], correct_pred_cnt)
 	print("accuracy:", correct_pred_cnt / y_test.shape[0])
 
 
