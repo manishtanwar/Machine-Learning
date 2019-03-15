@@ -4,6 +4,7 @@ import cvxopt
 from cvxopt import matrix
 import csv
 import time
+import string
 import sklearn.metrics
 
 train_file = sys.argv[1]
@@ -12,15 +13,39 @@ binary_multi = sys.argv[3]
 part_num = sys.argv[4]
 
 # Constants
-d1 = 3
-d2 = (d1+1)%10
 n = 28*28
 C = 1.0
 m = 0
 EPS = 1e-5
 gamma = 0.05
 
-def read_input(file):
+def read_input_full(file):
+	# input
+	x = []
+	y = []
+	with open(file, 'r') as csvfile:
+		reader = csv.reader(csvfile)
+
+		limit = 0
+		for row in reader:
+			limit += 1
+
+			# -------- debug ----------
+			# if limit == 100:
+			# 	break
+			# -------------------------
+
+			label = int(row[n])
+			y.append(label)
+			xl = []
+			for i in range(n):
+				xl.append(float(row[i]) / 255.0)
+			x.append(xl)
+	x = np.array(x)
+	y = np.array(y)
+	return (x,y)
+
+def read_input_digit(file):
 	# input
 	x = []
 	y = []
@@ -79,56 +104,7 @@ def find_matrices(x,y,C,part_num):
 
 
 # ------------ part_a -----------------------
-
 def part_a():
-	# ------------- training: ---------------
-	(x,y) = read_input(train_file)
-	y = y[:,np.newaxis]
-	global m
-	m = y.shape[0]
-	(P,q,G,h,A,b) = find_matrices(x,y,C,0)
-	cvxopt.solvers.options['show_progress'] = False
-	sol = cvxopt.solvers.qp(P,q,G,h,A,b)
-	alpha = sol['x']
-	sv_cnt = 0
-	one_sv = -1
-	w = np.zeros((n,1))
-
-	# List of indices of support vectors
-	Ind_SV = [index for index, ele in enumerate(alpha) if ele > EPS]
-	sv_cnt = len(Ind_SV)
-
-	for i in Ind_SV:
-		x_i = x[i].T.reshape((n,1))
-		w += alpha[i] * y[i] * x_i
-		if (alpha[i] < C - EPS):
-			one_sv = i
-			
-	if(one_sv == -1):
-		print("Error!")
-
-	print("# of SV:",sv_cnt)
-	b = y[one_sv] - w.T @ x[one_sv]
-	# print("W:",w)
-	print("b:",b)
-
-	# ------------- testing: ---------------
-	correct_pred_cnt = 0
-	(x_test,y_test) = read_input(test_file)
-
-	y_pred = np.zeros(y_test.shape)
-
-	for i in range(y_test.shape[0]):
-		y_pred[i] = 1 if w.T @ x_test[i] + b > 0 else -1
-		if(y_pred[i] == y_test[i]):
-			correct_pred_cnt += 1
-
-	print("accuracy:", correct_pred_cnt / y_test.shape[0])
-
-
-# ------------ part_b -----------------------
-
-def part_b():
 	# ------------- training: ---------------
 	(x,y) = read_input(train_file)
 	y = y[:,np.newaxis]
@@ -203,34 +179,12 @@ def part_b():
 # ------------ part_c -----------------------
 from svmutil import *
 
-def part_c1():
-	# ------------- LINEAR ------------------
-	# ------------- training: ---------------
-	(x,y) = read_input(train_file)
-	global m
-	m = y.shape[0]
-	prob  = svm_problem(y, x)
-	param = svm_parameter('-t 0 -c 1.0 -q')
-	model = svm_train(prob, param)
-	
-	alpha = model.get_sv_coef()
-	Ind_SV = model.get_sv_indices()
-	print(len(alpha),m)
-
-	sv_cnt = len(Ind_SV)
-	print("# of SV:",sv_cnt)
-
-	# ------------- testing: ---------------
-	(x_test,y_test) = read_input(test_file)
-	p_label, p_acc, p_val = svm_predict(y_test, x_test, model, '-q')
-	ACC, MSE, SCC = evaluations(y_test, p_label)
-
-	print("Accuracy:", ACC)
-
-def part_c2():
+def part_b(ret = False):
 	# ------------- GAUSSIAN ------------------
 	# ------------- training: ---------------
-	(x,y) = read_input(train_file)
+	start_time_train = time.time()
+
+	(x,y) = read_input_full(train_file)
 	global m
 	m = y.shape[0]
 	prob  = svm_problem(y, x)
@@ -239,51 +193,92 @@ def part_c2():
 
 	alpha = model.get_sv_coef()
 	Ind_SV = model.get_sv_indices()
-	print(len(alpha),m)
 
 	sv_cnt = len(Ind_SV)
 	print("# of SV:",sv_cnt)
+	
+	end_time_train = time.time()
+	print("Training time:", end_time_train - start_time_train, "\n")
 
 	# ------------- testing: ---------------
-	(x_test,y_test) = read_input(test_file)
-	p_label, p_acc, p_val = svm_predict(y_test, x_test, model, '-q')
-	ACC, MSE, SCC = evaluations(y_test, p_label)
+	(x_test,y_test) = read_input_full(test_file)
+	p_label,_,_ = svm_predict(y_test, x_test, model, '-q')
+	ACC,_,_ = evaluations(y_test, p_label)
 
 	print("Accuracy:", ACC)
+	if ret:
+		return (p_label, y_test)
+
+def part_c():
+	(y_pred, y_actual) = part_b(True)
+	confusion_mat = sklearn.metrics.confusion_matrix(y_actual, y_pred)
+	print(confusion_mat)
+
+def part_d():
+	# ------------- GAUSSIAN ------------------
+	# ------------- training: ---------------
+	start_time_train = time.time()
+
+	(x,y) = read_input_full(train_file)
+	(x_test,y_test) = read_input_full(test_file)
+
+	global m
+	m = y.shape[0]
+
+	index_arr = np.arange(m)
+	np.random.shuffle(index_arr)
+
+	# indices for training and testing for validation
+	vtest = index_arr[0:m//10]
+	vtrain = index_arr[m//10:m]
+	vx_test, vy_test = x[vtest,:], y[vtest]
+	vx_train, vy_train = x[vtrain,:], y[vtrain]
+
+	C_arr = np.array([1e-5, 1e-3, 1, 5, 10])
+	vali_acc = []
+	test_acc = []
+
+	for C_v in C_arr:
+		prob  = svm_problem(vy_train, vx_train)
+		s1 = '-t 2 -g 0.05 -q -c '
+		s2 = str(C_v)
+		s3 = s1 + s2
+		print(s3)
+		param = svm_parameter(s3)
+		model = svm_train(prob, param)
+
+		# on validation set
+		p_label,_,_ = svm_predict(vy_test, vx_test, model, '-q')
+		ACC,_,_ = evaluations(vy_test, p_label)
+		vali_acc.append(ACC)
+
+		# on test data
+		p_label,_,_ = svm_predict(y_test, x_test, model, '-q')
+		ACC2,_,_ = evaluations(y_test, p_label)
+		test_acc.append(ACC2)
+
+		print("C:",C_v,"Validation Acc:",ACC,"Test Acc:",ACC2)
 
 # setting print option to a fixed precision
 np.set_printoptions(precision = 6, suppress = True)
 
-
+start_time = time.time()
 
 if part_num == 'a':
-	start_time = time.time()
 	part_a()
-	end_time = time.time()
-	print("Time taken:", end_time - start_time)
 
 elif part_num == 'b':
-	start_time = time.time()
 	part_b()
-	end_time = time.time()
-	print("Time taken:", end_time - start_time)
 	
 elif part_num == 'c':
-	print("LibSVM - LINEAR:")
-	start_time = time.time()
-	part_c1()
-	end_time = time.time()
-	print("Time taken:", end_time - start_time, "\n")
-	
-	print("LibSVM - GAUSSIAN:")
-	start_time = time.time()
-	part_c2()
-	end_time = time.time()
-	print("Time taken:", end_time - start_time)
+	part_c()
 
-else:
-	x = np.array([[1,2,3],[4,5,6]])
-	print(gaussian_kernal(x))
+elif part_num == 'd':
+	np.random.seed(seed=0)
+	part_d()
+	
+end_time = time.time()
+print("Time taken:", end_time - start_time, "\n")
 	
 # ./run.sh 2 <path_of_train_data> <path_of_test_data> <binary_or_multi_class> <part_num> 
 # Here, 'binary_or_multi_class' is 0 for binary classification and 1 for multi-class. 

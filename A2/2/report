@@ -1,5 +1,5 @@
 export PYTHONPATH="/home/manish/Downloads/libsvm-3.23/python:${PYTHONPATH}"
-
+export PYTHONPATH="/home/tarun/paper/pranav/libsvm-3.23/python:${PYTHONPATH}"
 
 Ind_SV = []
 # Finding one SV with 0 < alpha < C
@@ -11,12 +11,47 @@ for i in range(m):
 			one_sv = i
 print("# of SV:",sc_cnt)
 
+1(a):
+	# of SV: 134
+	b: [0.046565]
+	Training time: 74.8231873512268
+	accuracy: 99.49799196787149
+	Time taken: 76.31420040130615
 
 
-2(b):
-		m: 4000
-		# of SV: 1386
-		b: 0.19471667145082705
-		1992 1990
-		accuracy: 0.998995983935743
-		Time taken: 312.6660690307617
+1(b):
+	# of SV: 1386
+	b: 0.19471667145082844
+	Training Time: 35.840638875961304
+	accuracy: 99.8995983935743
+	Time taken: 37.32110524177551
+
+1(c):
+	LibSVM - LINEAR:
+	# of SV: 134
+	b: [-414.466122]
+	Training Time: 4.590086936950684
+	Accuracy: 99.49799196787149
+	Time taken: 6.870549201965332 
+
+	LibSVM - GAUSSIAN:
+	# of SV: 1344
+	b: -1.464313350289908
+	Training Time: 8.967695951461792
+	Accuracy: 99.8995983935743
+	Time taken: 13.180775165557861
+
+
+2(b):	
+	Test Data:
+		# of SV: 10493
+		Training time: 237.51274156570435
+		Accuracy: 97.23
+		Time taken: 340.059606552124 
+	Train Data:
+		# of SV: 10493
+		Training time: 231.2091588973999 
+		Accuracy: 99.92
+		Time taken: 437.293541431427 
+
+	

@@ -82,6 +82,8 @@ def find_matrices(x,y,C,part_num):
 
 def part_a():
 	# ------------- training: ---------------
+	start_time = time.time()
+
 	(x,y) = read_input(train_file)
 	y = y[:,np.newaxis]
 	global m
@@ -93,7 +95,6 @@ def part_a():
 	sv_cnt = 0
 	one_sv = -1
 	w = np.zeros((n,1))
-
 	# List of indices of support vectors
 	Ind_SV = [index for index, ele in enumerate(alpha) if ele > EPS]
 	sv_cnt = len(Ind_SV)
@@ -112,6 +113,9 @@ def part_a():
 	# print("W:",w)
 	print("b:",b)
 
+	end_time = time.time()
+	print("Training time:", end_time - start_time)
+
 	# ------------- testing: ---------------
 	correct_pred_cnt = 0
 	(x_test,y_test) = read_input(test_file)
@@ -123,13 +127,15 @@ def part_a():
 		if(y_pred[i] == y_test[i]):
 			correct_pred_cnt += 1
 
-	print("accuracy:", correct_pred_cnt / y_test.shape[0])
+	print("accuracy:", 100.0 * (correct_pred_cnt / y_test.shape[0]))
 
 
 # ------------ part_b -----------------------
 
 def part_b():
 	# ------------- training: ---------------
+	start_time = time.time()
+
 	(x,y) = read_input(train_file)
 	y = y[:,np.newaxis]
 	global m
@@ -177,6 +183,9 @@ def part_b():
 	ySV = y[Ind_SV,:]
 	alphaSV = alpha[Ind_SV,:]
 
+	end_time = time.time()
+	print("Training Time:", end_time - start_time)
+
 	# ------------- testing: ---------------
 	correct_pred_cnt = 0
 	(x_test,y_test) = read_input(test_file)
@@ -197,7 +206,7 @@ def part_b():
 	# correct_pred_cnt = sum(y_pred == y_test)
 
 	# print(y_test.shape[0], correct_pred_cnt)
-	print("accuracy:", correct_pred_cnt / y_test.shape[0])
+	print("accuracy:", 100.0 * (correct_pred_cnt / y_test.shape[0]))
 
 
 # ------------ part_c -----------------------
@@ -206,6 +215,8 @@ from svmutil import *
 def part_c1():
 	# ------------- LINEAR ------------------
 	# ------------- training: ---------------
+	start_time = time.time()
+
 	(x,y) = read_input(train_file)
 	global m
 	m = y.shape[0]
@@ -213,23 +224,46 @@ def part_c1():
 	param = svm_parameter('-t 0 -c 1.0 -q')
 	model = svm_train(prob, param)
 	
-	alpha = model.get_sv_coef()
-	Ind_SV = model.get_sv_indices()
-	print(len(alpha),m)
+	alpha = np.asarray(model.get_sv_coef())
+	alpha = alpha[:,0]
+	Ind_SV = np.asarray(model.get_sv_indices()) - 1
 
 	sv_cnt = len(Ind_SV)
 	print("# of SV:",sv_cnt)
 
+	# -----------finding b and w---------------
+	w = np.zeros((n,1))
+	j = 0
+	for i in Ind_SV:
+		x_i = x[i].T.reshape((n,1))
+		w += alpha[j] * y[i] * x_i
+		if (alpha[j] < C - EPS):
+			one_sv = i
+		j+=1
+			
+	if(one_sv == -1):
+		print("Error!")
+
+	b = y[one_sv] - w.T @ x[one_sv]
+	# print("W:",w)
+	print("b:",b)
+
+	end_time = time.time()
+	print("Training Time:", end_time - start_time)
+
 	# ------------- testing: ---------------
 	(x_test,y_test) = read_input(test_file)
-	p_label, p_acc, p_val = svm_predict(y_test, x_test, model, '-q')
-	ACC, MSE, SCC = evaluations(y_test, p_label)
+	p_label,_,_ = svm_predict(y_test, x_test, model, '-q')
+	ACC,_,_ = evaluations(y_test, p_label)
 
 	print("Accuracy:", ACC)
+
 
 def part_c2():
 	# ------------- GAUSSIAN ------------------
 	# ------------- training: ---------------
+	start_time = time.time()
+
 	(x,y) = read_input(train_file)
 	global m
 	m = y.shape[0]
@@ -237,17 +271,34 @@ def part_c2():
 	param = svm_parameter('-t 2 -c 1.0 -g 0.05 -q')
 	model = svm_train(prob, param)
 
-	alpha = model.get_sv_coef()
-	Ind_SV = model.get_sv_indices()
-	print(len(alpha),m)
+	alpha = np.asarray(model.get_sv_coef())
+	alpha = alpha[:,0]
+	Ind_SV = np.asarray(model.get_sv_indices()) - 1
 
 	sv_cnt = len(Ind_SV)
-	print("# of SV:",sv_cnt)
+	print("# of SV:",sv_cnt)	
+
+	# ------------- finding b: --------------
+
+	for i in range(len(Ind_SV)):
+		if (alpha[i] < C - EPS):
+			one_sv = i
+			break
+
+	b = float(y[one_sv])
+	j = 0
+	for i in Ind_SV:
+		b -= alpha[j] * y[i] * gauss_K(x[i], x[one_sv])
+		j += 1
+	print("b:",b)
+
+	end_time = time.time()
+	print("Training Time:", end_time - start_time)
 
 	# ------------- testing: ---------------
 	(x_test,y_test) = read_input(test_file)
-	p_label, p_acc, p_val = svm_predict(y_test, x_test, model, '-q')
-	ACC, MSE, SCC = evaluations(y_test, p_label)
+	p_label,_,_ = svm_predict(y_test, x_test, model, '-q')
+	ACC,_,_ = evaluations(y_test, p_label)
 
 	print("Accuracy:", ACC)
 
@@ -280,10 +331,6 @@ elif part_num == 'c':
 	part_c2()
 	end_time = time.time()
 	print("Time taken:", end_time - start_time)
-
-else:
-	x = np.array([[1,2,3],[4,5,6]])
-	print(gaussian_kernal(x))
 	
 # ./run.sh 2 <path_of_train_data> <path_of_test_data> <binary_or_multi_class> <part_num> 
 # Here, 'binary_or_multi_class' is 0 for binary classification and 1 for multi-class. 
