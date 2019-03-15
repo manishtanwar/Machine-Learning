@@ -4,6 +4,7 @@ import cvxopt
 from cvxopt import matrix
 import csv
 import time
+import sklearn.metrics
 
 train_file = sys.argv[1]
 test_file = sys.argv[2]
@@ -51,12 +52,8 @@ def gauss_K(x,z):
 	return np.exp(-gamma * norm * norm)
 
 def gaussian_kernal(x):
-	x_g = np.zeros((m,m))
-	
-	for i in range(m):
-		for j in range(m):
-			x_g[i][j] = gauss_K(x[i], x[j])
-	return x_g
+	# return np.asarray([ [ gauss_K(i,j) for j in x ] for i in x ])
+	return sklearn.metrics.pairwise.rbf_kernel(x, Y=None, gamma=gamma)
 
 def find_matrices(x,y,C,part_num):
 	# print(x.shape, y.shape, C)
@@ -137,16 +134,19 @@ def part_b():
 	y = y[:,np.newaxis]
 	global m
 	m = y.shape[0]
-	# (P,q,G,h,A,b) = find_matrices(x,y,C,1)
 
-	# cvxopt.solvers.options['show_progress'] = False
-	# sol = cvxopt.solvers.qp(P,q,G,h,A,b)
-	# alpha = sol['x']
-	# alpha = np.array(alpha)
+	(P,q,G,h,A,b) = find_matrices(x,y,C,1)
+	cvxopt.solvers.options['show_progress'] = False
+	sol = cvxopt.solvers.qp(P,q,G,h,A,b)
+	alpha = sol['x']
+	alpha = np.array(alpha)
 	
+	# Saving alpha:
 	# alnp = np.array(alpha)
 	# np.save("save", alnp)
-	alpha = np.load("save.npy")
+	
+	# Loading alpha:
+	# alpha = np.load("save.npy")
 
 	sv_cnt = 0
 	one_sv = -1
@@ -164,9 +164,6 @@ def part_b():
 			one_sv = i
 			break
 
-	# print(Ind_SV)
-	# print(alpha)
-
 	if(one_sv == -1):
 		print("Error!")
 
@@ -175,21 +172,31 @@ def part_b():
 		b -= alpha[i][0] * y[i][0] * gauss_K(x[i], x[one_sv])
 	print("b:",b)
 
+	# Finding x,y,alpha for indices of Support Vectors
+	xSV = x[Ind_SV,:]
+	ySV = y[Ind_SV,:]
+	alphaSV = alpha[Ind_SV,:]
+
 	# ------------- testing: ---------------
 	correct_pred_cnt = 0
 	(x_test,y_test) = read_input(test_file)
-	# y_pred = 1 if w.T @ x_test.T + b > 0 else -1
-	y_pred = np.zeros(y_test.shape)
 
-	for i in range(y_test.shape[0]):
-		amt = b
-		for j in Ind_SV:
-			amt += alpha[j] * y[j] * gauss_K(x[j], x_test[i])
-		y_pred[i] = 1 if amt > 0 else -1
-		if(y_pred[i] == y_test[i]):
-			correct_pred_cnt += 1
+	# using sk-learn gaussian
+	MAT = sklearn.metrics.pairwise.rbf_kernel(x_test, Y=xSV, gamma=gamma)
+	vec = np.multiply(alphaSV[:,0], ySV[:,0])
+	MAT[:,] = np.multiply(MAT[:,], vec)
+	Amt = np.sum(MAT, axis = 1) + b
+	y_pred = np.where(Amt > 0, 1, -1)
+	correct_pred_cnt = sum(y_pred == y_test)
 
-	print(y_test.shape[0], correct_pred_cnt)
+	# without sk-learn gaussian
+	# print(alphaSV.shape, ySV.shape)
+	# Amt = np.sum(np.asarray([ [ alphaSV[j][0] * ySV[j][0] * gauss_K(xSV[j], x_test[i]) for j in range(xSV.shape[0])] for i in range(x_test.shape[0])]), axis = 1) + b
+	# print(Amt.shape)
+	# y_pred = np.where(Amt > 0, 1, -1)
+	# correct_pred_cnt = sum(y_pred == y_test)
+
+	# print(y_test.shape[0], correct_pred_cnt)
 	print("accuracy:", correct_pred_cnt / y_test.shape[0])
 
 
@@ -262,17 +269,21 @@ elif part_num == 'b':
 	print("Time taken:", end_time - start_time)
 	
 elif part_num == 'c':
-	# print("LibSVM - LINEAR:")
-	# start_time = time.time()
-	# part_c1()
-	# end_time = time.time()
-	# print("Time taken:", end_time - start_time, "\n")
+	print("LibSVM - LINEAR:")
+	start_time = time.time()
+	part_c1()
+	end_time = time.time()
+	print("Time taken:", end_time - start_time, "\n")
 	
 	print("LibSVM - GAUSSIAN:")
 	start_time = time.time()
 	part_c2()
 	end_time = time.time()
 	print("Time taken:", end_time - start_time)
+
+else:
+	x = np.array([[1,2,3],[4,5,6]])
+	print(gaussian_kernal(x))
 	
 # ./run.sh 2 <path_of_train_data> <path_of_test_data> <binary_or_multi_class> <part_num> 
 # Here, 'binary_or_multi_class' is 0 for binary classification and 1 for multi-class. 
