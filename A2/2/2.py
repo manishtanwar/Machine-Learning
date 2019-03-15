@@ -31,7 +31,7 @@ def read_input(file):
 			limit += 1
 
 			# -------- debug ----------
-			# if limit == 10000:
+			# if limit == 100:
 			# 	break
 			# -------------------------
 
@@ -93,13 +93,13 @@ def part_a():
 	cvxopt.solvers.options['show_progress'] = False
 	sol = cvxopt.solvers.qp(P,q,G,h,A,b)
 	alpha = sol['x']
-	sc_cnt = 0
+	sv_cnt = 0
 	one_sv = -1
 	w = np.zeros((n,1))
 
 	# List of indices of support vectors
 	Ind_SV = [index for index, ele in enumerate(alpha) if ele > EPS]
-	sc_cnt = len(Ind_SV)
+	sv_cnt = len(Ind_SV)
 
 	for i in Ind_SV:
 		x_i = x[i].T.reshape((n,1))
@@ -110,7 +110,7 @@ def part_a():
 	if(one_sv == -1):
 		print("Error!")
 
-	print("# of SV:",sc_cnt)
+	print("# of SV:",sv_cnt)
 	b = y[one_sv] - w.T @ x[one_sv]
 	# print("W:",w)
 	print("b:",b)
@@ -118,7 +118,6 @@ def part_a():
 	# ------------- testing: ---------------
 	correct_pred_cnt = 0
 	(x_test,y_test) = read_input(test_file)
-	# y_pred = 1 if w.T @ x_test.T + b > 0 else -1
 
 	y_pred = np.zeros(y_test.shape)
 
@@ -138,27 +137,27 @@ def part_b():
 	y = y[:,np.newaxis]
 	global m
 	m = y.shape[0]
-	(P,q,G,h,A,b) = find_matrices(x,y,C,1)
+	# (P,q,G,h,A,b) = find_matrices(x,y,C,1)
 
-	cvxopt.solvers.options['show_progress'] = False
-	sol = cvxopt.solvers.qp(P,q,G,h,A,b)
-	alpha = sol['x']
-	alpha = np.array(alpha)
+	# cvxopt.solvers.options['show_progress'] = False
+	# sol = cvxopt.solvers.qp(P,q,G,h,A,b)
+	# alpha = sol['x']
+	# alpha = np.array(alpha)
 	
 	# alnp = np.array(alpha)
 	# np.save("save", alnp)
-	# alpha = np.load("save.npy")
+	alpha = np.load("save.npy")
 
-	sc_cnt = 0
+	sv_cnt = 0
 	one_sv = -1
 	print("m:",m)
 	# print(alpha)
 
 	# List of indices of support vectors
 	Ind_SV = [index for index, ele in enumerate(alpha) if ele > EPS]
-	sc_cnt = len(Ind_SV)
+	sv_cnt = len(Ind_SV)
 
-	print("# of SV:",sc_cnt)
+	print("# of SV:",sv_cnt)
 	# Finding one SV with 0 < alpha < C
 	for i in Ind_SV:
 		if (alpha[i] < C - EPS):
@@ -195,39 +194,86 @@ def part_b():
 
 
 # ------------ part_c -----------------------
-# from svmutil import *
+from svmutil import *
 
-def part_c():
+def part_c1():
+	# ------------- LINEAR ------------------
 	# ------------- training: ---------------
 	(x,y) = read_input(train_file)
 	global m
 	m = y.shape[0]
 	prob  = svm_problem(y, x)
-	param = svm_parameter('-t 0 -c 4 -b 1')
-	m = svm_train(prob, param)
+	param = svm_parameter('-t 0 -c 1.0 -q')
+	model = svm_train(prob, param)
+	
+	alpha = model.get_sv_coef()
+	Ind_SV = model.get_sv_indices()
+	print(len(alpha),m)
+
+	sv_cnt = len(Ind_SV)
+	print("# of SV:",sv_cnt)
 
 	# ------------- testing: ---------------
-	# correct_pred_cnt = 0
-	# (x_test,y_test) = read_input(test_file)
-	# y_pred = 1 if w.T @ x_test.T + b > 0 else -1
+	(x_test,y_test) = read_input(test_file)
+	p_label, p_acc, p_val = svm_predict(y_test, x_test, model, '-q')
+	ACC, MSE, SCC = evaluations(y_test, p_label)
 
-	# print("accuracy:", correct_pred_cnt / y_test.shape[0])
+	print("Accuracy:", ACC)
+
+def part_c2():
+	# ------------- GAUSSIAN ------------------
+	# ------------- training: ---------------
+	(x,y) = read_input(train_file)
+	global m
+	m = y.shape[0]
+	prob  = svm_problem(y, x)
+	param = svm_parameter('-t 2 -c 1.0 -g 0.05 -q')
+	model = svm_train(prob, param)
+
+	alpha = model.get_sv_coef()
+	Ind_SV = model.get_sv_indices()
+	print(len(alpha),m)
+
+	sv_cnt = len(Ind_SV)
+	print("# of SV:",sv_cnt)
+
+	# ------------- testing: ---------------
+	(x_test,y_test) = read_input(test_file)
+	p_label, p_acc, p_val = svm_predict(y_test, x_test, model, '-q')
+	ACC, MSE, SCC = evaluations(y_test, p_label)
+
+	print("Accuracy:", ACC)
 
 # setting print option to a fixed precision
 np.set_printoptions(precision = 6, suppress = True)
 
-start_time = time.time()
+
 
 if part_num == 'a':
+	start_time = time.time()
 	part_a()
+	end_time = time.time()
+	print("Time taken:", end_time - start_time)
+
 elif part_num == 'b':
+	start_time = time.time()
 	part_b()
+	end_time = time.time()
+	print("Time taken:", end_time - start_time)
+	
 elif part_num == 'c':
-	part_c()
-
-end_time = time.time()
-print("Time taken:", end_time - start_time)
-
+	# print("LibSVM - LINEAR:")
+	# start_time = time.time()
+	# part_c1()
+	# end_time = time.time()
+	# print("Time taken:", end_time - start_time, "\n")
+	
+	print("LibSVM - GAUSSIAN:")
+	start_time = time.time()
+	part_c2()
+	end_time = time.time()
+	print("Time taken:", end_time - start_time)
+	
 # ./run.sh 2 <path_of_train_data> <path_of_test_data> <binary_or_multi_class> <part_num> 
 # Here, 'binary_or_multi_class' is 0 for binary classification and 1 for multi-class. 
 # 'part_num' is part number which can be a-c for binary classification and a-d for multi-class.

@@ -10,3 +10,13 @@ for i in range(m):
 		if (alpha[i] < C - EPS):
 			one_sv = i
 print("# of SV:",sc_cnt)
+
+
+
+2(b):
+		m: 4000
+		# of SV: 1386
+		b: 0.19471667145082705
+		1992 1990
+		accuracy: 0.998995983935743
+		Time taken: 312.6660690307617
