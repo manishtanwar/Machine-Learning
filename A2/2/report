@@ -41,6 +41,15 @@ print("# of SV:",sc_cnt)
 	Accuracy: 99.8995983935743
 	Time taken: 13.180775165557861
 
+2(a):
+	10000 9724	
+	Test Data:
+		Training time: 472.36072039604187
+		accuracy: 97.24000000000001
+		Time taken: 539.7932188510895 
+	Train Data:
+		Training time: 516.0933496952057
+		accuracy: 99.92
 
 2(b):	
 	Test Data:
@@ -54,4 +63,27 @@ print("# of SV:",sc_cnt)
 		Accuracy: 99.92
 		Time taken: 437.293541431427 
 
-	
+2(c):
+	# of SV: 10493
+	Training time: 246.1455283164978 
+
+	Accuracy: 97.23
+	[[ 969    0    1    0    0    3    4    1    2    0]
+	 [   0 1121    3    2    1    2    2    0    3    1]
+	 [   4    0 1000    4    2    0    1    6   15    0]
+	 [   0    0    8  985    0    4    0    6    5    2]
+	 [   0    0    4    0  962    0    6    0    2    8]
+	 [   2    0    3    6    1  866    7    1    5    1]
+	 [   6    3    0    0    4    4  939    0    2    0]
+	 [   1    4   19    2    4    0    0  987    2    9]
+	 [   4    0    3   10    1    5    3    3  942    3]
+	 [   4    4    3    8   13    4    0    9   12  952]]
+	Time taken: 353.75955986976624 
+
+2(d):
+	C: 1e-05 	Validation Acc: 9.0 	Test Acc: 10.280000000000001
+	C: 0.001 	Validation Acc: 9.0 	Test Acc: 10.280000000000001
+	C: 1.0 		Validation Acc: 97.7 	Test Acc: 97.11999999999999
+	C: 5.0 		Validation Acc: 97.8 	Test Acc: 97.24000000000001
+	C: 10.0 	Validation Acc: 97.8 	Test Acc: 97.24000000000001
+	Time taken: 2324.572094678879
