@@ -137,10 +137,10 @@ def test(stem_flag=False, bigram_flag=False):
 		    # P(y)
 			prob = math.log(class_docu_count[i])
 			
-			for word in word_list:
-				count = dict[word][i] if word in dict else 0
-	            # P(xj/y)
-				prob += math.log((count + 1) / (class_word_count[i] + len(dict)))
+			# for word in word_list:
+			# 	count = dict[word][i] if word in dict else 0
+	  #           # P(xj/y)
+			# 	prob += math.log((count + 1) / (class_word_count[i] + len(dict)))
 
 			# bigrams?
 			if bigram_flag:

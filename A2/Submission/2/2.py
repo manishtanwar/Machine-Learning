@@ -52,8 +52,8 @@ def gauss_K(x,z):
 	return np.exp(-gamma * norm * norm)
 
 def gaussian_kernal(x):
-	# return np.asarray([ [ gauss_K(i,j) for j in x ] for i in x ])
-	return sklearn.metrics.pairwise.rbf_kernel(x, Y=None, gamma=gamma)
+	return np.asarray([ [ gauss_K(i,j) for j in x ] for i in x ])
+	# return sklearn.metrics.pairwise.rbf_kernel(x, Y=None, gamma=gamma)
 
 def find_matrices(x,y,C,part_num):
 	# print(x.shape, y.shape, C)
@@ -201,10 +201,10 @@ def part_b():
 
 	# without sk-learn gaussian
 	# print(alphaSV.shape, ySV.shape)
-	# Amt = np.sum(np.asarray([ [ alphaSV[j][0] * ySV[j][0] * gauss_K(xSV[j], x_test[i]) for j in range(xSV.shape[0])] for i in range(x_test.shape[0])]), axis = 1) + b
-	# print(Amt.shape)
-	# y_pred = np.where(Amt > 0, 1, -1)
-	# correct_pred_cnt = sum(y_pred == y_test)
+	Amt = np.sum(np.asarray([ [ alphaSV[j][0] * ySV[j][0] * gauss_K(xSV[j], x_test[i]) for j in range(xSV.shape[0])] for i in range(x_test.shape[0])]), axis = 1) + b
+	print(Amt.shape)
+	y_pred = np.where(Amt > 0, 1, -1)
+	correct_pred_cnt = sum(y_pred == y_test)
 
 	# print(y_test.shape[0], correct_pred_cnt)
 	print("accuracy:", 100.0 * (correct_pred_cnt / y_test.shape[0]))
