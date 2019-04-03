@@ -33,7 +33,8 @@ def softmax(x):
 	return y / np.sum(y)
 
 def loss_function(y_pred, y_true):
-
+	log = -np.log(y_pred[y_true, range(y_pred.shape[1])])
+	return np.sum(log) / y_pred.shape[1]
 
 def train(file):
 	input = np.load(file)
