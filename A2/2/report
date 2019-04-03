@@ -1,3 +1,4 @@
+//////////// changed libsvm path /////////////////
 export PYTHONPATH="/home/manish/Downloads/libsvm-3.23/python:${PYTHONPATH}"
 export PYTHONPATH="/home/tarun/paper/pranav/libsvm-3.23/python:${PYTHONPATH}"
 

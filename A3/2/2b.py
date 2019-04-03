@@ -14,6 +14,7 @@ l = len(layers)
 W = {}
 o = {}
 b = {}
+P = {}
 seed = 0
 
 # start_time = time.time()
@@ -47,10 +48,13 @@ def train(file):
 
 	W[0] = np.random.rand(n,layers[0])
 	b[0] = np.zeros((layers[0],1))
+	P[0] = np.zeros((layers[0],1))
 	for i in range(1, l):
 		W[i] = np.random.rand(layers[i-1], layers[i])
 		b[i] = np.zeros((layers[i],1))
+		P[i] = np.zeros((layers[i],1))
 	b[l] = np.zeros((c, 1))
+	P[l] = np.zeros((c, 1))
 	W[l] = np.random.rand(layers[l-1], c)
 
 	# for i in range(l+1):
@@ -72,7 +76,22 @@ def train(file):
 
 		return loss_function(o[l], y_batch)
 
+	def back_propagate(x_batch, y_batch):
+		y_hot = np.zeros((c, y_batch.shape[0]))
+		y_hot[y_batch : range(y_batch.shape[0])] = 1
+
+		P[l] = np.sum(y_hot, axis=1) - np.sum(y_hot.T @ o[l])
+
+		for i in range(l-1, -1, -1):
+			P[i] = np.multiply((W[i+1] @ P[i+1]), np.sum(np.multiply(o[i],1-o[i]), axis=1))
+			W[i+1] = W[i+1] - rate * np.sum(o[i], axis=1) @ (P[i+1].T)
+			b[i+1] = b[i+1] - rate * P[i+1].T
+		W[0] = W[0] - rate * np.sum(x_batch, axis=1) @ (P[0].T)
+		b[0] = b[0] - rate * P[0].T
+	
 	while(True):
+		prev_loss = 0.
+		cur_loss = 0.
 		for batch in range(0, (m+batch_size-1)//batch_size):
 			start = batch*batch_size
 			# end = start + batch_size
@@ -86,9 +105,13 @@ def train(file):
 			print("start :",start, "end :",end)
 			# print(x_batch, y_batch)
 
-			forward_pass(x_batch, y_batch)
+			cur_loss = max(cur_loss, forward_pass(x_batch, y_batch))
 
-		break;
+			back_propagate(x_batch, y_batch)
+		
+		if(abs(cur_loss-prev_loss) < EPS):
+			break;
+		prev_loss = cur_loss
 
 
 train("example.npy")
