@@ -20,4 +20,4 @@ labels = np.append(labels, Y, axis=1)
 # print(labels.shape)
 la = labels[0:200]
 # print(la.shape)
-np.save(out_file, la)
+np.save(out_file, labels)

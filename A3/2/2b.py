@@ -94,18 +94,18 @@ def train(file):
 		y_hot[y_batch[:,0], range(y_batch.shape[0])] = 1
 		# print(y_hot)
 
-		P[l] = (np.sum(y_hot, axis=1) - np.sum(y_hot.T @ o[l]))
+		P[l] = (np.sum(y_hot, axis=1) - np.sum(o[l], axis=1))
 		P[l] = P[l][:,np.newaxis]
 
 		for i in range(l-1, -1, -1):
-			P[i] = np.multiply((W[i+1] @ P[i+1]), (np.sum(np.multiply(o[i],1-o[i]), axis=1)[:,np.newaxis]) )
+			P[i] = np.multiply((W[i+1] @ P[i+1]), (np.sum(np.multiply(o[i],1-o[i]), axis=1)[:,np.newaxis]) ) / y_batch.shape[1]
 			# print(P[i+1].T.shape, P[i+1].shape, o[i].shape)
-			W[i+1] = W[i+1] - rate * np.sum(o[i], axis=1)[:,np.newaxis] @ (P[i+1].T)
+			W[i+1] = W[i+1] - rate * ((np.sum(o[i], axis=1)[:,np.newaxis]) @ (P[i+1].T) / y_batch.shape[1])
 			b[i+1] = b[i+1] - rate * P[i+1]
 			# print(W[i+1].shape,P[i].shape,b[i+1].shape)
 
 		# print(P[0].T.shape, x_batch.shape)
-		W[0] = W[0] - rate * (np.sum(x_batch.T, axis=1)[:,np.newaxis]) @ (P[0].T)
+		W[0] = W[0] - rate * ((np.sum(x_batch.T, axis=1)[:,np.newaxis]) @ (P[0].T) / y_batch.shape[1])
 		b[0] = b[0] - rate * P[0]
 
 	while(True):
@@ -126,15 +126,16 @@ def train(file):
 			# print(x_batch.shape, y_batch)
 
 			cur_loss = max(cur_loss, forward_pass(x_batch, y_batch))
-
+			print("LOSS : ", cur_loss)
 			back_propagate(x_batch, y_batch)
 		
-		print("LOSS : ", cur_loss)
+		# print("LOSS : ", cur_loss)
 		# break;
 		if(abs(cur_loss-prev_loss) < EPS):
 			break;
 		prev_loss = cur_loss
 
 
-train("train.npy")
+train("train_big.npy")
+# train("train.npy")
 # train("example.npy")
