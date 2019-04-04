@@ -1,0 +1,6 @@
+b.y0 : 100
+a.y0 : 100 |  b.y0 : 101
+b.child[i]->y0 : 10
+b.child[i]->y0 : 10
+a.child[i]->y0 : 2
+a.child[i]->y0 : 2
