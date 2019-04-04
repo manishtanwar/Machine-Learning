@@ -42,8 +42,8 @@ def softmax(x):
 	return y / np.sum(y)
 
 def loss_function(y_pred, y_true):
-	log = -np.log(y_pred[y_true, range(y_pred.shape[1])])
-	print(log)
+	log = -np.log(y_pred[y_true[:,0], range(y_pred.shape[1])])
+	# print(log)
 	# print("shape : ", y_pred.shape)
 	return np.sum(log) / y_pred.shape[1]
 
@@ -85,12 +85,14 @@ def train(file):
 			# print("There : ", W[i].shape, o[i-1].shape, b[i].shape)
 			o[i] = sigmoid(W[i].T @ o[i-1] + b[i])
 		o[l] = np.apply_along_axis(softmax, 0, W[l].T @ o[l-1] + b[l])
-
+		# print(o[l])
 		return loss_function(o[l], y_batch)
 
 	def back_propagate(x_batch, y_batch):
+		# print(y_batch)
 		y_hot = np.zeros((c, y_batch.shape[0]))
-		y_hot[y_batch, range(y_batch.shape[0])] = 1
+		y_hot[y_batch[:,0], range(y_batch.shape[0])] = 1
+		# print(y_hot)
 
 		P[l] = (np.sum(y_hot, axis=1) - np.sum(y_hot.T @ o[l]))
 		P[l] = P[l][:,np.newaxis]
@@ -128,6 +130,7 @@ def train(file):
 			back_propagate(x_batch, y_batch)
 		
 		print("LOSS : ", cur_loss)
+		# break;
 		if(abs(cur_loss-prev_loss) < EPS):
 			break;
 		prev_loss = cur_loss
