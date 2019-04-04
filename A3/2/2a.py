@@ -17,7 +17,7 @@ labels = encoder.transform(X).toarray()
 Y = Y[:,np.newaxis]
 labels = np.append(labels, Y, axis=1)
 # print(labels)
-# print(labels.shape)
-la = labels[0:200]
-# print(la.shape)
-np.save(out_file, labels)
+print(labels.shape)
+la = labels[0:20]
+print(la.shape)
+np.save(out_file, la)
