@@ -78,8 +78,10 @@ map<int,int> attr_range = {{2,7},{3,4}};
 
 void modify(vector<vi> &v){
 	for(int i=5;i<11;i++)
-		for(int j=0;j<v.size();i++)
+		for(int j=0;j<v.size();j++)
 			v[j][i] += 2;
+	for(int j=0;j<v.size();j++)
+		v[j][1] -= 1;
 }
 
 void preprocessing(){
@@ -101,32 +103,43 @@ inline double entropy(int a, int b){
 	double p1,p2;
 	p1 = (double)a/(a+b);
 	p2 = 1.0 - p1;
-	return -(p1*log2(p1) + p2*log2(p2));
+	// trace(p1,p2,a,b);
+	double ret = 0;
+	if(a > 0) ret -= p1*log2(p1);
+	if(b > 0) ret -= p2*log2(p2);
+	// trace(ret);
+	return ret;
 }
 
 void growNode(node *n,vi &rem_data,vi &rem_attr);
 
 void produce_children(node *n,vi &rem_data,vi &rem_attr){
 	double best_IG = 0.0;
-	int best_attr = -1;
+	int best_attr = 30;
 	double H = entropy(n->y0, n->y1);
 	
 	for(auto a : rem_attr){
 		double IG = H;
-		vi y_baccha[2] = {vi(attr_range[a]), vi(attr_range[a])};
+		vi y_baccha[2] = {vi(attr_range[a], 0), vi(attr_range[a], 0)};
 
 		for(auto i : rem_data)
 			y_baccha[train[i][y_in]][train[i][a]]++;
 
 		for(int i=0;i<attr_range[a];i++){
-			double pi = ((double)y_baccha[0][a]+y_baccha[1][a])/rem_data.size();
-			IG -= pi * entropy(y_baccha[0][a], y_baccha[1][a]);
+			int baccha_cnt = y_baccha[0][i] + y_baccha[1][i];
+			// trace(baccha_cnt);
+			if(baccha_cnt == 0) continue;
+			double pi = ((double)baccha_cnt)/rem_data.size();
+			IG -= pi * entropy(y_baccha[0][i], y_baccha[1][i]);
 		}
+		trace(IG, attr_range[a], a);
+		// assert(IG >= 0);
 		
 		if(best_IG < IG) best_IG = IG, best_attr = a;
 		else if(best_IG == IG && a < best_attr) best_attr = a;
 	}
 
+	n->attr_index = best_attr;
 	int child_cnt = attr_range[best_attr];
 	vi rem_attr_child;
 	for(auto a : rem_attr) if(a != best_attr) rem_attr_child.push_back(a);
@@ -134,8 +147,10 @@ void produce_children(node *n,vi &rem_data,vi &rem_attr){
 	n->child = vector<node *> (child_cnt);
 	
 	vector<vi> rem_data_child(child_cnt);
+	trace(node_cnt,best_attr,rem_attr.size());
 	
 	for(auto i : rem_data){
+		// trace(child_cnt, train[i][best_attr],best_attr);
 		rem_data_child[train[i][best_attr]].push_back(i);
 	}
 
@@ -149,6 +164,7 @@ void produce_children(node *n,vi &rem_data,vi &rem_attr){
 
 void growNode(node *n,vi &rem_data,vi &rem_attr){
 	node_cnt++;
+	trace(node_cnt);
 
 	n->y = rem_data.size();
 	n->y0 = n->y1 =  0;
@@ -173,7 +189,7 @@ void train_it(){
 }
 
 int main(int argc, char *argv[]){
-    ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0); cout<<setprecision(25);
+    ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0); cout<<setprecision(5);
 
     train = get_input(argv[1]);
     test = get_input(argv[2]);
@@ -181,4 +197,5 @@ int main(int argc, char *argv[]){
 
     preprocessing();
     train_it();
+    cout<<node_cnt<<endl;
 }
