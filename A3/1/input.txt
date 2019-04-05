@@ -1,0 +1,9 @@
+class node{
+	public:
+
+	int y0,y1;
+	int y;
+	bool leaf;
+	int attr_index;
+
+	vector<node *> child;

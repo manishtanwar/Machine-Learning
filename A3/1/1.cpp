@@ -28,7 +28,13 @@ class node{
 
 	vector<node *> child;
 
-	node(){}
+	node(){
+		this->y0 = 0;
+		this->y1 = 0;
+		this->y = 0;
+		this->leaf = 0;
+		this->attr_index = -1;
+	}
 
 	node(int y0,int y1,int y,bool leaf,int attr_index){
 		this->y0 = y0;
@@ -65,16 +71,105 @@ vector<vector<int>> get_input(char *argv){
     return mat;
 }
 
-vector< vector<int> > train, test, val;
-node *root;
+vector<vi> train, test, val;
 
 set<int> categorical_attr = {2,3,5,6,7,8,9,10};
-map<int,int> cat_range = {{2,7},{3,4},};
+map<int,int> attr_range = {{2,7},{3,4}};
+
+void modify(vector<vi> &v){
+	for(int i=5;i<11;i++)
+		for(int j=0;j<v.size();i++)
+			v[j][i] += 2;
+}
+
+void preprocessing(){
+	for(int i=0;i<23;i++)
+		if(!categorical_attr.count(i)) attr_range[i] = 2;
+	for(int i=5;i<11;i++)
+		attr_range[i] = 12;
+	modify(train);
+	modify(test);
+	modify(val);
+}
+
+node *root;
+int node_cnt = 0;
+int attr_cnt = 23;
+int y_in = 23;
+
+inline double entropy(int a, int b){
+	double p1,p2;
+	p1 = (double)a/(a+b);
+	p2 = 1.0 - p1;
+	return -(p1*log2(p1) + p2*log2(p2));
+}
+
+void growNode(node *n,vi &rem_data,vi &rem_attr);
+
+void produce_children(node *n,vi &rem_data,vi &rem_attr){
+	double best_IG = 0.0;
+	int best_attr = -1;
+	double H = entropy(n->y0, n->y1);
+	
+	for(auto a : rem_attr){
+		double IG = H;
+		vi y_baccha[2] = {vi(attr_range[a]), vi(attr_range[a])};
+
+		for(auto i : rem_data)
+			y_baccha[train[i][y_in]][train[i][a]]++;
+
+		for(int i=0;i<attr_range[a];i++){
+			double pi = ((double)y_baccha[0][a]+y_baccha[1][a])/rem_data.size();
+			IG -= pi * entropy(y_baccha[0][a], y_baccha[1][a]);
+		}
+		
+		if(best_IG < IG) best_IG = IG, best_attr = a;
+		else if(best_IG == IG && a < best_attr) best_attr = a;
+	}
+
+	int child_cnt = attr_range[best_attr];
+	vi rem_attr_child;
+	for(auto a : rem_attr) if(a != best_attr) rem_attr_child.push_back(a);
+	
+	n->child = vector<node *> (child_cnt);
+	
+	vector<vi> rem_data_child(child_cnt);
+	
+	for(auto i : rem_data){
+		rem_data_child[train[i][best_attr]].push_back(i);
+	}
+
+	for(int i=0;i<attr_range[best_attr];i++){
+		n->child[i] = NULL;
+		if(rem_data_child[i].size() == 0) continue;
+		n->child[i] = new node();
+		growNode(n->child[i], rem_data_child[i], rem_attr_child);
+	}
+}
+
+void growNode(node *n,vi &rem_data,vi &rem_attr){
+	node_cnt++;
+
+	n->y = rem_data.size();
+	n->y0 = n->y1 =  0;
+	for(auto &i : rem_data){
+		if(train[i][y_in] == 0) n->y0++;
+		else n->y1++;
+	}
+	if(n->y0 == 0 || n->y1 == 0 || rem_attr.size() == 0){
+		n->leaf = 1;
+		return;
+	}
+	produce_children(n,rem_data,rem_attr);
+}
 
 void train_it(){
-	vi rem(train.size());
-	for(int i=0;i<rem.size();i++) rem[i] = i;
-
+	vi rem_data(train.size());
+	vi rem_attr(attr_cnt);
+	for(int i=0;i<attr_cnt;i++) rem_attr[i] = i;
+	for(int i=0;i<rem_data.size();i++) rem_data[i] = i;
+	root = new node();
+	growNode(root,rem_data,rem_attr);
 }
 
 int main(int argc, char *argv[]){
@@ -84,5 +179,6 @@ int main(int argc, char *argv[]){
     test = get_input(argv[2]);
     val = get_input(argv[3]);
 
+    preprocessing();
     train_it();
 }

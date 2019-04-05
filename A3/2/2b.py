@@ -41,13 +41,13 @@ def train(file):
 	y = input[:,-1].astype(int)
 	y = y[:,np.newaxis]
 
-	W[0] = np.random.normal(0., 100., (n,layers[0]))
-	b[0] = np.random.normal(0., 100., (layers[0],1))
+	W[0] = np.random.normal(0., 3., (n,layers[0]))
+	b[0] = np.random.normal(0., 3., (layers[0],1))
 	for i in range(1, l):
-		W[i] = np.random.normal(0., 100., (layers[i-1], layers[i]))
-		b[i] = np.random.normal(0., 100., (layers[i],1))
-	b[l] = np.random.normal(0., 100., (c, 1))
-	W[l] = np.random.normal(0., 100., (layers[l-1], c))
+		W[i] = np.random.normal(0., 3., (layers[i-1], layers[i]))
+		b[i] = np.random.normal(0., 3., (layers[i],1))
+	b[l] = np.random.normal(0., 3., (c, 1))
+	W[l] = np.random.normal(0., 3., (layers[l-1], c))
 
 	index = np.arange(0,m)
 	np.random.seed(seed)
@@ -58,7 +58,6 @@ def train(file):
 		for i in range(1,l):
 			o[i] = sigmoid(W[i].T @ o[i-1] + b[i])
 
-		bb = ((W[l].T @ o[l-1]) + b[l])
 		o[l] = np.apply_along_axis(softmax, 0, ((W[l].T @ o[l-1]) + b[l]))
 		return (o[l], loss_function(o[l], y_batch))
 
@@ -124,10 +123,11 @@ def train(file):
 		# print("LOSS : ", cur_loss)
 		# break;
 		# --------- debug -------------
-		# sys.stdout.flush()
 		
+		print("iter:", iter)
+		sys.stdout.flush()
 		if(iter%50 == 0):
-			print("iter: ",iter)
+			# print("iter: ",iter)
 			(y_pred, _) = forward_pass(x, y)
 			# print(y_pred.shape, y.shape)
 			y_lb = np.argmax(y_pred, axis=0)
