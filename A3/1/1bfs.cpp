@@ -113,6 +113,26 @@ inline double entropy(int a, int b){
 
 void growNode(node *n,vi &rem_data,vi &rem_attr);
 
+class queue_node{
+	public:
+	node *n;
+	vi rem_data;
+	vi rem_attr;
+	queue_node(){}
+	queue_node(node *n, vi rem_data, vi rem_attr){
+		this->n = n;
+		this->rem_attr = rem_attr;
+		this->rem_data = rem_data;
+	}
+	queue_node(const queue_node &n){
+		this->n = n.n;
+		this->rem_attr = n.rem_attr;
+		this->rem_data = n.rem_data;
+	}
+};
+
+queue<queue_node> bfs_queue;
+
 void produce_children(node *n,vi &rem_data,vi &rem_attr){
 	double best_IG = 0.0;
 	int best_attr = 30;
@@ -158,7 +178,7 @@ void produce_children(node *n,vi &rem_data,vi &rem_attr){
 		n->child[i] = NULL;
 		if(rem_data_child[i].size() == 0) continue;
 		n->child[i] = new node();
-		growNode(n->child[i], rem_data_child[i], rem_attr_child);
+		bfs_queue.push(queue_node(n->child[i], rem_data_child[i], rem_attr_child));
 	}
 }
 
@@ -178,13 +198,22 @@ void growNode(node *n,vi &rem_data,vi &rem_attr){
 	produce_children(n,rem_data,rem_attr);
 }
 
+void keep_looping(){
+	while(!bfs_queue.empty()){
+		queue_node front = bfs_queue.front();
+		bfs_queue.pop();
+		growNode(front.n, front.rem_data, front.rem_attr);
+	}
+}
+
 void train_it(){
 	vi rem_data(train.size());
 	vi rem_attr(attr_cnt);
 	for(int i=0;i<attr_cnt;i++) rem_attr[i] = i;
 	for(int i=0;i<rem_data.size();i++) rem_data[i] = i;
 	root = new node();
-	growNode(root,rem_data,rem_attr);
+	bfs_queue.push(queue_node(root, rem_data, rem_attr));
+	keep_looping();
 }
 
 double test_it(vector<vi> &data){

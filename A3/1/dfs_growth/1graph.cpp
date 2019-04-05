@@ -138,6 +138,7 @@ void produce_children(node *n,vi &rem_data,vi &rem_attr){
 		if(best_IG < IG) best_IG = IG, best_attr = a;
 		else if(best_IG == IG && a < best_attr) best_attr = a;
 	}
+	assert(best_attr >= 0);
 
 	n->attr_index = best_attr;
 	int child_cnt = attr_range[best_attr];
@@ -162,6 +163,36 @@ void produce_children(node *n,vi &rem_data,vi &rem_attr){
 	}
 }
 
+ofstream fout_train, fout_test, fout_valid;
+
+void test_it_acc(vector<vi> &data, ofstream &fout){
+	int correct_pred;
+	correct_pred = 0;
+	
+	// trace(node_cnt);
+
+	for(auto &e : data){
+		node* n = root;
+		int pred = 0;
+		while(1){
+			// if(n->leaf == 0 && e.size() <= n->attr_index){
+			// 	trace(e.size(), n->attr_index, n->leaf, depth);
+			// }
+			assert(((n->leaf==1) || e.size() > n->attr_index));
+			if(n->leaf || n->child[e[n->attr_index]] == NULL){
+				if(n->y0 > n->y1) pred = 0;
+				else pred = 1;
+				break;
+			}
+			n = n->child[e[n->attr_index]];
+		}
+		if(pred == e[y_in]) correct_pred++;
+	}
+	fout << node_cnt << " " << 100.0 * (double)correct_pred/data.size() << '\n';
+}
+
+set<int> done;
+
 void growNode(node *n,vi &rem_data,vi &rem_attr){
 	node_cnt++;
 	// trace(node_cnt);
@@ -176,6 +207,13 @@ void growNode(node *n,vi &rem_data,vi &rem_attr){
 		return;
 	}
 	produce_children(n,rem_data,rem_attr);
+
+	if(node_cnt%40 == 0 && !done.count(node_cnt)){
+		done.insert(node_cnt);
+		test_it_acc(train, fout_train);
+		test_it_acc(test, fout_test);
+		test_it_acc(val, fout_valid);
+	}
 }
 
 void train_it(){
@@ -212,6 +250,10 @@ int main(int argc, char *argv[]){
     train = get_input(argv[1]);
     test = get_input(argv[2]);
     val = get_input(argv[3]);
+    
+    fout_valid.open("accuracy_val");
+    fout_test.open("accuracy_test");
+    fout_train.open("accuracy_train");
 
     preprocessing();
     train_it();

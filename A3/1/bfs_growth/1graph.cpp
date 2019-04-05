@@ -113,6 +113,26 @@ inline double entropy(int a, int b){
 
 void growNode(node *n,vi &rem_data,vi &rem_attr);
 
+class queue_node{
+	public:
+	node *n;
+	vi rem_data;
+	vi rem_attr;
+	queue_node(){}
+	queue_node(node *n, vi rem_data, vi rem_attr){
+		this->n = n;
+		this->rem_attr = rem_attr;
+		this->rem_data = rem_data;
+	}
+	queue_node(const queue_node &n){
+		this->n = n.n;
+		this->rem_attr = n.rem_attr;
+		this->rem_data = n.rem_data;
+	}
+};
+
+queue<queue_node> bfs_queue;
+
 void produce_children(node *n,vi &rem_data,vi &rem_attr){
 	double best_IG = 0.0;
 	int best_attr = 30;
@@ -158,9 +178,39 @@ void produce_children(node *n,vi &rem_data,vi &rem_attr){
 		n->child[i] = NULL;
 		if(rem_data_child[i].size() == 0) continue;
 		n->child[i] = new node();
-		growNode(n->child[i], rem_data_child[i], rem_attr_child);
+		bfs_queue.push(queue_node(n->child[i], rem_data_child[i], rem_attr_child));
 	}
 }
+
+ofstream fout_train, fout_test, fout_valid;
+
+void test_it_acc(vector<vi> &data, ofstream &fout){
+	int correct_pred;
+	correct_pred = 0;
+	
+	// trace(node_cnt);
+
+	for(auto &e : data){
+		node* n = root;
+		int pred = 0;
+		while(1){
+			if(n->leaf == 0 && e.size() <= n->attr_index){
+				trace(e.size(), n->attr_index, n->leaf);
+			}
+			assert(((n->leaf==1) || e.size() > n->attr_index));
+			if(n->leaf || n->child[e[n->attr_index]] == NULL || n->child[e[n->attr_index]]->y == 0){
+				if(n->y0 > n->y1) pred = 0;
+				else pred = 1;
+				break;
+			}
+			n = n->child[e[n->attr_index]];
+		}
+		if(pred == e[y_in]) correct_pred++;
+	}
+	fout << node_cnt << " " << 100.0 * (double)correct_pred/data.size() << '\n';
+}
+
+set<int> done;
 
 void growNode(node *n,vi &rem_data,vi &rem_attr){
 	node_cnt++;
@@ -176,6 +226,20 @@ void growNode(node *n,vi &rem_data,vi &rem_attr){
 		return;
 	}
 	produce_children(n,rem_data,rem_attr);
+	if(node_cnt%40 == 0 && !done.count(node_cnt)){
+		done.insert(node_cnt);
+		test_it_acc(train, fout_train);
+		test_it_acc(test, fout_test);
+		test_it_acc(val, fout_valid);
+	}
+}
+
+void keep_looping(){
+	while(!bfs_queue.empty()){
+		queue_node front = bfs_queue.front();
+		bfs_queue.pop();
+		growNode(front.n, front.rem_data, front.rem_attr);
+	}
 }
 
 void train_it(){
@@ -184,7 +248,8 @@ void train_it(){
 	for(int i=0;i<attr_cnt;i++) rem_attr[i] = i;
 	for(int i=0;i<rem_data.size();i++) rem_data[i] = i;
 	root = new node();
-	growNode(root,rem_data,rem_attr);
+	bfs_queue.push(queue_node(root, rem_data, rem_attr));
+	keep_looping();
 }
 
 double test_it(vector<vi> &data){
@@ -212,6 +277,10 @@ int main(int argc, char *argv[]){
     train = get_input(argv[1]);
     test = get_input(argv[2]);
     val = get_input(argv[3]);
+    
+    fout_valid.open("accuracy_val");
+    fout_test.open("accuracy_test");
+    fout_train.open("accuracy_train");
 
     preprocessing();
     train_it();
