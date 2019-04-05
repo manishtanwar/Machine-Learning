@@ -132,7 +132,7 @@ void produce_children(node *n,vi &rem_data,vi &rem_attr){
 			double pi = ((double)baccha_cnt)/rem_data.size();
 			IG -= pi * entropy(y_baccha[0][i], y_baccha[1][i]);
 		}
-		trace(IG, attr_range[a], a);
+		// trace(IG, attr_range[a], a);
 		// assert(IG >= 0);
 		
 		if(best_IG < IG) best_IG = IG, best_attr = a;
@@ -147,7 +147,7 @@ void produce_children(node *n,vi &rem_data,vi &rem_attr){
 	n->child = vector<node *> (child_cnt);
 	
 	vector<vi> rem_data_child(child_cnt);
-	trace(node_cnt,best_attr,rem_attr.size());
+	// trace(node_cnt,best_attr,rem_attr.size());
 	
 	for(auto i : rem_data){
 		// trace(child_cnt, train[i][best_attr],best_attr);
@@ -162,10 +162,10 @@ void produce_children(node *n,vi &rem_data,vi &rem_attr){
 	}
 }
 
+
 void growNode(node *n,vi &rem_data,vi &rem_attr){
 	node_cnt++;
-	trace(node_cnt);
-
+	// trace(node_cnt);
 	n->y = rem_data.size();
 	n->y0 = n->y1 =  0;
 	for(auto &i : rem_data){
@@ -188,6 +188,25 @@ void train_it(){
 	growNode(root,rem_data,rem_attr);
 }
 
+double test_it(vector<vi> &data){
+	int correct_pred;
+	correct_pred = 0;
+	for(auto &e : data){
+		node* n = root;
+		int pred = 0;
+		while(1){
+			if(n->leaf || n->child[e[n->attr_index]] == NULL){
+				if(n->y0 > n->y1) pred = 0;
+				else pred = 1;
+				break;
+			}
+			n = n->child[e[n->attr_index]];
+		}
+		if(pred == e[y_in]) correct_pred++;
+	}
+	return 100.0 * (double)correct_pred/data.size();
+}
+
 int main(int argc, char *argv[]){
     ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0); cout<<setprecision(5);
 
@@ -197,5 +216,9 @@ int main(int argc, char *argv[]){
 
     preprocessing();
     train_it();
-    cout<<node_cnt<<endl;
+    // cout<<node_cnt<<endl;
+
+    cout<<"train acc : "<<test_it(train)<<endl;
+    cout<<"test acc : "<<test_it(test)<<endl;
+    cout<<"valid acc : "<<test_it(val)<<endl;
 }
