@@ -16,6 +16,7 @@ template<class L, class R> ostream& operator<<(ostream &os, pair<L,R> P){return 
 #define trace(...) 1
 #endif
 #define pb push_back
+typedef vector<int> vi;
 
 class node{
 	public:
@@ -47,7 +48,41 @@ class node{
 	}
 };
 
-int main(){
+vector<vector<int>> get_input(char *argv){
+	ifstream fin;
+    fin.open(argv);
+
+	string line;
+	vector< vector<int> > mat;
+    while(getline(fin, line)){
+    	vector<int> tokens;
+		stringstream ss(line); 
+		string ele;
+		while(getline(ss, ele, ' '))
+			tokens.push_back(stoi(ele));
+		mat.push_back(tokens);
+    }
+    return mat;
+}
+
+vector< vector<int> > train, test, val;
+node *root;
+
+set<int> categorical_attr = {2,3,5,6,7,8,9,10};
+map<int,int> cat_range = {{2,7},{3,4},};
+
+void train_it(){
+	vi rem(train.size());
+	for(int i=0;i<rem.size();i++) rem[i] = i;
+
+}
+
+int main(int argc, char *argv[]){
     ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0); cout<<setprecision(25);
-    
+
+    train = get_input(argv[1]);
+    test = get_input(argv[2]);
+    val = get_input(argv[3]);
+
+    train_it();
 }
