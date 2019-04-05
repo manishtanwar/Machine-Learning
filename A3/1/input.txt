@@ -7,3 +7,5 @@ class node{
 	int attr_index;
 
 	vector<node *> child;
+
+
