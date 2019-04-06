@@ -229,10 +229,10 @@ void produce_children(node *n,vi &rem_data,vi rem_attr,int depth){
 		n->child[i] = new node();
 
 		if(is_best_cont){
-			// bool isSeparable = isContin_separabel(rem_data_child[i], best_attr);
-			// if(isSeparable) rem_attr_child.push_back(best_attr);
+			bool isSeparable = isContin_separabel(rem_data_child[i], best_attr);
+			if(isSeparable) rem_attr_child.push_back(best_attr);
 			growNode(n->child[i], rem_data_child[i], rem_attr_child, depth);
-			// if(isSeparable) rem_attr_child.pop_back();
+			if(isSeparable) rem_attr_child.pop_back();
 		}
 		else growNode(n->child[i], rem_data_child[i], rem_attr_child, depth);
 	}

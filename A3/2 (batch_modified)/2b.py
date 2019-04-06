@@ -40,6 +40,7 @@ def train(file):
 	y = input[:,-1].astype(int)
 	y = y[:,np.newaxis]
 
+	np.random.seed(seed)
 	W[0] = np.random.normal(0., 1., (n,layers[0]))
 	b[0] = np.random.normal(0., 1., (layers[0],1))
 	for i in range(1, l):
@@ -49,7 +50,6 @@ def train(file):
 	W[l] = np.random.normal(0., 1., (layers[l-1], c))
 
 	index = np.arange(0,m)
-	np.random.seed(seed)
 	np.random.shuffle(index)
 
 	def forward_pass(x_batch, y_batch):
