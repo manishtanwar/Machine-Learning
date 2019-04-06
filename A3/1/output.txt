@@ -1,6 +1,4 @@
-b.y0 : 100
-a.y0 : 100 |  b.y0 : 101
-b.child[i]->y0 : 10
-b.child[i]->y0 : 10
-a.child[i]->y0 : 2
-a.child[i]->y0 : 2
+"here : train done" : here : train done | node_cnt : 9448
+train acc : 69.767
+test acc : 66.983
+valid acc : 67.1

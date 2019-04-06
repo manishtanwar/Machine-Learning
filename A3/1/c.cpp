@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 template<class T> ostream& operator<<(ostream &os, vector<T> V){os << "[ "; for(auto v : V) os << v << " "; return os << "]";}
+template<class T> ostream& operator<<(ostream &os, set<T> V){os << "[ "; for(auto v : V) os << v << " "; return os << "]";}
 template<class L, class R> ostream& operator<<(ostream &os, pair<L,R> P){return os << "(" << P.first << "," << P.second << ")";}
 #ifndef ONLINE_JUDGE
 #define TRACE
@@ -17,6 +18,8 @@ template<class L, class R> ostream& operator<<(ostream &os, pair<L,R> P){return 
 #endif
 #define pb push_back
 typedef vector<int> vi;
+
+const double EPS = 1e-10;
 
 vector<vector<int>> get_input(char *argv){
 	ifstream fin;
@@ -135,7 +138,7 @@ double find_meadian(vi &rem_data, int attr){
 	}
 	sort(tmp.begin(), tmp.end());
 	
-	if(tmp.size() & 1){
+	if(tmp.size()%2 == 1){
 		ans = tmp[tmp.size() / 2];
 	}
 	else{
@@ -147,26 +150,24 @@ double find_meadian(vi &rem_data, int attr){
 }
 
 inline int get_binary(double meadian,int a){
-	if(a <= meadian) return 0; return 1;
+	if(((double)a) <= meadian) return 0; return 1;
 }
 
-bool isContinAttrDone(vi &rem_data_child, int a){
-	set<int> checker_set;
+bool isContin_separabel(vi &rem_data_child, int a){
+	int y[2] = {0,0};
+	double med = find_meadian(rem_data_child, a);
 	for(auto &i : rem_data_child){
-		checker_set.insert(train[i][a]);
+		y[get_binary(med,train[i][a])]++;
 	}
-	return (checker_set.size() <= 1);
+	return (y[0] * y[1] > 0);
 }
 
-void growNode(node *n,vi &rem_data,vi rem_attr);
+void growNode(node *n,vi &rem_data,vi rem_attr,int depth);
 
-void produce_children(node *n,vi &rem_data,vi &rem_attr){
-	trace(node_cnt,rem_attr,rem_data.size());
-	cout<<endl;
+void produce_children(node *n,vi &rem_data,vi &rem_attr,int depth){
 	double best_IG = 0.0;
 	int best_attr = 30;
 	double H = entropy(n->y0, n->y1);
-	trace(node_cnt,rem_attr);
 	
 	for(auto a : rem_attr){
 		double IG = H;
@@ -192,11 +193,12 @@ void produce_children(node *n,vi &rem_data,vi &rem_attr){
 		// assert(IG >= 0);
 		
 		if(best_IG < IG) best_IG = IG, best_attr = a;
-		else if(best_IG == IG && a < best_attr) best_attr = a;
+		else if((abs(best_IG-IG) < EPS) && a < best_attr) best_attr = a;
 	}
-	trace(node_cnt,"best attr chosen");
 
 	n->attr_index = best_attr;
+	bool is_best_cont = cont_attr.count(best_attr);
+
 	int child_cnt = attr_range[best_attr];
 	vi rem_attr_child;
 	
@@ -205,9 +207,10 @@ void produce_children(node *n,vi &rem_data,vi &rem_attr){
 	
 	for(auto a : rem_attr) if(a != best_attr) rem_attr_child.push_back(a);	
 
-	if(cont_attr.count(best_attr)){
+	if(is_best_cont){
 		n->is_continuous_split = 1;
-		n->meadian_split = find_meadian(rem_data,best_attr);
+		n->meadian_split = find_meadian(rem_data, best_attr);
+
 		for(auto i : rem_data){
 			rem_data_child[get_binary(n->meadian_split, train[i][best_attr])].push_back(i);
 		}
@@ -217,24 +220,24 @@ void produce_children(node *n,vi &rem_data,vi &rem_attr){
 			rem_data_child[train[i][best_attr]].push_back(i);
 		}
 	}
-	trace(node_cnt);
 
 	for(int i=0;i<attr_range[best_attr];i++){
 		n->child[i] = NULL;
 		if(rem_data_child[i].size() == 0) continue;
 		n->child[i] = new node();
-		
-		bool isAttrDone = isContinAttrDone(rem_data_child[i], best_attr);
 
-		if(!isAttrDone) rem_attr_child.push_back(best_attr);
-		growNode(n->child[i], rem_data_child[i], rem_attr_child);
-		if(!isAttrDone) rem_attr_child.pop_back();
+		if(is_best_cont){
+			bool isSeparable = isContin_separabel(rem_data_child[i], best_attr);
+			if(isSeparable) rem_attr_child.push_back(best_attr);
+			growNode(n->child[i], rem_data_child[i], rem_attr_child, depth);
+			if(isSeparable) rem_attr_child.pop_back();
+		}
+		else growNode(n->child[i], rem_data_child[i], rem_attr_child, depth);
 	}
 }
 
-void growNode(node *n,vi &rem_data,vi rem_attr){
+void growNode(node *n,vi &rem_data,vi rem_attr,int depth){
 	node_cnt++;
-	trace(node_cnt);
 	n->y = rem_data.size();
 	n->y0 = n->y1 =  0;
 	for(auto &i : rem_data){
@@ -245,9 +248,8 @@ void growNode(node *n,vi &rem_data,vi rem_attr){
 		n->leaf = 1;
 		return;
 	}
-	trace(node_cnt,n,rem_data.size(),rem_attr.size());
 
-	produce_children(n,rem_data,rem_attr);
+	produce_children(n,rem_data,rem_attr,depth+1);
 }
 
 void train_it(){
@@ -256,7 +258,7 @@ void train_it(){
 	for(int i=0;i<attr_cnt;i++) rem_attr[i] = i;
 	for(int i=0;i<rem_data.size();i++) rem_data[i] = i;
 	root = new node();
-	growNode(root,rem_data,rem_attr);
+	growNode(root,rem_data,rem_attr,0);
 }
 
 double test_it(vector<vi> &data){
@@ -266,13 +268,18 @@ double test_it(vector<vi> &data){
 		node* n = root;
 		int pred = 0;
 		while(1){
-			if(n->leaf || n->child[e[n->attr_index]] == NULL){
+			// trace(dd, n->attr_index, n->leaf);
+			node *baccha;
+			if(n->leaf == 0){
+				if(cont_attr.count(n->attr_index)) baccha = n->child[get_binary(n->meadian_split, n->attr_index)];
+				else baccha = n->child[e[n->attr_index]];
+			}
+			if(n->leaf || baccha == NULL){
 				if(n->y0 > n->y1) pred = 0;
 				else pred = 1;
 				break;
 			}
-			if(cont_attr.count(n->attr_index)) n = n->child[get_binary(n->meadian_split, n->attr_index)];
-			else n = n->child[e[n->attr_index]];
+			n = baccha;
 		}
 		if(pred == e[y_in]) correct_pred++;
 	}
@@ -291,6 +298,8 @@ int main(int argc, char *argv[]){
     trace("here : train done",node_cnt);
 
     cout<<"train acc : "<<test_it(train)<<endl;
+    // trace("here : train done",node_cnt);
     cout<<"test acc : "<<test_it(test)<<endl;
+    // trace("here : train done",node_cnt);
     cout<<"valid acc : "<<test_it(val)<<endl;
 }

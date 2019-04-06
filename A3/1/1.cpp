@@ -215,6 +215,7 @@ int main(int argc, char *argv[]){
 
     preprocessing();
     train_it();
+    // trace(root->attr_index);
     // cout<<node_cnt<<endl;
 
     cout<<"train acc : "<<test_it(train)<<endl;
