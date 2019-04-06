@@ -1,7 +1,0 @@
-10
-
-b = size of batch of SGD
-m = the number of inputs
-//n = dimension
-list = [12,13] => list of hidden layers list
-c = the number of classes(output)
