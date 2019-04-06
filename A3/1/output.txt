@@ -1,4 +1,4 @@
-"here : train done" : here : train done | node_cnt : 9448
-train acc : 69.767
-test acc : 66.983
-valid acc : 67.1
+"train done" : train done |  node_cnt : 10600 |  max_depth : 23 |  misclassified : 144 |  train.size() : 18000
+train acc : 99.2
+test acc : 71.667
+valid acc : 72.833

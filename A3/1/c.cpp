@@ -116,6 +116,7 @@ void preprocessing(){
 
 node *root;
 int node_cnt = 0;
+int max_depth = 0;
 int attr_cnt = 23;
 int y_in = 23;
 
@@ -149,8 +150,10 @@ double find_meadian(vi &rem_data, int attr){
 	return ans;
 }
 
-inline int get_binary(double meadian,int a){
-	if(((double)a) <= meadian) return 0; return 1;
+inline int get_binary(double median,int a){
+	double ad = a;
+	if(ad < median || abs(ad-median) < EPS) return 0; 
+	return 1;
 }
 
 bool isContin_separabel(vi &rem_data_child, int a){
@@ -164,7 +167,7 @@ bool isContin_separabel(vi &rem_data_child, int a){
 
 void growNode(node *n,vi &rem_data,vi rem_attr,int depth);
 
-void produce_children(node *n,vi &rem_data,vi &rem_attr,int depth){
+void produce_children(node *n,vi &rem_data,vi rem_attr,int depth){
 	double best_IG = 0.0;
 	int best_attr = 30;
 	double H = entropy(n->y0, n->y1);
@@ -184,7 +187,6 @@ void produce_children(node *n,vi &rem_data,vi &rem_attr,int depth){
 
 		for(int i=0;i<attr_range[a];i++){
 			int baccha_cnt = y_baccha[0][i] + y_baccha[1][i];
-			// trace(baccha_cnt);
 			if(baccha_cnt == 0) continue;
 			double pi = ((double)baccha_cnt)/rem_data.size();
 			IG -= pi * entropy(y_baccha[0][i], y_baccha[1][i]);
@@ -202,7 +204,7 @@ void produce_children(node *n,vi &rem_data,vi &rem_attr,int depth){
 	int child_cnt = attr_range[best_attr];
 	vi rem_attr_child;
 	
-	n->child = vector<node *> (child_cnt);
+	n->child = vector<node *> (child_cnt, NULL);
 	vector<vi> rem_data_child(child_cnt);
 	
 	for(auto a : rem_attr) if(a != best_attr) rem_attr_child.push_back(a);	
@@ -221,23 +223,27 @@ void produce_children(node *n,vi &rem_data,vi &rem_attr,int depth){
 		}
 	}
 
-	for(int i=0;i<attr_range[best_attr];i++){
+	for(int i=0;i<child_cnt;i++){
 		n->child[i] = NULL;
 		if(rem_data_child[i].size() == 0) continue;
 		n->child[i] = new node();
 
 		if(is_best_cont){
-			bool isSeparable = isContin_separabel(rem_data_child[i], best_attr);
-			if(isSeparable) rem_attr_child.push_back(best_attr);
+			// bool isSeparable = isContin_separabel(rem_data_child[i], best_attr);
+			// if(isSeparable) rem_attr_child.push_back(best_attr);
 			growNode(n->child[i], rem_data_child[i], rem_attr_child, depth);
-			if(isSeparable) rem_attr_child.pop_back();
+			// if(isSeparable) rem_attr_child.pop_back();
 		}
 		else growNode(n->child[i], rem_data_child[i], rem_attr_child, depth);
 	}
 }
 
+int misclassified = 0;
+
 void growNode(node *n,vi &rem_data,vi rem_attr,int depth){
 	node_cnt++;
+	max_depth = max(max_depth, depth);
+
 	n->y = rem_data.size();
 	n->y0 = n->y1 =  0;
 	for(auto &i : rem_data){
@@ -246,6 +252,13 @@ void growNode(node *n,vi &rem_data,vi rem_attr,int depth){
 	}
 	if(n->y0 == 0 || n->y1 == 0 || rem_attr.size() == 0){
 		n->leaf = 1;
+		// -------------- debug ------------------
+		misclassified += min(n->y0, n->y1);
+		// if(rem_attr.size() == 0){
+		// 	if(n->y0 > n->y1) misclassified += n->y1;
+		// 	else misclassified += n->y0;
+		// }
+		// ---------------------------------------
 		return;
 	}
 
@@ -271,7 +284,7 @@ double test_it(vector<vi> &data){
 			// trace(dd, n->attr_index, n->leaf);
 			node *baccha;
 			if(n->leaf == 0){
-				if(cont_attr.count(n->attr_index)) baccha = n->child[get_binary(n->meadian_split, n->attr_index)];
+				if(n->is_continuous_split) baccha = n->child[get_binary(n->meadian_split, e[n->attr_index])];
 				else baccha = n->child[e[n->attr_index]];
 			}
 			if(n->leaf || baccha == NULL){
@@ -294,12 +307,11 @@ int main(int argc, char *argv[]){
     val = get_input(argv[3]);
 
     preprocessing();
+
     train_it();
-    trace("here : train done",node_cnt);
+    trace("train done", node_cnt, max_depth, misclassified, train.size());
 
     cout<<"train acc : "<<test_it(train)<<endl;
-    // trace("here : train done",node_cnt);
     cout<<"test acc : "<<test_it(test)<<endl;
-    // trace("here : train done",node_cnt);
     cout<<"valid acc : "<<test_it(val)<<endl;
 }
