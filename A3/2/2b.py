@@ -35,16 +35,16 @@ def softmax(x):
 	yy = np.exp(x - np.max(x, axis=0, keepdims = True))
 	return yy / np.sum(yy, axis = 0, keepdims = True)
 
-def sigmoid1(x):
-	return 1 / (1 + np.exp(-x))
+# def sigmoid1(x):
+# 	return 1 / (1 + np.exp(-x))
 
-def softmax_old(x):
-	y = np.exp(x - np.max(x))
-	return y / np.sum(y)
+# def softmax_old(x):
+# 	y = np.exp(x - np.max(x))
+# 	return y / np.sum(y)
 
-def softmax1(x):
-	y = np.exp(x - np.amax(x,axis=0))
-	return y / np.sum(y,axis=0)
+# def softmax1(x):
+# 	y = np.exp(x - np.amax(x,axis=0))
+# 	return y / np.sum(y,axis=0)
 
 def loss_function(y_pred, y_true):
 	log = -np.log(y_pred[y_true[:,0], range(y_pred.shape[1])] + (1e-10))
