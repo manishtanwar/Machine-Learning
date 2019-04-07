@@ -1,1 +1,0 @@
-python3 2b.py Dataset/poker-hand-training-true.data.txt Dataset/poker-hand-testing.data.txt > out.txt

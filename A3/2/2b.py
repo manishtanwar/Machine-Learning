@@ -5,7 +5,8 @@ import time
 
 global_start_time = time.time()
 
-# np.random.seed(0)
+np.random.seed(0)
+
 np.set_printoptions(threshold=sys.maxsize)
 np.set_printoptions(precision = 4, suppress = True)
 
@@ -13,7 +14,7 @@ train_file = sys.argv[1]
 test_file = sys.argv[2]
 
 c = 10
-layers = [150]
+layers = [100,50]
 batch_size = 100
 rate = 0.1
 
@@ -28,13 +29,20 @@ P = {}
 seed = 0
 
 def sigmoid(x):
+	return np.where(x >= 0, 1 / (1 + np.exp(-x)), np.exp(x) / (1+np.exp(x)))
+
+def softmax(x):
+	yy = np.exp(x - np.max(x, axis=0, keepdims = True))
+	return yy / np.sum(yy, axis = 0, keepdims = True)
+
+def sigmoid1(x):
 	return 1 / (1 + np.exp(-x))
 
 def softmax_old(x):
 	y = np.exp(x - np.max(x))
 	return y / np.sum(y)
 
-def softmax(x):
+def softmax1(x):
 	y = np.exp(x - np.amax(x,axis=0))
 	return y / np.sum(y,axis=0)
 
@@ -66,11 +74,11 @@ def train(file):
 	for i in range(1, l):
 		W[i] = np.random.normal(0., 1., (layers[i-1], layers[i]))
 		b[i] = np.random.normal(0., 1., (layers[i],1))
-	b[l] = np.random.normal(0., 1., (c, 1))
 	W[l] = np.random.normal(0., 1., (layers[l-1], c))
+	b[l] = np.random.normal(0., 1., (c, 1))
 
 	index = np.arange(0,m)
-	np.random.shuffle(index)
+	# np.random.shuffle(index)
 
 	def forward_pass(x_batch, y_batch):
 		o[0] = sigmoid(np.matmul(W[0].T, x_batch.T) + b[0])
@@ -97,6 +105,7 @@ def train(file):
 				assert(P[i].shape == (layers[i],m_batch))
 			# --------------------------------
 
+		m_batch = 1
 		for i in range(l,0,-1):
 			W[i] = W[i] - (rate / m_batch) * np.matmul(o[i-1], (P[i].T))
 			tmp = np.ones((1,P[i].shape[1]))
@@ -108,11 +117,14 @@ def train(file):
 
 	end_time_init = time.time()
 
-	# print(y)
+	# print(W)
+	# print(b)
+
 	iter = 0
 	while(True):
-		if(iter == 500):
+		if(iter == 501):
 			break;
+		np.random.shuffle(index)
 		# print("iter :",iter)
 		prev_loss = 0.
 		cur_loss = 0.
@@ -156,35 +168,35 @@ def train(file):
 		# --------- debug -------------
 		# sys.stdout.flush()
 		
-		# if(iter%50 == 0):
-		# 	if(iter==0):
-		# 		print("True Prediction")
-		# 		count = np.zeros(c, dtype=int)
-		# 		for i in range(y.shape[0]):
-		# 			count[y[i][0]] += 1
-		# 		print(count)
-		# 	print("iter: ",iter,'\n')
-		# 	(y_pred, _) = forward_pass(x, y)
-		# 	# print(y_pred.shape, y.shape)
-		# 	y_lb = np.argmax(y_pred, axis=0)
-		# 	count = np.zeros(c, dtype=int)
-		# 	for i in range(y_lb.shape[0]):
-		# 		count[y_lb[i]] += 1
-		# 	print(count)
-		# 	y1 = y[:,0]
-		# 	# print(y_lb.shape, y1.shape)
+		if(iter%50 == 0):
+			if(iter==0):
+				print("True Prediction")
+				count = np.zeros(c, dtype=int)
+				for i in range(y.shape[0]):
+					count[y[i][0]] += 1
+				print(count)
+			print("iter: ",iter,'\n')
+			(y_pred, _) = forward_pass(x, y)
+			# print(y_pred.shape, y.shape)
+			y_lb = np.argmax(y_pred, axis=0)
+			count = np.zeros(c, dtype=int)
+			for i in range(y_lb.shape[0]):
+				count[y_lb[i]] += 1
+			print(count)
+			y1 = y[:,0]
+			# print(y_lb.shape, y1.shape)
 
-		# 	print("Loss : ", loss_function(y_pred, y))
-		# 	print(np.sum(y1 == y_lb))
-		# 	print("Train Accuracy:", 100.0 * (np.sum(y1 == y_lb)/y1.shape[0]))
+			print("Loss : ", loss_function(y_pred, y))
+			print(np.sum(y1 == y_lb))
+			print("Train Accuracy:", 100.0 * (np.sum(y1 == y_lb)/y1.shape[0]))
 
-		# 	(y_predt, _) = forward_pass(xt, yt)
-		# 	# print(y_pred.shape, y.shape)
-		# 	y_lbt = np.argmax(y_predt, axis=0)
-		# 	y1t = yt[:,0]
-		# 	print("Test Accuracy:", 100.0 * (np.sum(y1t == y_lbt)/y1t.shape[0]))
+			(y_predt, _) = forward_pass(xt, yt)
+			# print(y_pred.shape, y.shape)
+			y_lbt = np.argmax(y_predt, axis=0)
+			y1t = yt[:,0]
+			print("Test Accuracy:", 100.0 * (np.sum(y1t == y_lbt)/y1t.shape[0]))
 
-		# 	sys.stdout.flush()
+			sys.stdout.flush()
 
 		# print(W,b,o)
 		# print(y_pred)
