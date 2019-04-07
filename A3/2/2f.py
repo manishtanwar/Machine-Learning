@@ -4,7 +4,6 @@ import inspect, re
 import time
 
 global_start_time = time.time()
-
 np.random.seed(0)
 
 np.set_printoptions(threshold=sys.maxsize)
@@ -14,9 +13,9 @@ train_file = sys.argv[1]
 test_file = sys.argv[2]
 
 c = 10
-layers = [150]
+layers = [100, 50]
 batch_size = 100
-rate = 0.1
+rate = 0.5
 
 EPS = 1e-5
 m = 0
