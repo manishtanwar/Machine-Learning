@@ -2,6 +2,14 @@
 10
 100
 2
+100 50
+sigmoid
+fixed
+
+85
+10
+100
+2
 40 40
 relu
 fixed

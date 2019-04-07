@@ -29,15 +29,16 @@ layers = [int(x) for x in config_lines[4].split()]
 activation_fn = config_lines[5].split()[0]
 Learning_Rate_type = config_lines[6].split()[0]
 
-print(n, c, batch_size, l, layers, activation_fn, Learning_Rate_type)
+# print(n, c, batch_size, l, layers, activation_fn, Learning_Rate_type)
 
 rate = 0.1
+Tolerance = 1e-4
+
 state = "DEBUG"
 # state = "NOT_DEBUG"
 
-EPS = 1e-5
+EPS = 1e-7
 m = 0
-n = 0
 
 W = {}
 o = {}
@@ -85,6 +86,7 @@ y_test = test_input[:,-1].astype(int)
 y_test = y_test[:,np.newaxis]
 
 def train(file):
+	global rate
 	input = np.load(file)
 	x = input[:,:-1].astype(float)
 	(m, n) = x.shape
@@ -126,6 +128,8 @@ def train(file):
 	prev_loss = 0.
 	global_prev_loss = 0.
 	global_cur_loss = 0.
+	failed_decreasing_cnt = int(0)
+
 	while(True):
 		# if(iter == 1000):
 		# 	break;
@@ -180,10 +184,24 @@ def train(file):
 			print("prev_loss:",global_prev_loss)
 			print("loss difference:", abs(global_cur_loss-global_prev_loss))
 			break;
-		global_prev_loss = global_cur_loss
+
+		if(Learning_Rate_type == 'variable'):
+			if(global_prev_loss - global_cur_loss < Tolerance):
+				failed_decreasing_cnt += 1
+				if(failed_decreasing_cnt == 2):
+					rate /= 5
+					failed_decreasing_cnt = 0
+			else:
+				failed_decreasing_cnt = 0
 		
+		global_prev_loss = global_cur_loss
 		prev_loss = cur_loss
 		iter += 1
+
+	# Training Data
+	(y_pred_train,_) = forward_pass(x, y)
+	y_lb_train = np.argmax(y_pred_train, axis=0)
+	print("Train Accuracy:", 100.0 * (np.sum(y[:,0] == y_lb_train)/y_lb_train.shape[0]))
 
 train_start_time = time.time()
 train(train_file)
@@ -191,11 +209,10 @@ global_end_time = time.time()
 
 print("Training Time:", global_end_time - train_start_time)
 
+# Testing Data
 (y_pred_test, _) = forward_pass(x_test, y_test)
 y_lb_test = np.argmax(y_pred_test, axis=0)
-# print(y_lb_test.shape, y_test.shape)
-
 confusion_mat = sklearn.metrics.confusion_matrix(y_test[:,0], y_lb_test)
+print("Test Accuracy:", 100.0 * (np.sum(y_test[:,0] == y_lb_test)/y_lb_test.shape[0]))
 print("Confusion Matrix:")
 print(confusion_mat)
-print("Test Accuracy:", 100.0 * (np.sum(y_test[:,0] == y_lb_test)/y_lb_test.shape[0]))
