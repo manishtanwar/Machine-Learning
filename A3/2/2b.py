@@ -13,20 +13,32 @@ np.set_printoptions(precision = 4, suppress = True)
 train_file = sys.argv[1]
 test_file = sys.argv[2]
 
-c = 10
-layers = [100, 50]
-batch_size = 100
-rate = 0.15
-activation_fn = 'relu'
-# activation_fn = 'sigmoid'
+if(train_file[-4:] != '.npy'):
+	train_file += '.npy'
+if(test_file[-4:] != '.npy'):
+	test_file += '.npy'
 
+config_file = open(sys.argv[3],"r")
+config_lines = config_file.readlines()
+
+n = int(config_lines[0])
+c = int(config_lines[1])
+batch_size = int(config_lines[2])
+l = int(config_lines[3])
+layers = [int(x) for x in config_lines[4].split()]   
+activation_fn = config_lines[5].split()[0]
+Learning_Rate_type = config_lines[6].split()[0]
+
+print(n, c, batch_size, l, layers, activation_fn, Learning_Rate_type)
+
+rate = 0.1
 state = "DEBUG"
 # state = "NOT_DEBUG"
 
 EPS = 1e-5
 m = 0
 n = 0
-l = len(layers)
+
 W = {}
 o = {}
 b = {}
@@ -67,7 +79,7 @@ def forward_pass(x_batch, y_batch):
 	o[l] = softmax(np.matmul(W[l].T, o[l-1]) + b[l])
 	return (o[l], loss_function(o[l], y_batch))
 
-test_input = np.load("test.npy")
+test_input = np.load(test_file)
 x_test = test_input[:,:-1].astype(float)
 y_test = test_input[:,-1].astype(int)
 y_test = y_test[:,np.newaxis]
@@ -111,13 +123,16 @@ def train(file):
 		b[0] = b[0] - (rate / m_batch) * ((np.matmul(tmp, P[0].T)).T)
 
 	iter = 0
+	prev_loss = 0.
+	global_prev_loss = 0.
+	global_cur_loss = 0.
 	while(True):
-		if(iter == 1000):
-			break;
+		# if(iter == 1000):
+		# 	break;
 		np.random.shuffle(index)
 		# print("iter :",iter)
-		prev_loss = 0.
 		cur_loss = 0.
+		
 		for batch_i in range(0, (m+batch_size-1)//batch_size):
 			start = batch_i*batch_size
 			end = (batch_i+1)*batch_size
@@ -132,11 +147,17 @@ def train(file):
 			
 			back_propagate(x_batch, y_batch)
 
+		(y_pred_train, global_cur_loss) = forward_pass(x, y)
+		
+		
 		if(iter%50 == 0):
-			print("iteration no:",iter)
 			if(state == 'DEBUG'):
+				print("iteration no:", iter)
+				# print("loss:", cur_loss)
+				# print("loss difference:", abs(cur_loss-prev_loss))
+				print("loss:", global_cur_loss)
+				print("loss difference:", abs(global_cur_loss - global_prev_loss))
 				# Train Data
-				(y_pred_train, _) = forward_pass(x, y)
 				y_lb_train = np.argmax(y_pred_train, axis=0)
 				print("Train Accuracy:", 100.0 * (np.sum(y[:,0] == y_lb_train)/y_lb_train.shape[0]))
 
@@ -146,15 +167,26 @@ def train(file):
 				print("Test Accuracy:", 100.0 * (np.sum(y_test[:,0] == y_lb_test)/y_lb_test.shape[0]))
 				print()
 			sys.stdout.flush()
-		if(abs(cur_loss-prev_loss) < EPS):
-			# print("converged")
+		# if(abs(cur_loss-prev_loss) < EPS):
+		# 	print("converged")
+		# 	print("cur_loss:",cur_loss)
+		# 	print("prev_loss:",prev_loss)
+		# 	print("loss difference:", abs(cur_loss-prev_loss))
+		# 	break;
+
+		if(abs(global_cur_loss-global_prev_loss) < EPS):
+			print("converged")
+			print("cur_loss:",global_cur_loss)
+			print("prev_loss:",global_prev_loss)
+			print("loss difference:", abs(global_cur_loss-global_prev_loss))
 			break;
-		# print(abs(cur_loss-prev_loss))
+		global_prev_loss = global_cur_loss
+		
 		prev_loss = cur_loss
 		iter += 1
 
 train_start_time = time.time()
-train("train_big.npy")
+train(train_file)
 global_end_time = time.time()
 
 print("Training Time:", global_end_time - train_start_time)

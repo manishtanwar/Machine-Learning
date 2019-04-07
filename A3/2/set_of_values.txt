@@ -1,0 +1,4 @@
+acti rate 	layers		epoches
+	
+relu 0.15   [100,50]	1000-1200
+relu 0.1    [150] 		500
