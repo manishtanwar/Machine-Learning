@@ -5,7 +5,7 @@ import time
 import sklearn.metrics
 
 global_start_time = time.time()
-np.random.seed(0)
+# np.random.seed(0)
 
 np.set_printoptions(threshold=sys.maxsize)
 np.set_printoptions(precision = 4, suppress = True)
@@ -114,7 +114,7 @@ def train(file):
 		for i in range(l-1, -1, -1):
 			P[i] = np.multiply(np.matmul(W[i+1], P[i+1]), (gradient(o[i])))
 
-		# m_batch = 1
+		m_batch = 1
 		for i in range(l,0,-1):
 			W[i] = W[i] - (rate / m_batch) * np.matmul(o[i-1], (P[i].T))
 			tmp = np.ones((1,P[i].shape[1]))
@@ -131,10 +131,11 @@ def train(file):
 	failed_decreasing_cnt = int(0)
 
 	while(True):
-		# if(iter == 1000):
-		# 	break;
+		if(iter == 1000):
+			break;
 		np.random.shuffle(index)
 		# print("iter :",iter)
+
 		cur_loss = 0.
 		
 		for batch_i in range(0, (m+batch_size-1)//batch_size):
@@ -152,7 +153,8 @@ def train(file):
 			back_propagate(x_batch, y_batch)
 
 		(y_pred_train, global_cur_loss) = forward_pass(x, y)
-		
+		# y_lb_train = np.argmax(y_pred_train, axis=0)
+		# print("Train Accuracy:", 100.0 * (np.sum(y[:,0] == y_lb_train)/y_lb_train.shape[0]))
 		
 		if(iter%50 == 0):
 			if(state == 'DEBUG'):
@@ -177,6 +179,7 @@ def train(file):
 		# 	print("prev_loss:",prev_loss)
 		# 	print("loss difference:", abs(cur_loss-prev_loss))
 		# 	break;
+		# print("Losses -> prev:",global_prev_loss,"cur:",global_cur_loss)
 
 		if(abs(global_cur_loss-global_prev_loss) < EPS):
 			print("converged")

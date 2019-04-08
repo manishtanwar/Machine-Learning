@@ -1,0 +1,134 @@
+iteration no: 0
+loss: 2.082436809509013
+loss difference: 2.082436809509013
+Train Accuracy: 49.95201919232307
+Test Accuracy: 50.1209
+
+iteration no: 50
+loss: 1.6035168657663528
+loss difference: 0.2614388823662601
+Train Accuracy: 57.35705717712914
+Test Accuracy: 57.5045
+
+iteration no: 100
+loss: 0.4143725042233735
+loss difference: 0.09089936294901718
+Train Accuracy: 84.07437025189924
+Test Accuracy: 83.23570000000001
+
+iteration no: 150
+loss: 0.40297482082662944
+loss difference: 0.005103066862128025
+Train Accuracy: 85.67373050779689
+Test Accuracy: 84.9615
+
+iteration no: 200
+loss: 0.33871321250592024
+loss difference: 0.00892396356584374
+Train Accuracy: 88.12075169932028
+Test Accuracy: 87.4685
+
+iteration no: 250
+loss: 0.33013374502089105
+loss difference: 0.01856796133890687
+Train Accuracy: 88.54058376649341
+Test Accuracy: 87.508
+
+iteration no: 300
+loss: 0.3318147561348286
+loss difference: 0.001810445283967399
+Train Accuracy: 88.89644142343063
+Test Accuracy: 88.0056
+
+iteration no: 350
+loss: 0.30258164324189735
+loss difference: 0.006404283139176903
+Train Accuracy: 90.07596961215513
+Test Accuracy: 88.8068
+
+iteration no: 400
+loss: 0.29610246394181683
+loss difference: 0.01974743835674664
+Train Accuracy: 90.30387844862055
+Test Accuracy: 89.3591
+
+iteration no: 450
+loss: 0.28894143221713575
+loss difference: 0.002996388980947118
+Train Accuracy: 90.56377449020391
+Test Accuracy: 89.456
+
+iteration no: 500
+loss: 0.3031132454496163
+loss difference: 0.019594921426975387
+Train Accuracy: 90.04398240703718
+Test Accuracy: 88.8753
+
+iteration no: 550
+loss: 0.2795437414903188
+loss difference: 0.0218970506895777
+Train Accuracy: 90.77169132347062
+Test Accuracy: 89.6109
+
+iteration no: 600
+loss: 0.28273035912844385
+loss difference: 0.0031833210531506673
+Train Accuracy: 90.69972011195522
+Test Accuracy: 89.66969999999999
+
+iteration no: 650
+loss: 0.28056721692623615
+loss difference: 0.0020135524462944754
+Train Accuracy: 90.68372650939625
+Test Accuracy: 89.6592
+
+iteration no: 700
+loss: 0.28648264805431106
+loss difference: 0.005875517184558254
+Train Accuracy: 90.56377449020391
+Test Accuracy: 89.51050000000001
+
+iteration no: 750
+loss: 0.2978152481062123
+loss difference: 0.012379759080583641
+Train Accuracy: 90.59176329468212
+Test Accuracy: 89.4318
+
+iteration no: 800
+loss: 0.2880233456757051
+loss difference: 0.007205700403698889
+Train Accuracy: 90.7796881247501
+Test Accuracy: 89.499
+
+iteration no: 850
+loss: 0.28539473383544134
+loss difference: 0.004980551339975159
+Train Accuracy: 90.83966413434626
+Test Accuracy: 89.56530000000001
+
+iteration no: 900
+loss: 0.28001753746285774
+loss difference: 0.002111493323402047
+Train Accuracy: 90.7796881247501
+Test Accuracy: 89.5349
+
+iteration no: 950
+loss: 0.27898767830334764
+loss difference: 0.006410792024432788
+Train Accuracy: 90.86365453818472
+Test Accuracy: 89.63449999999999
+
+Train Accuracy: 90.62375049980008
+Training Time: 239.3553535938263
+Test Accuracy: 89.3886
+Confusion Matrix:
+[[473123  28084      2      0      0      0      0      0      0      0]
+ [ 27618 382857   8664   3359      0      0      0      0      0      0]
+ [   590  12256  34275    476      0      0     25      0      0      0]
+ [   922  14771   1839   3589      0      0      0      0      0      0]
+ [  3885      0      0      0      0      0      0      0      0      0]
+ [  1871    125      0      0      0      0      0      0      0      0]
+ [    12    299    987     84      0      0     42      0      0      0]
+ [     7    177      6     40      0      0      0      0      0      0]
+ [    12      0      0      0      0      0      0      0      0      0]
+ [     3      0      0      0      0      0      0      0      0      0]]

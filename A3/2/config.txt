@@ -2,9 +2,9 @@
 10
 100
 2
-100 50
+25 25
 sigmoid
-fixed
+variable
 
 85
 10

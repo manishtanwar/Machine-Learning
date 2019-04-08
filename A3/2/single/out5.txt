@@ -1,0 +1,114 @@
+iteration no: 0
+loss: 2.8414413673961554
+loss difference: 2.8414413673961554
+Train Accuracy: 49.95201919232307
+
+iteration no: 50
+loss: 1.4238641788786213
+loss difference: 0.24674364735996823
+Train Accuracy: 58.42862854858056
+
+iteration no: 100
+loss: 1.117582514872622
+loss difference: 0.5446945939503216
+Train Accuracy: 55.085965613754496
+
+iteration no: 150
+loss: 1.5465472665386104
+loss difference: 0.39680462508546066
+Train Accuracy: 55.533786485405834
+
+iteration no: 200
+loss: 1.0881483894296102
+loss difference: 0.03881963102414665
+Train Accuracy: 56.649340263894445
+
+iteration no: 250
+loss: 1.6098395348518892
+loss difference: 0.07094224805337834
+Train Accuracy: 58.63654538184726
+
+iteration no: 300
+loss: 2.4095426468841095
+loss difference: 0.7924278609207835
+Train Accuracy: 51.47940823670532
+
+iteration no: 350
+loss: 0.950938268549892
+loss difference: 0.4796599632182693
+Train Accuracy: 57.28108756497401
+
+iteration no: 400
+loss: 1.0241362353801178
+loss difference: 0.5005444974100361
+Train Accuracy: 58.68852459016394
+
+iteration no: 450
+loss: 0.9027995791016005
+loss difference: 1.1038320515187818
+Train Accuracy: 57.05317872850859
+
+iteration no: 500
+loss: 1.6371173541863386
+loss difference: 0.6393945304534436
+Train Accuracy: 58.39664134346262
+
+iteration no: 550
+loss: 0.9252530507724369
+loss difference: 0.6635556995019994
+Train Accuracy: 57.37305077968813
+
+iteration no: 600
+loss: 1.4062322396798834
+loss difference: 0.17691951558733532
+Train Accuracy: 58.692522990803674
+
+iteration no: 650
+loss: 1.367555849549073
+loss difference: 0.3161123094208034
+Train Accuracy: 58.59656137544982
+
+iteration no: 700
+loss: 1.8442111825694452
+loss difference: 0.38729199651581814
+Train Accuracy: 54.95801679328268
+
+iteration no: 750
+loss: 1.8782076000713543
+loss difference: 0.7864979743996277
+Train Accuracy: 58.70051979208317
+
+iteration no: 800
+loss: 1.082447147936462
+loss difference: 0.1256393909679534
+Train Accuracy: 58.68852459016394
+
+iteration no: 850
+loss: 1.7507335412983775
+loss difference: 0.22844570773470774
+Train Accuracy: 57.29708116753298
+
+iteration no: 900
+loss: 1.269172189419631
+loss difference: 0.300195724736665
+Train Accuracy: 58.692522990803674
+
+iteration no: 950
+loss: 1.3108217418034265
+loss difference: 0.3589331424096398
+Train Accuracy: 58.68452618952419
+
+Train Accuracy: 57.24510195921631
+Training Time: 107.24120569229126
+Test Accuracy: 52.3824
+Confusion Matrix:
+[[154928 346281      0      0      0      0      0      0      0      0]
+ [ 53602 368896      0      0      0      0      0      0      0      0]
+ [  1729  45893      0      0      0      0      0      0      0      0]
+ [  1362  19759      0      0      0      0      0      0      0      0]
+ [   763   3122      0      0      0      0      0      0      0      0]
+ [   781   1215      0      0      0      0      0      0      0      0]
+ [    15   1409      0      0      0      0      0      0      0      0]
+ [     0    230      0      0      0      0      0      0      0      0]
+ [     3      9      0      0      0      0      0      0      0      0]
+ [     0      3      0      0      0      0      0      0      0      0]]
