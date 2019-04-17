@@ -229,7 +229,7 @@ void prune_it(){
 	dfs_init(root);
 	double val_acc_prev = test_it(val);
 	while(1){
-		trace(val_acc_prev);
+		trace(val_acc_prev, node_cnt);
 		double best_val_acc_prune = 0;
 		int parent_child_index = -1;
 		node *best_leaf_to_prune;
@@ -254,7 +254,8 @@ void prune_it(){
 			}
 		}
 
-		if(best_val_acc_prune >= val_acc_prev || abs(best_val_acc_prune-val_acc_prev) < EPS){
+			// if(best_val_acc_prune >= val_acc_prev || abs(best_val_acc_prune-val_acc_prev) < EPS){
+		if(best_val_acc_prune >= val_acc_prev){
 			val_acc_prev = best_val_acc_prune;
 			auto z = best_leaf_to_prune;
 			z->parent->child[parent_child_index] = NULL;
@@ -263,6 +264,7 @@ void prune_it(){
 				if(y != NULL) child_cnt++;
 			}
 			curr_leaves.erase(z);
+			node_cnt--;
 
 			if(child_cnt == 0){
 				z->parent->leaf = 1;

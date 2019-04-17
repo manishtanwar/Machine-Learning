@@ -18,8 +18,6 @@ template<class L, class R> ostream& operator<<(ostream &os, pair<L,R> P){return 
 #define pb push_back
 typedef vector<int> vi;
 
-const double EPS = 1e-9; 
-
 class node{
 	public:
 
@@ -27,10 +25,8 @@ class node{
 	int y;
 	bool leaf;
 	int attr_index;
-	int rem_child_cnt;
 
 	vector<node *> child;
-	node* parent;
 
 	node(){
 		this->y0 = 0;
@@ -38,7 +34,6 @@ class node{
 		this->y = 0;
 		this->leaf = 0;
 		this->attr_index = -1;
-		this->parent = NULL;
 	}
 
 	node(int y0,int y1,int y,bool leaf,int attr_index){
@@ -56,7 +51,6 @@ class node{
 		this->leaf = n.leaf;
 		this->attr_index = n.attr_index;
 		this->child = n.child;
-		this->parent = n.parent;
 	}
 };
 
@@ -119,6 +113,26 @@ inline double entropy(int a, int b){
 
 void growNode(node *n,vi &rem_data,vi &rem_attr);
 
+class queue_node{
+	public:
+	node *n;
+	vi rem_data;
+	vi rem_attr;
+	queue_node(){}
+	queue_node(node *n, vi rem_data, vi rem_attr){
+		this->n = n;
+		this->rem_attr = rem_attr;
+		this->rem_data = rem_data;
+	}
+	queue_node(const queue_node &n){
+		this->n = n.n;
+		this->rem_attr = n.rem_attr;
+		this->rem_data = n.rem_data;
+	}
+};
+
+queue<queue_node> bfs_queue;
+
 void produce_children(node *n,vi &rem_data,vi &rem_attr){
 	double best_IG = 0.0;
 	int best_attr = 30;
@@ -142,7 +156,7 @@ void produce_children(node *n,vi &rem_data,vi &rem_attr){
 		// assert(IG >= 0);
 		
 		if(best_IG < IG) best_IG = IG, best_attr = a;
-		else if(abs(best_IG-IG) < EPS && a < best_attr) best_attr = a;
+		else if(best_IG == IG && a < best_attr) best_attr = a;
 	}
 
 	n->attr_index = best_attr;
@@ -164,64 +178,7 @@ void produce_children(node *n,vi &rem_data,vi &rem_attr){
 		n->child[i] = NULL;
 		if(rem_data_child[i].size() == 0) continue;
 		n->child[i] = new node();
-		n->child[i]->parent = n;
-		growNode(n->child[i], rem_data_child[i], rem_attr_child);
-	}
-}
-
-void growNode(node *n,vi &rem_data,vi &rem_attr){
-	node_cnt++;
-	// trace(node_cnt);
-	n->y = rem_data.size();
-	n->y0 = n->y1 =  0;
-	for(auto &i : rem_data){
-		if(train[i][y_in] == 0) n->y0++;
-		else n->y1++;
-	}
-	if(n->y0 == 0 || n->y1 == 0 || rem_attr.size() == 0){
-		n->leaf = 1;
-		return;
-	}
-	produce_children(n,rem_data,rem_attr);
-}
-
-void train_it(){
-	vi rem_data(train.size());
-	vi rem_attr(attr_cnt);
-	for(int i=0;i<attr_cnt;i++) rem_attr[i] = i;
-	for(int i=0;i<rem_data.size();i++) rem_data[i] = i;
-	root = new node();
-	growNode(root,rem_data,rem_attr);
-}
-
-double test_it(vector<vi> &data){
-	int correct_pred;
-	correct_pred = 0;
-	for(auto &e : data){
-		node* n = root;
-		int pred = 0;
-		while(1){
-			if(n->leaf || n->child[e[n->attr_index]] == NULL){
-				if(n->y0 > n->y1) pred = 0;
-				else pred = 1;
-				break;
-			}
-			n = n->child[e[n->attr_index]];
-		}
-		if(pred == e[y_in]) correct_pred++;
-	}
-	return 100.0 * (double)correct_pred/data.size();
-}
-
-set<node*> curr_leaves;
-void dfs_init(node *n){
-	if(n->leaf){
-		curr_leaves.insert(n);
-		return;
-	}
-	for(auto z : n->child){
-		if(z == NULL) continue;
-		dfs_init(z);
+		bfs_queue.push(queue_node(n->child[i], rem_data_child[i], rem_attr_child));
 	}
 }
 
@@ -253,60 +210,65 @@ void test_it_acc(vector<vi> &data, ofstream &fout){
 	fout << node_cnt << "\t" << 100.0 * (double)correct_pred/data.size() << '\n';
 }
 
-void prune_it(){
-	dfs_init(root);
-	double val_acc_prev = test_it(val);
-	while(1){
-		trace(val_acc_prev, node_cnt);
-		double best_val_acc_prune = 0;
-		int parent_child_index = -1;
-		node *best_leaf_to_prune;
+set<int> done;
 
-		for(auto z : curr_leaves){
-			if(z == root) continue;
-			int i = 0;
-			for(auto &y : z->parent->child){
-				if(y == z) break;
-				i++;
-			}
-			assert(i < z->parent->child.size());
-			
-			z->parent->child[i] = NULL;
-			double acc_here = test_it(val);
-			z->parent->child[i] = z;
-
-			if(acc_here > best_val_acc_prune){
-				best_val_acc_prune = acc_here;
-				best_leaf_to_prune = z;
-				parent_child_index = i;
-			}
-		}
-
-			// if(best_val_acc_prune >= val_acc_prev || abs(best_val_acc_prune-val_acc_prev) < EPS){
-		if(best_val_acc_prune >= val_acc_prev){
-			val_acc_prev = best_val_acc_prune;
-			auto z = best_leaf_to_prune;
-			z->parent->child[parent_child_index] = NULL;
-			int child_cnt = 0;
-			for(auto &y : z->parent->child){
-				if(y != NULL) child_cnt++;
-			}
-			curr_leaves.erase(z);
-			node_cnt--;
-
-			if(child_cnt == 0){
-				z->parent->leaf = 1;
-				curr_leaves.insert(z->parent);
-			}
-		}
-		else break;
-
-		if(node_cnt % 10 == 0){
-			test_it_acc(train, fout_train);
-			test_it_acc(test, fout_test);
-			test_it_acc(val, fout_valid);
-		}
+void growNode(node *n,vi &rem_data,vi &rem_attr){
+	node_cnt++;
+	// trace(node_cnt);
+	n->y = rem_data.size();
+	n->y0 = n->y1 =  0;
+	for(auto &i : rem_data){
+		if(train[i][y_in] == 0) n->y0++;
+		else n->y1++;
 	}
+	if(n->y0 == 0 || n->y1 == 0 || rem_attr.size() == 0){
+		n->leaf = 1;
+		return;
+	}
+	produce_children(n,rem_data,rem_attr);
+	if(node_cnt % 10 == 0 && !done.count(node_cnt)){
+		done.insert(node_cnt);
+		test_it_acc(train, fout_train);
+		test_it_acc(test, fout_test);
+		test_it_acc(val, fout_valid);
+	}
+}
+
+void keep_looping(){
+	while(!bfs_queue.empty()){
+		queue_node front = bfs_queue.front();
+		bfs_queue.pop();
+		growNode(front.n, front.rem_data, front.rem_attr);
+	}
+}
+
+void train_it(){
+	vi rem_data(train.size());
+	vi rem_attr(attr_cnt);
+	for(int i=0;i<attr_cnt;i++) rem_attr[i] = i;
+	for(int i=0;i<rem_data.size();i++) rem_data[i] = i;
+	root = new node();
+	bfs_queue.push(queue_node(root, rem_data, rem_attr));
+	keep_looping();
+}
+
+double test_it(vector<vi> &data){
+	int correct_pred;
+	correct_pred = 0;
+	for(auto &e : data){
+		node* n = root;
+		int pred = 0;
+		while(1){
+			if(n->leaf || n->child[e[n->attr_index]] == NULL){
+				if(n->y0 > n->y1) pred = 0;
+				else pred = 1;
+				break;
+			}
+			n = n->child[e[n->attr_index]];
+		}
+		if(pred == e[y_in]) correct_pred++;
+	}
+	return 100.0 * (double)correct_pred/data.size();
 }
 
 int main(int argc, char *argv[]){
@@ -315,18 +277,15 @@ int main(int argc, char *argv[]){
     train = get_input(argv[1]);
     test = get_input(argv[2]);
     val = get_input(argv[3]);
-
+    
     fout_valid.open("accuracy_val");
     fout_test.open("accuracy_test");
     fout_train.open("accuracy_train");
 
     preprocessing();
     train_it();
-
-    prune_it();
-    // trace(root->attr_index);
     // cout<<node_cnt<<endl;
-    trace(root->leaf);
+
     cout<<"train acc : "<<test_it(train)<<endl;
     cout<<"test acc : "<<test_it(test)<<endl;
     cout<<"valid acc : "<<test_it(val)<<endl;
