@@ -1,0 +1,6 @@
+{
+    "python.pythonPath": "/home/manish/anaconda3/envs/ml/bin/python",
+    "files.exclude": {
+        "**/train_dataset/*": true
+    }
+}
