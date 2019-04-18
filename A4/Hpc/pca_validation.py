@@ -4,13 +4,12 @@ import numpy as np
 from PIL import Image
 from sklearn.decomposition import PCA
 
-# im = Image.open(sys.argv[1]).convert("L")
-# data = np.asarray(im)
 Xpca = []
 X = []
 X_rgb = []
 Y = []
 folder_cnt = 0
+
 for folder in sorted(glob.glob("train_dataset/*")):
     for img in sorted(glob.glob(folder + "/*.png")):
         im_rgb = Image.open(img)
@@ -25,7 +24,7 @@ for folder in sorted(glob.glob("train_dataset/*")):
     folder_cnt += 1
     print("folder_cnt:",folder_cnt)
     sys.stdout.flush()
-    # if(folder_cnt == 2):
+    # if(folder_cnt == 1):
     #     break
 
 # np.save("saved/Xpca",Xpca)

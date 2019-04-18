@@ -1,2 +1,5 @@
 train_dataset.zip
 train_dataset/*
+saved/*
+saved_small/*
+validation_dataset/*
