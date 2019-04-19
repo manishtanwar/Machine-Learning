@@ -2,6 +2,16 @@ import sys
 import numpy as np
 from sklearn import svm
 import sklearn
+import random
+
+seq_pre_episode = 13
+
+def generate_train_data(X, Y):
+    X_gen = []
+    Y_gen = []
+    for episode in range(len(Y)):
+        start_index = random.randint(0,Y[episode].shape[0]-8)
+        y_label = Y[episode][]
 
 def linear_svm(X, Y, X_test, Y_test):
     clf = svm.SVC(kernel='linear')
