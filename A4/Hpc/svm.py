@@ -4,20 +4,28 @@ from sklearn import svm
 import sklearn
 import random
 
-seq_pre_episode = 13
+seq_per_episode = 13
 
 def generate_train_data(X, Y):
-    X_gen = []
-    Y_gen = []
-    for episode in range(len(Y)):
-        start_index = random.randint(0,Y[episode].shape[0]-8)
-        y_label = Y[episode][]
+	X_gen = []
+	Y_gen = []
+	for episode in range(len(Y)):
+		for seq_no in range(seq_per_episode):
+			start_index = random.randint(0,Y[episode].shape[0]-8)
+			y_label = Y[episode][start_index+7]
+			img_list = np.arange(start_index, start_index+7)
+			for i in range(0,6):
+				for j in range(i+1,6):
+					final_img_list = np.delete(img_list,[i,j])
+					X_gen.append()
+					Y_gen.append(y_label)
+
 
 def linear_svm(X, Y, X_test, Y_test):
-    clf = svm.SVC(kernel='linear')
-    clf.fit(X,Y)
-    Y_pred = clf.predict(X_test)
-    # f1_score = sklearn.metrics.f1_score(y_actual, y_pred, average = None)
+	clf = svm.SVC(kernel='linear')
+	clf.fit(X,Y)
+	Y_pred = clf.predict(X_test)
+	# f1_score = sklearn.metrics.f1_score(y_actual, y_pred, average = None)
 
 # def gaussian_svm(X, Y, X_test, Y_test):
 #     clf = svm.SVC(kernel='rbf')

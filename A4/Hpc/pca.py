@@ -23,12 +23,13 @@ for folder in sorted(glob.glob("train_dataset/*")):
         if(folder_cnt < 50):
             Xpca.append(data)
         X.append(data)
-    Y.append(np.genfromtxt(folder + "/rew.csv",delimiter=','))
+        break
+    Y.append(np.genfromtxt(folder + "/rew.csv",delimiter=',',dtype="uint8"))
     folder_cnt += 1
     print("folder_cnt:",folder_cnt)
     sys.stdout.flush()
-    # if(folder_cnt == 1):
-    #     break
+    if(folder_cnt == 1):
+        break
 
 np.save("saved/Xpca",Xpca)
 np.save("saved/X",X)
@@ -41,6 +42,9 @@ print("Y.len:",len(Y))
 print("X[0].shape", X[0].shape)
 # print("X_rgb[0].shape", X_rgb[0].shape)
 print("Y[0].shape", Y[0].shape)
+print("Y[0][0].type", type(Y[0][0]))
+print("X[0][0].type", type(X[0][0]))
+
 # del X_rgb
 # del Y
 # sys.stdout.flush()
