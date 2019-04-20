@@ -47,21 +47,25 @@ def get_model():
 
 X = np.load("saved_small/X_rgb_100.npy")
 Y = np.load("saved_small/Y_100.npy")
-print(X.shape[0])
-(X_train, Y_train) = generate_train_data(X,Y)
-print(X_train.shape, Y_train.shape)
+# print(X.shape[0])
+# (X_train, Y_train) = generate_train_data(X,Y)
+# print(X_train.shape, Y_train.shape)
 
-X_test_in = np.asarray(np.load("saved_small/X_val_rgb_3k.npy"))
-Y_test_in = np.asarray(np.load("saved_small/Yval_3k.npy"))
+X_test_in = np.asarray(np.load("saved_small/X_val_rgb.npy"))
+Y_test_in = np.asarray(np.load("saved_small/Yval.npy"))
 
 (X_test, Y_test) = generate_test_data(X_test_in, Y_test_in[:,1])
 
-print(X_test.shape, Y_test.shape)
-model = get_model()
-model.fit(X_train, Y_train, epochs=20, batch_size=128)
-model.save('model_cnn_100_episodes')
+# print(X_test.shape, Y_test.shape)
+# model = get_model()
+# model.fit(X_train, Y_train, epochs=20, batch_size=128)
+# model.save('model_cnn_100_episodes')
 
-# model = load_model('model_cnn_100_episodes')
+model = load_model('model_cnn_small')
 
 score = model.evaluate(X_test, Y_test, batch_size=128)
 print("Score:",score)
+y_pred = model.predict_classes(X_test)
+print(y_pred)
+print(Y_test.shape, y_pred.shape)
+print(sum(Y_test == y_pred[:,0]))

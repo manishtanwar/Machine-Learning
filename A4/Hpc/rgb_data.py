@@ -10,7 +10,11 @@ X = []
 # X_rgb = []
 Y = []
 folder_cnt = 0
+# skip = 0
 for folder in sorted(glob.glob("train_dataset/*")):
+    # skip += 1
+    # if(skip <= 100):
+    #     continue
     for img in sorted(glob.glob(folder + "/*.png")):
         # im_rgb = Image.open(img)
         # im = im_rgb.convert("L")
@@ -25,11 +29,11 @@ for folder in sorted(glob.glob("train_dataset/*")):
     folder_cnt += 1
     print("folder_cnt:",folder_cnt)
     sys.stdout.flush()
-    if(folder_cnt == 100):
+    if(folder_cnt == 250):
         break
 
-np.save("saved_small/X_rgb_100",X)
-np.save("saved_small/Y_100",Y)
+np.save("saved/X_rgb_250f",X)
+np.save("saved/Y_250f",Y)
 
 print("X.len:",len(X))
 print("Y.len:",len(Y))
