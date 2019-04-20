@@ -6,7 +6,7 @@ from sklearn.decomposition import PCA
 
 Xval = []
 Yval = np.genfromtxt("validation_rewards.csv",delimiter=',',dtype="uint8")
-print(Y_val.shape)
+print(Yval.shape)
 
 folder_cnt = 0
 for folder in sorted(glob.glob("validation_dataset/*")):

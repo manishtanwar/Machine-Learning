@@ -4,5 +4,7 @@ saved/*
 saved_small/*
 saved_val/*
 validation_dataset/*
+cnn_data_saved/*
+.vscode/*
 model_cnn_small
 model_cnn_100_episodes

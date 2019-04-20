@@ -3,41 +3,59 @@ import glob
 import numpy as np
 from PIL import Image
 from sklearn.decomposition import PCA
+import random
 
-# im = Image.open(sys.argv[1]).convert("L")
-# data = np.asarray(im)
+def decision(p):
+	return random.random() < p
+
 X = []
-# X_rgb = []
 Y = []
 folder_cnt = 0
-# skip = 0
+positive_cnt = 0
+negative_cnt = 0
 for folder in sorted(glob.glob("train_dataset/*")):
-    # skip += 1
-    # if(skip <= 100):
-    #     continue
-    for img in sorted(glob.glob(folder + "/*.png")):
-        # im_rgb = Image.open(img)
-        # im = im_rgb.convert("L")
-        # data_rgb = np.asarray(im_rgb).flatten()
-        # X_rgb.append(data_rgb)
+	y_folder = np.genfromtxt(folder + "/rew.csv",delimiter=',',dtype="uint8")
+	X_folder = []
+	for img in sorted(glob.glob(folder + "/*.png")):
+		im = Image.open(img)
+		data = np.asarray(im)
+		X_folder.append(data)
+	for img in range(7,y_folder.shape[0]):
+		if(y_folder[img] == 1):
+			positive_cnt += 1
+			start_index = img-7
+			y_label = y_folder[img]
+			img_list = np.arange(start_index, start_index+7)
+			for i in range(0,6):
+				for j in range(i+1,6):
+					final_list = np.delete(img_list,[i,j])
+					stacked = X_folder[final_list[0]]
+					for k in range(4):
+						stacked = np.append(stacked, X_folder[final_list[k+1]], axis=2)
+					X.append(stacked)
+					Y.append(y_label)
+		elif(decision(0.05)):
+			negative_cnt += 1
+			start_index = img-7
+			y_label = y_folder[img]
+			img_list = np.arange(start_index, start_index+7)
+			for i in range(0,6):
+				for j in range(i+1,6):
+					final_list = np.delete(img_list,[i,j])
+					stacked = X_folder[final_list[0]]
+					for k in range(4):
+						stacked = np.append(stacked, X_folder[final_list[k+1]], axis=2)
+					X.append(stacked)
+					Y.append(y_label)
+	folder_cnt += 1
+	print("folder_cnt:",folder_cnt)
+	sys.stdout.flush()
 
-        im = Image.open(img)
-        data = np.asarray(im)
-        X.append(data)
-        # break
-    Y.append(np.genfromtxt(folder + "/rew.csv",delimiter=',',dtype="uint8"))
-    folder_cnt += 1
-    print("folder_cnt:",folder_cnt)
-    sys.stdout.flush()
-    if(folder_cnt == 250):
-        break
+np.save("saved/X_generated",X)
+np.save("saved/Y_generated",Y)
 
-np.save("saved/X_rgb_250f",X)
-np.save("saved/Y_250f",Y)
-
+print("+",positive_cnt, "-", negative_cnt)
 print("X.len:",len(X))
 print("Y.len:",len(Y))
-print("X[0].shape", X[0].shape)
-print("Y[0].shape", Y[0].shape)
-print("Y[0][0].type", type(Y[0][0]))
-print("X[0][0].type", type(X[0][0]))
+# print("X[0].shape", X[0].shape)
+# print("Y[0].shape", Y[0].shape)

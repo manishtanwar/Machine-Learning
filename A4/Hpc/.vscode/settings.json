@@ -1,9 +1,9 @@
 {
     "files.exclude": {
         "**/saved": true,
-        "**/saved_small/": true,
-        "**/saved_val/": true,
-        "**/train_dataset/": true,
-        "**/validation_dataset/": true
+        "**/saved_small": true,
+        "**/saved_val": true,
+        "**/train_dataset": true,
+        "**/validation_dataset": true
     }
 }
