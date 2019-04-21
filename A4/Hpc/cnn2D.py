@@ -1,37 +1,52 @@
+import keras
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Flatten, Conv2D, MaxPooling2D, Conv3D, MaxPooling2D
+from keras.models import load_model
 import sys
 import numpy as np
 import random 
-from keras.models import load_model
 from sklearn.metrics import f1_score
 import tensorflow as tf
 
-def f1_score_call(y_true, y_pred):
-	return f1_score(y_true, y_pred, average='binary')
-
-def f2_score(y_true, y_pred):
-    y_true = tf.cast(y_true, "int32")
-    y_pred = tf.cast(tf.round(y_pred), "int32") # implicit 0.5 threshold via tf.round
-    y_correct = y_true * y_pred
-    sum_true = tf.reduce_sum(y_true, axis=1)
-    sum_pred = tf.reduce_sum(y_pred, axis=1)
-    sum_correct = tf.reduce_sum(y_correct, axis=1)
-    precision = sum_correct / sum_pred
-    recall = sum_correct / sum_true
-    f_score = 5 * precision * recall / (4 * precision + recall)
-    f_score = tf.where(tf.is_nan(f_score), tf.zeros_like(f_score), f_score)
-    return tf.reduce_mean(f_score)
 # 2.66% 1
 # seq_per_episode = 13
-def generate_test_data(Xt,Yt):
-	X = []
-	for i in range(Yt.shape[0]):
-		ele = Xt[i*5]
-		for j in range(4):
-			ele = np.append(ele,Xt[i*5+j+1],axis=2)
-		X.append(ele)
-	return (np.asarray(X), np.asarray(Yt))
+
+batch_size = 128
+batch_per_file = 265
+files_cnt = 10
+
+class Data_generator(keras.util.Sequence):
+	def __init__(self, list_files, batch_size, dimension=(210,160,15), shuffle = True):
+		self.list_files = list_files
+		self.batch_size = batch_size
+		self.dimension = dimension
+		self.shuffle = shuffle
+	
+	def __len__(self):
+		return batch_per_file * files_cnt
+		# batch_per_epoch = batch_per_file * files_cnt
+		# return int(total_seq // self.batch_size)
+	
+	def __getitem__(self, index):
+		file_no = int(index // batch_per_file) + 1
+		infile_index = index % batch_per_file
+		start = infile_index * self.batch_size
+		end = (infile_index + 1) * self.batch_size
+		y_whole = np.load("cnn_data_saved/Y_generated" + file_no + ".npy")
+
+		if(end > y_whole.shape[0]):
+			start -= end-y_whole.shape[0]
+			end = y_whole.shape[0]
+		x = np.load("cnn_data_saved/X_generated" + file_no + ".npy")[start:end]
+		y = y_whole[start:end]
+		
+		return x,y
+
+	def on_epoch_end(self):
+		self.indexes = np.arange(batch_per_file * files_cnt * batch_size)
+		if(self.shuffle):
+			np.random.shuffle(self.indexes)
+
 
 def get_model():
 	model = Sequential()
@@ -45,23 +60,22 @@ def get_model():
 	model.add(Dense(2048, activation='relu'))
 
 	model.add(Dense(1, activation='sigmoid'))
-	model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy', f2_score])
+	model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 	return model
 
 X_train = np.load("cnn_data_saved/X_generated.npy")
 Y_train = np.load("cnn_data_saved/Y_generated.npy")
+
 class_weight = {0: 1.,
                 1: 5.}
 
 model = get_model()
 model.fit(X_train, Y_train, epochs=4, batch_size=128, class_weight=class_weight)
 model.save('model_cnn')
-
 # model = load_model('model_cnn')
 
-X_test = np.asarray(np.load("cnn_data_saved/X_val.npy"))
-Y_test = np.asarray(np.load("cnn_data_saved/Y_val.npy"))
-(X_test, Y_test) = generate_test_data(X_test, Y_test[:,1])
+X_test = np.asarray(np.load("cnn_data_saved/val/X_val.npy"))
+Y_test = np.asarray(np.load("cnn_data_saved/val/Y_val.npy"))
 
 score = model.evaluate(X_test, Y_test, batch_size=128)
 print("Score:",score)

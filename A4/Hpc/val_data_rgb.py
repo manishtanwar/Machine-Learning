@@ -8,6 +8,15 @@ Xval = []
 Yval = np.genfromtxt("validation_rewards.csv",delimiter=',',dtype="uint8")
 print(Yval.shape)
 
+def generate_test_data(Xt,Yt):
+	X = []
+	for i in range(Yt.shape[0]):
+		ele = Xt[i*5]
+		for j in range(4):
+			ele = np.append(ele,Xt[i*5+j+1],axis=2)
+		X.append(ele)
+	return (np.asarray(X), np.asarray(Yt))
+
 folder_cnt = 0
 for folder in sorted(glob.glob("validation_dataset/*")):
     for img in sorted(glob.glob(folder + "/*.png")):
@@ -18,14 +27,19 @@ for folder in sorted(glob.glob("validation_dataset/*")):
     folder_cnt += 1
     print("folder_cnt:",folder_cnt)
     sys.stdout.flush()
-    if(folder_cnt == 3000):
-        break
+    # if(folder_cnt == 5):
+    #     break
 
 Yval = Yval[0:folder_cnt]
+Yval = Yval[:,1]
+(Xval, Yval) = generate_test_data(Xval, Yval)
+
 print("Xval.len:",len(Xval))
 print("Yval.len:",len(Yval))
 print("Xval[0].shape", Xval[0].shape)
+print("Yval.shape", Yval.shape)
+# print(Yval)
 sys.stdout.flush()
 
-np.save("cnn_data_saved/X_val", Xval)
-np.save("cnn_data_saved/Y_val", Yval[0:folder_cnt])
+np.save("cnn_data_saved/val/X_val", Xval)
+np.save("cnn_data_saved/val/Y_val", Yval)

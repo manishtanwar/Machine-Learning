@@ -13,7 +13,14 @@ Y = []
 folder_cnt = 0
 positive_cnt = 0
 negative_cnt = 0
+
+file_number = 10
+start = 25 * (file_number-1)
+
 for folder in sorted(glob.glob("train_dataset/*")):
+	if(folder_cnt < start):
+		folder_cnt += 1
+		continue
 	y_folder = np.genfromtxt(folder + "/rew.csv",delimiter=',',dtype="uint8")
 	X_folder = []
 	for img in sorted(glob.glob(folder + "/*.png")):
@@ -38,7 +45,7 @@ for folder in sorted(glob.glob("train_dataset/*")):
 					X.append(stacked)
 					Y.append(y_label)
 					positive_cnt += 1
-		elif(decision(1./30.)):
+		elif(decision(1./20.)):
 			start_index = img-7
 			y_label = y_folder[img]
 			img_list = np.arange(start_index, start_index+7)
@@ -56,15 +63,15 @@ for folder in sorted(glob.glob("train_dataset/*")):
 	folder_cnt += 1
 	print("folder_cnt:",folder_cnt)
 	sys.stdout.flush()
-	if(folder_cnt == 5):
+	if(folder_cnt >= start+25):
 		break
 
 print("+",positive_cnt, "-", negative_cnt)
 print("X.len:",len(X))
 print("Y.len:",len(Y))
-print("x_type:",type(X[0][0][0][0]))
+# print("x_type:",type(X[0][0][0][0]))
 # print("X[0].shape", X[0].shape)
 # print("Y[0].shape", Y[0].shape)
 
-np.save("cnn_data_saved/X_generated",X)
-np.save("cnn_data_saved/Y_generated",Y)
+np.save("cnn_data_saved/X_generated" + str(file_number),X)
+np.save("cnn_data_saved/Y_generated" + str(file_number),Y)
