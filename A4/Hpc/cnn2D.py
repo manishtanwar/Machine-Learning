@@ -13,11 +13,25 @@ import tensorflow as tf
 
 batch_size = 128
 batch_per_file = 265
-files_cnt = 10
+files_cnt = 1
 
-class Data_generator(keras.util.Sequence):
-	def __init__(self, list_files, batch_size, dimension=(210,160,15), shuffle = True):
-		self.list_files = list_files
+def f_score(y_true, y_pred):
+	tp = tn = fp = fn = 0
+	for i in range(y_true.shape[0]):
+		if(y_true[i] == 1 and y_pred[i] == 1):
+			tp += 1
+		if(y_true[i] == 0 and y_pred[i] == 0):
+			tn += 1
+		if(y_true[i] == 0 and y_pred[i] == 1):
+			fp += 1
+		if(y_true[i] == 1 and y_pred[i] == 0):
+			fn += 1
+	precision = tp / (tp + fp)
+	recall = tp / (tp + fn)
+	return (2*precision*recall) / (precision + recall)
+
+class Data_generator(keras.utils.Sequence):
+	def __init__(self, batch_size, dimension=(210,160,15), shuffle = True):
 		self.batch_size = batch_size
 		self.dimension = dimension
 		self.shuffle = shuffle
@@ -32,12 +46,12 @@ class Data_generator(keras.util.Sequence):
 		infile_index = index % batch_per_file
 		start = infile_index * self.batch_size
 		end = (infile_index + 1) * self.batch_size
-		y_whole = np.load("cnn_data_saved/Y_generated" + file_no + ".npy")
+		y_whole = np.load("cnn_data_saved/Y_generated" + str(file_no) + ".npy")
 
 		if(end > y_whole.shape[0]):
 			start -= end-y_whole.shape[0]
 			end = y_whole.shape[0]
-		x = np.load("cnn_data_saved/X_generated" + file_no + ".npy")[start:end]
+		x = np.load("cnn_data_saved/X_generated" + str(file_no) + ".npy")[start:end]
 		y = y_whole[start:end]
 		
 		return x,y
@@ -60,17 +74,16 @@ def get_model():
 	model.add(Dense(2048, activation='relu'))
 
 	model.add(Dense(1, activation='sigmoid'))
-	model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+	model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy', f_score])
 	return model
 
-X_train = np.load("cnn_data_saved/X_generated.npy")
-Y_train = np.load("cnn_data_saved/Y_generated.npy")
-
-class_weight = {0: 1.,
-                1: 5.}
+class_weight = {0: 1.0,
+                1: 1.3}
 
 model = get_model()
-model.fit(X_train, Y_train, epochs=4, batch_size=128, class_weight=class_weight)
+training_generator = Data_generator(batch_size)
+
+model.fit_generator(generator = training_generator, epochs=1, class_weight=class_weight)
 model.save('model_cnn')
 # model = load_model('model_cnn')
 
