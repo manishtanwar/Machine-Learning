@@ -1,5 +1,6 @@
 {
     "files.exclude": {
+        "**/cnn_data_saved": true,
         "**/saved": true,
         "**/saved_small": true,
         "**/saved_val": true,

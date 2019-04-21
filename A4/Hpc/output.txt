@@ -3,5 +3,7 @@ folder_cnt: 2
 folder_cnt: 3
 folder_cnt: 4
 folder_cnt: 5
-folder_cnt: 6
-folder_cnt: 7
++ 88 - 174
+X.len: 3930
+Y.len: 3930
+x_type: <class 'numpy.uint8'>
