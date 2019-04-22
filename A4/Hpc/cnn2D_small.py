@@ -10,18 +10,8 @@ import tensorflow as tf
 
 # 2.66% 1
 # seq_per_episode = 13
-
 batch_size = 128
-batch_per_file = 265
-files_cnt = 1
-
-# batch_size = 128
-# batch_per_file = 26
-# files_cnt = 1
-
-# batch_size = 3498
-# batch_per_file = 1
-# files_cnt = 1
+no_batches = 1500
 
 # 3498
 def f_score(y_true, y_pred):
@@ -40,42 +30,28 @@ def f_score(y_true, y_pred):
 	return (2*precision*recall) / (precision + recall)
 
 class Data_generator(keras.utils.Sequence):
-	def __init__(self, batch_size, dimension=(210,160,15), shuffle = True):
+	def __init__(self, batch_size, shuffle = True):
 		self.batch_size = batch_size
-		self.dimension = dimension
 		self.shuffle = shuffle
 		self.on_epoch_end()
 	
 	def __len__(self):
-		return batch_per_file * files_cnt
-		# batch_per_epoch = batch_per_file * files_cnt
-		# return int(total_seq // self.batch_size)
+		return no_batches
 	
 	def __getitem__(self, index):
-		file_no = int(index // batch_per_file) + 1
-		infile_index = index % batch_per_file
-		start = infile_index * self.batch_size
-		end = (infile_index + 1) * self.batch_size
-		# print("file_no:", file_no, "start:", start, "end:", end)
-		y_whole = np.load("cnn_data_saved/Y_generated" + str(file_no) + ".npy")
-
-		if(end > y_whole.shape[0]):
-			start -= end-y_whole.shape[0]
-			end = y_whole.shape[0]
-		x = np.load("cnn_data_saved/X_generated" + str(file_no) + ".npy")[start:end]
-		y = y_whole[start:end]
-		
+		x = np.load("batch_cnn/X" + str(index) + ".npy")
+		y = np.load("batch_cnn/Y" + str(index) + ".npy")
 		return x,y
 
 	def on_epoch_end(self):
-		self.indexes = np.arange(batch_per_file * files_cnt * batch_size)
+		self.indexes = np.arange(no_batches * batch_size)
 		if(self.shuffle):
 			np.random.shuffle(self.indexes)
 
-
 def get_model():
 	model = Sequential()
-	model.add(Conv2D(32, (3,3), strides=2, activation='relu', input_shape = (210,160,15)))
+	# (210,160,15)
+	model.add(Conv2D(32, (3,3), strides=2, activation='relu', input_shape = (183,154,15)))
 	model.add(MaxPooling2D(pool_size=(2,2),strides=2))
 
 	model.add(Conv2D(64, (3,3), strides=2, activation='relu'))
@@ -85,28 +61,27 @@ def get_model():
 	model.add(Dense(2048, activation='relu'))
 
 	model.add(Dense(1, activation='sigmoid'))
-	model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+	# model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+	model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
 	return model
 
 class_weight = {0: 1.0,
-                1: 1.3}
+                1: 1.0}
 
 model = get_model()
 training_generator = Data_generator(batch_size)
 
-model.fit_generator(generator = training_generator, epochs=1, class_weight=class_weight, use_multiprocessing=True, workers=5)
-model.save('model_cnnss')
+model.fit_generator(generator = training_generator, epochs=10, class_weight=class_weight, use_multiprocessing=True, workers=50)
+model.save('model_cnn_epoch10_1500')
+
 # model = load_model('model_cnn')
 
 X_test = np.asarray(np.load("cnn_data_saved/val/X_val.npy"))
 Y_test = np.asarray(np.load("cnn_data_saved/val/Y_val.npy"))
 
-# score = model.evaluate(X_test, Y_test, batch_size=128)
-# print("Score:",score)
 y_pred = model.predict_classes(X_test)
-# print(y_pred)
-# print(Y_test.shape, y_pred.shape)
-# print(sum(Y_test == y_pred[:,0]))
 accuracy = (sum(Y_test == y_pred[:,0])) / y_pred.shape[0]
 f1 = f1_score(Y_test, y_pred[:,0], average='binary')
-print("f1:",f1,"accuracy:",accuracy)
+
+unka_fscore = f_score(Y_test, y_pred[:, 0])
+print("f1:",f1, "accuracy:", accuracy, "unka_fscore", unka_fscore)

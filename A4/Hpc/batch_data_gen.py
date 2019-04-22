@@ -10,6 +10,7 @@ def decision(p):
 
 X = []
 Y = []
+start_folder = 400
 folder_cnt = 0
 positive_cnt = 0
 negative_cnt = 0
@@ -18,7 +19,7 @@ batch_size = 128
 w = 160
 h = 210
 cur = 0
-file_no = 0
+file_no = 4516
 
 def go(X,Y):
 	global file_no
@@ -30,6 +31,9 @@ def go(X,Y):
 
 # 183 * 154
 for folder in sorted(glob.glob("train_dataset/*")):
+	if(folder_cnt < start_folder):
+		folder_cnt += 1
+		continue
 	y_folder = np.genfromtxt(folder + "/rew.csv",delimiter=',',dtype="uint8")
 	X_folder = []
 	for img in sorted(glob.glob(folder + "/*.png")):
@@ -80,8 +84,8 @@ for folder in sorted(glob.glob("train_dataset/*")):
 	folder_cnt += 1
 	print("folder_cnt:",folder_cnt)
 	sys.stdout.flush()
-	if(folder_cnt == 300):
-		break
+	# if(folder_cnt == 400):
+	# 	break
 
 print("+",positive_cnt, "-", negative_cnt, "file_cnts", file_no)
 # np.save("cnn_data_saved/X_generated" + str(file_number),X)

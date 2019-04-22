@@ -18,9 +18,11 @@ def generate_test_data(Xt,Yt):
 	return (np.asarray(X), np.asarray(Yt))
 
 folder_cnt = 0
+w = 160
+h = 210
 for folder in sorted(glob.glob("validation_dataset/*")):
     for img in sorted(glob.glob(folder + "/*.png")):
-        im_rgb = Image.open(img)
+        im_rgb = Image.open(img).crop((3,27,w-3,h))
         data_rgb = np.asarray(im_rgb)
         Xval.append(data_rgb)
         # break
@@ -41,5 +43,5 @@ print("Yval.shape", Yval.shape)
 # print(Yval)
 sys.stdout.flush()
 
-np.save("cnn_data_saved/val/X_val", Xval)
-np.save("cnn_data_saved/val/Y_val", Yval)
+np.save("cnn_data_saved/val_crop/X_val", Xval)
+np.save("cnn_data_saved/val_crop/Y_val", Yval)

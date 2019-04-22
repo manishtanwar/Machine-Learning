@@ -2,89 +2,78 @@ import sys
 import glob
 import numpy as np
 from PIL import Image
-from sklearn.decomposition import PCA
+from sklearn.decomposition import IncrementalPCA
+from sklearn.externals import joblib
 
-# im = Image.open(sys.argv[1]).convert("L")
-# data = np.asarray(im)
-Xpca = []
-X = []
-# X_rgb = []
+def get_pca_model():
+	# Xpca = []
+	# folder_cnt = 0
+	# for folder in sorted(glob.glob("train_dataset/*")):
+	# 	for img in sorted(glob.glob(folder + "/*.png")):
+	# 		im = Image.open(img).convert("L")
+	# 		data = np.asarray(im).flatten()
+	# 		Xpca.append(data)
+	# 	folder_cnt += 1
+	# 	print("folder_cnt:",folder_cnt)
+	# 	sys.stdout.flush()
+	# 	if(folder_cnt == 50):
+	# 		break
+	# ipca = IncrementalPCA(n_components=50, batch_size=100)
+	# ipca.fit(Xpca)
+	# joblib.dump(ipca, "saved_pca/pca_model")
+
+	ipca = joblib.load("saved_pca/pca_model")
+	return ipca
+
+ipca = get_pca_model()
+
+print("pca variance ratio : \n", ipca.explained_variance_ratio_)
+print("total variance :", np.sum(ipca.explained_variance_ratio_))
+sys.stdout.flush()
+
+X_red = []
 Y = []
 folder_cnt = 0
+start_folder = 200
+
 for folder in sorted(glob.glob("train_dataset/*")):
-    for img in sorted(glob.glob(folder + "/*.png")):
-        # im_rgb = Image.open(img)
-        # im = im_rgb.convert("L")
-        # data_rgb = np.asarray(im_rgb).flatten()
-        # X_rgb.append(data_rgb)
+	if(folder_cnt < start_folder):
+		folder_cnt += 1
+		continue
+	Y.append(np.genfromtxt(folder + "/rew.csv",delimiter=',',dtype="uint8"))
+	for img in sorted(glob.glob(folder + "/*.png")):
+		im = Image.open(img).convert("L")
+		data = np.asarray(im).flatten()
+		data = data.reshape(1,data.shape[0])
+		X_red.append(ipca.transform(data).flatten())
+	folder_cnt += 1
+	print("folder_cnt:",folder_cnt)
+	sys.stdout.flush()
+	if(folder_cnt == 300):
+		break
 
-        im = Image.open(img).convert("L")
-        data = np.asarray(im).flatten()
-        if(folder_cnt < 50):
-            Xpca.append(data)
-        X.append(data)
-        # break
-    Y.append(np.genfromtxt(folder + "/rew.csv",delimiter=',',dtype="uint8"))
-    folder_cnt += 1
-    print("folder_cnt:",folder_cnt)
-    sys.stdout.flush()
-    # if(folder_cnt == 1):
-    #     break
+X_red = np.asarray(X_red)
+print("X_red.shape", X_red.shape)
+print("X_red.type", type(X_red[0][0]))
+np.save("saved_pca/X3", X_red)
+np.save("saved_pca/Y3", Y)
 
-np.save("saved/Xpca",Xpca)
-# np.save("saved/X",X)
-# np.save("saved/X_rgb",X_rgb)
-np.save("saved/Y",Y)
+# Xval = []
+# Yval = np.genfromtxt("validation_rewards.csv",delimiter=',',dtype="uint8")
+# folder_cnt = 0
+# for folder in sorted(glob.glob("validation_dataset/*")):
+# 	for img in sorted(glob.glob(folder + "/*.png")):
+# 		im = Image.open(img).convert("L")
+# 		data = np.asarray(im).flatten()
+# 		data = data.reshape(1,data.shape[0])
+# 		Xval.append(ipca.transform(data).flatten())
+# 	folder_cnt += 1
+# 	print("folder_cnt:",folder_cnt)
+# 	sys.stdout.flush()
+# 	# if(folder_cnt == 5):
+# 	# 	break
 
-print("Xpca.len:",len(Xpca))
-print("X.len:",len(X))
-print("Y.len:",len(Y))
-print("X[0].shape", X[0].shape)
-# print("X_rgb[0].shape", X_rgb[0].shape)
-print("Y[0].shape", Y[0].shape)
-print("Y[0][0].type", type(Y[0][0]))
-print("X[0][0].type", type(X[0][0]))
-
-# del X_rgb
-del Y
-sys.stdout.flush()
-
-pca = PCA(n_components=50)
-pca.fit(Xpca)
-
-print("pca variance ratio : \n", pca.explained_variance_ratio_)
-sys.stdout.flush()
-
-X_reduced = pca.transform(X)
-
-print("X_reduced.shape", X_reduced.shape)
-np.save("saved/X_reduced", X_reduced)
-
-del X_reduced
-del X
-
-Xval = []
-Yval = np.genfromtxt("validation_rewards.csv",delimiter=',',dtype="uint8")
-
-folder_cnt = 0
-for folder in sorted(glob.glob("validation_dataset/*")):
-    for img in sorted(glob.glob(folder + "/*.png")):
-        # im_rgb = Image.open(img)
-        # im = im_rgb.convert("L")
-        # data_rgb = np.asarray(im_rgb).flatten()
-        # X_rgb.append(data_rgb)
-
-        im = Image.open(img).convert("L")
-        data = np.asarray(im).flatten()
-        Xval.append(data)
-        # break
-    folder_cnt += 1
-    print("folder_cnt:",folder_cnt)
-    sys.stdout.flush()
-    # if(folder_cnt == 1):
-    #     break
-
-X_val_reduced = pca.transform(Xval)
-print("X_val_reduced.shape", X_val_reduced.shape)
-np.save("saved_val/X_val_reduced", X_val_reduced)
-np.save("saved_val/Yval", Yval)
+# Xval = np.asarray(Xval)
+# print("Xval.shape", Xval.shape)
+# np.save("saved_pca/Xval", Xval)
+# np.save("saved_pca/Yval", Yval)
