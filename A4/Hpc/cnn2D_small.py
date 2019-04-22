@@ -15,6 +15,15 @@ batch_size = 128
 batch_per_file = 265
 files_cnt = 1
 
+# batch_size = 128
+# batch_per_file = 26
+# files_cnt = 1
+
+# batch_size = 3498
+# batch_per_file = 1
+# files_cnt = 1
+
+# 3498
 def f_score(y_true, y_pred):
 	tp = tn = fp = fn = 0
 	for i in range(len(y_true)):
@@ -35,6 +44,7 @@ class Data_generator(keras.utils.Sequence):
 		self.batch_size = batch_size
 		self.dimension = dimension
 		self.shuffle = shuffle
+		self.on_epoch_end()
 	
 	def __len__(self):
 		return batch_per_file * files_cnt
@@ -46,6 +56,7 @@ class Data_generator(keras.utils.Sequence):
 		infile_index = index % batch_per_file
 		start = infile_index * self.batch_size
 		end = (infile_index + 1) * self.batch_size
+		# print("file_no:", file_no, "start:", start, "end:", end)
 		y_whole = np.load("cnn_data_saved/Y_generated" + str(file_no) + ".npy")
 
 		if(end > y_whole.shape[0]):
@@ -83,19 +94,19 @@ class_weight = {0: 1.0,
 model = get_model()
 training_generator = Data_generator(batch_size)
 
-model.fit_generator(generator = training_generator, epochs=1, class_weight=class_weight)
-model.save('model_cnn')
+model.fit_generator(generator = training_generator, epochs=1, class_weight=class_weight, use_multiprocessing=True, workers=5)
+model.save('model_cnnss')
 # model = load_model('model_cnn')
 
 X_test = np.asarray(np.load("cnn_data_saved/val/X_val.npy"))
 Y_test = np.asarray(np.load("cnn_data_saved/val/Y_val.npy"))
 
-score = model.evaluate(X_test, Y_test, batch_size=128)
-print("Score:",score)
+# score = model.evaluate(X_test, Y_test, batch_size=128)
+# print("Score:",score)
 y_pred = model.predict_classes(X_test)
 # print(y_pred)
-print(Y_test.shape, y_pred.shape)
-print(sum(Y_test == y_pred[:,0]))
-
+# print(Y_test.shape, y_pred.shape)
+# print(sum(Y_test == y_pred[:,0]))
+accuracy = (sum(Y_test == y_pred[:,0])) / y_pred.shape[0]
 f1 = f1_score(Y_test, y_pred[:,0], average='binary')
-print(f1)
+print("f1:",f1,"accuracy:",accuracy)
