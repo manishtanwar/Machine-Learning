@@ -14,17 +14,26 @@ folder_cnt = 0
 positive_cnt = 0
 negative_cnt = 0
 
-file_number = 11
-start = 25 * (file_number-1)
+batch_size = 128
+w = 160
+h = 210
+cur = 0
+file_no = 0
 
+def go(X,Y):
+	global file_no
+	np.save("batch_cnn/X" + str(file_no),X)
+	np.save("batch_cnn/Y" + str(file_no),Y)
+	file_no += 1
+	X.clear()
+	Y.clear()
+
+# 183 * 154
 for folder in sorted(glob.glob("train_dataset/*")):
-	if(folder_cnt < start):
-		folder_cnt += 1
-		continue
 	y_folder = np.genfromtxt(folder + "/rew.csv",delimiter=',',dtype="uint8")
 	X_folder = []
 	for img in sorted(glob.glob(folder + "/*.png")):
-		im = Image.open(img)
+		im = Image.open(img).crop((3,27,w-3,h))
 		data = np.asarray(im)
 		X_folder.append(data)
 	for img in range(7,y_folder.shape[0]):
@@ -45,6 +54,10 @@ for folder in sorted(glob.glob("train_dataset/*")):
 					X.append(stacked)
 					Y.append(y_label)
 					positive_cnt += 1
+					cur += 1
+					if(cur == batch_size):
+						go(X,Y)
+						cur = 0
 		elif(decision(1./20.)):
 			start_index = img-7
 			y_label = y_folder[img]
@@ -60,18 +73,16 @@ for folder in sorted(glob.glob("train_dataset/*")):
 					X.append(stacked)
 					Y.append(y_label)
 					negative_cnt += 1
+					cur += 1
+					if(cur == batch_size):
+						go(X,Y)
+						cur = 0
 	folder_cnt += 1
 	print("folder_cnt:",folder_cnt)
 	sys.stdout.flush()
-	if(folder_cnt >= start+25):
+	if(folder_cnt == 300):
 		break
 
-print("+",positive_cnt, "-", negative_cnt)
-print("X.len:",len(X))
-print("Y.len:",len(Y))
-# print("x_type:",type(X[0][0][0][0]))
-# print("X[0].shape", X[0].shape)
-# print("Y[0].shape", Y[0].shape)
-
-np.save("cnn_data_saved/X_generated" + str(file_number),X)
-np.save("cnn_data_saved/Y_generated" + str(file_number),Y)
+print("+",positive_cnt, "-", negative_cnt, "file_cnts", file_no)
+# np.save("cnn_data_saved/X_generated" + str(file_number),X)
+# np.save("cnn_data_saved/Y_generated" + str(file_number),Y)

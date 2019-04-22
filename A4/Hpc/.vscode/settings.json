@@ -7,5 +7,7 @@
         "**/saved_val": true,
         "**/train_dataset": true,
         "**/validation_dataset": true
-    }
+    },
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": false
 }

@@ -10,3 +10,4 @@ model_cnn_small
 model_cnn_100_episodes
 model_cnn
 cnn_data_saved_small/*
+batch_cnn/*
