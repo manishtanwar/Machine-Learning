@@ -34,7 +34,7 @@ sys.stdout.flush()
 X_red = []
 Y = []
 folder_cnt = 0
-start_folder = 200
+start_folder = 300
 
 for folder in sorted(glob.glob("train_dataset/*")):
 	if(folder_cnt < start_folder):
@@ -49,7 +49,7 @@ for folder in sorted(glob.glob("train_dataset/*")):
 	folder_cnt += 1
 	print("folder_cnt:",folder_cnt)
 	sys.stdout.flush()
-	if(folder_cnt == 300):
+	if(folder_cnt == 400):
 		break
 
 X_red = np.asarray(X_red)

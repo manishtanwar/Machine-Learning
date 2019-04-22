@@ -7,3 +7,4 @@ model_cnn_100_episodes
 model_cnn
 batch_cnn/*
 saved_pca/*
+cnn_models/*

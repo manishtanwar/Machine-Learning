@@ -14,7 +14,7 @@ from keras.callbacks import ModelCheckpoint
 # seq_per_episode = 13
 batch_size = 128
 no_batches = 800
-batch_base = 0
+batch_base = 2000
 
 # 3498
 def f_score(y_true, y_pred):
@@ -76,12 +76,12 @@ def get_model():
 	# model.add(Dense(2, activation='relu'))
 	model.add(Dense(1, activation='sigmoid'))
 
-	# model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy', f1])
-	model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy', f1])
+	model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy', f1])
+	# model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy', f1])
 	return model
 
 class_weight = {0: 1.0,
-                1: 1.0}
+                1: 1.5}
 
 model = get_model()
 training_generator = Data_generator(batch_size)
@@ -91,8 +91,8 @@ Y_test = np.asarray(np.load("cnn_data_saved/val_crop/Y_val.npy"))
 
 checkpointer = ModelCheckpoint(filepath='callback_best.hdf5', verbose=1, save_best_only=True)
 model.fit_generator(generator = training_generator, validation_data=(X_test, Y_test), epochs=10, class_weight=class_weight, use_multiprocessing=True, workers=50)
-# model.save('cnn_models/model_adam')
-model = load_model('model_cnn')
+model.save('cnn_models/model_adam')
+# model = load_model('model_cnn')
 
 y_pred = model.predict_classes(X_test)
 accuracy = (sum(Y_test == y_pred[:,0])) / y_pred.shape[0]
