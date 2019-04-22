@@ -64,14 +64,14 @@ class Data_generator(keras.utils.Sequence):
 def get_model():
 	model = Sequential()
 	# (210,160,15)
-	model.add(Conv2D(32, (3,3), strides=2, activation='relu', input_shape = (183,154,15)))
+	model.add(Conv2D(32, (3,3), strides=2, activation='LeakyReLU', input_shape = (183,154,15)))
 	model.add(MaxPooling2D(pool_size=(2,2),strides=2))
 
-	model.add(Conv2D(64, (3,3), strides=2, activation='relu'))
+	model.add(Conv2D(64, (3,3), strides=2, activation='LeakyReLU'))
 	model.add(MaxPooling2D(pool_size=(2,2),strides=2))
 
 	model.add(Flatten())
-	model.add(Dense(2048, activation='relu'))
+	model.add(Dense(2048, activation='LeakyReLU'))
 
 	# model.add(Dense(2, activation='relu'))
 	model.add(Dense(1, activation='sigmoid'))
