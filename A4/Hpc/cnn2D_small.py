@@ -99,7 +99,7 @@ X_test = np.asarray(np.load("cnn_data_saved/val_crop/X_val.npy"))
 Y_test = np.asarray(np.load("cnn_data_saved/val_crop/Y_val.npy"))
 
 checkpointer = ModelCheckpoint(filepath='callback_best.hdf5', verbose=1, save_best_only=True)
-model.fit_generator(generator = training_generator, validation_data=(X_test, Y_test), epochs=5, class_weight=class_weight, use_multiprocessing=True, workers=20)
+model.fit_generator(generator = training_generator, validation_data=(X_test, Y_test), epochs=5, callbacks=[checkpointer], class_weight=class_weight, use_multiprocessing=True, workers=20)
 model.save('cnn_models/model_base3k_batches800_epochs5_gpu1')
 # model = load_model('model_cnn')
 

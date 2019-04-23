@@ -61,15 +61,18 @@ def generate_train_seq(X, Y):
 
 
 def linear_svm(X, Y):
-	clf = svm.SVC(kernel='linear', max_iter=10000)
-	clf.fit(X,Y)
-	joblib.dump(clf, "saved_pca/svm_model_linear")
+	# clf = svm.SVC(kernel='linear', max_iter=10000)
+	# clf.fit(X,Y)
+	# joblib.dump(clf, "saved_pca/svm_model_linear")
+	clf = joblib.load("saved_pca/svm_model_linear")
 	return clf
 
 def gaussian_svm(X, Y):
-	clf = svm.SVC(kernel='rbf', max_iter=10000, gamma='auto')
-	clf.fit(X,Y)
-	joblib.dump(clf, "saved_pca/svm_model_gaussian")
+	# clf = svm.SVC(kernel='rbf', max_iter=10000, gamma='auto')
+	# clf.fit(X,Y)
+	# joblib.dump(clf, "saved_pca/svm_model_gaussian")
+
+	clf = joblib.load("saved_pca/svm_model_gaussian")
 	return clf
 
 saved = 1
@@ -119,19 +122,19 @@ print("confusion matrix:")
 print(confusion_matrix)
 
 # ********** Gaussian ******** 
-print('Gaussian')
-rbf_clf = gaussian_svm(X,Y)
-# rbf_clf = joblib.load("saved_pca/svm_model_gaussian")
-Ypred = rbf_clf.predict(Xtest)
-f1_score = sklearn.metrics.f1_score(Ytest, Ypred, average = None)
-f1_b = sklearn.metrics.f1_score(Ytest, Ypred, average='binary')
-print("f1_score:")
-print(f1_score)
-print("f1_b:", f1_b)
+# print('Gaussian')
+# rbf_clf = gaussian_svm(X,Y)
+# # rbf_clf = joblib.load("saved_pca/svm_model_gaussian")
+# Ypred = rbf_clf.predict(Xtest)
+# f1_score = sklearn.metrics.f1_score(Ytest, Ypred, average = None)
+# f1_b = sklearn.metrics.f1_score(Ytest, Ypred, average='binary')
+# print("f1_score:")
+# print(f1_score)
+# print("f1_b:", f1_b)
 
-accuracy = sklearn.metrics.accuracy_score(Ytest, Ypred)
-print("accuracy:",accuracy)
+# accuracy = sklearn.metrics.accuracy_score(Ytest, Ypred)
+# print("accuracy:",accuracy)
 
-confusion_matrix = sklearn.metrics.confusion_matrix(Ytest, Ypred)
-print("confusion matrix:")
-print(confusion_matrix)
+# confusion_matrix = sklearn.metrics.confusion_matrix(Ytest, Ypred)
+# print("confusion matrix:")
+# print(confusion_matrix)

@@ -17,9 +17,9 @@ from keras.layers import LeakyReLU
 # set_random_seed(3)
 
 batch_size = 512
-no_batches = 700
+no_batches = 400
 # total batches = 5672 of size 128
-batch_base = 1000
+batch_base = 3000
 # 3498
 
 def f_score(y_true, y_pred):
@@ -101,9 +101,9 @@ training_generator = Data_generator(batch_size)
 X_test = np.asarray(np.load("cnn_data_saved/val_crop/X_val.npy"))
 Y_test = np.asarray(np.load("cnn_data_saved/val_crop/Y_val.npy"))
 
-checkpointer = ModelCheckpoint(filepath='callback_best.hdf5', verbose=1, save_best_only=True)
-model.fit_generator(generator = training_generator, validation_data=(X_test, Y_test), epochs=10, class_weight=class_weight, use_multiprocessing=True, workers=20)
-model.save('cnn_models/model_base1k_batches1k_epochs10_bs512')
+checkpointer = ModelCheckpoint(filepath='callback_bestlogin2.hdf5', verbose=1, save_best_only=True)
+model.fit_generator(generator = training_generator, validation_data=(X_test, Y_test), callbacks=[checkpointer], epochs=10, class_weight=class_weight, use_multiprocessing=True, workers=20)
+model.save('cnn_models/model_base1k_batches3k_epochs10_bs512')
 # model = load_model('model_cnn')
 
 y_pred = model.predict_classes(X_test)
