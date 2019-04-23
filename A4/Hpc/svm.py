@@ -6,7 +6,6 @@ import random
 from sklearn.externals import joblib
 
 
-saved = 1
 def decision(p):
 	return random.random() < p
 
@@ -62,16 +61,19 @@ def generate_train_seq(X, Y):
 
 
 def linear_svm(X, Y):
-	clf = svm.SVC(kernel='linear', max_iter=10000)
+	clf = svm.SVC(kernel='linear', max_iter=50000)
 	clf.fit(X,Y)
 	joblib.dump(clf, "saved_pca/svm_model_linear")
 	return clf
 
 def gaussian_svm(X, Y):
-	clf = svm.SVC(kernel='rbf', max_iter=10000, gamma='auto')
+	clf = svm.SVC(kernel='rbf', max_iter=50000, gamma='auto')
 	clf.fit(X,Y)
 	joblib.dump(clf, "saved_pca/svm_model_gaussian")
 	return clf
+
+saved = 1
+seq_cnt = 100000
 
 if saved == 0:
 	Xin = np.load("saved_pca/X0.npy")
@@ -90,8 +92,8 @@ if saved == 0:
 	np.save("saved_pca/X_seqf", X)
 	np.save("saved_pca/Y_seqf", Y)
 else:
-	X = np.load("saved_pca/X_seqf.npy")
-	Y = np.load("saved_pca/Y_seqf.npy")
+	X = np.load("saved_pca/X_seqf.npy")[0:seq_cnt]
+	Y = np.load("saved_pca/Y_seqf.npy")[0:seq_cnt]
 print("X.shape", X.shape, "Y.shape", Y.shape)
 
 Xtest = np.load("saved_pca/Xval.npy")
@@ -104,8 +106,10 @@ lin_clf = linear_svm(X,Y)
 # lin_clf = joblib.load("saved_pca/svm_model_linear")
 Ypred = lin_clf.predict(Xtest)
 f1_score = sklearn.metrics.f1_score(Ytest, Ypred, average = None)
+f1_b = sklearn.metrics.f1_score(Ytest, Ypred, average='binary')
 print("f1_score:")
 print(f1_score)
+print("f1_b:", f1_b)
 
 accuracy = sklearn.metrics.accuracy_score(Ytest, Ypred)
 print("accuracy:",accuracy)
@@ -120,8 +124,10 @@ rbf_clf = gaussian_svm(X,Y)
 # rbf_clf = joblib.load("saved_pca/svm_model_gaussian")
 Ypred = rbf_clf.predict(Xtest)
 f1_score = sklearn.metrics.f1_score(Ytest, Ypred, average = None)
+f1_b = sklearn.metrics.f1_score(Ytest, Ypred, average='binary')
 print("f1_score:")
 print(f1_score)
+print("f1_b:", f1_b)
 
 accuracy = sklearn.metrics.accuracy_score(Ytest, Ypred)
 print("accuracy:",accuracy)

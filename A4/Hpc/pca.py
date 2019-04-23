@@ -58,26 +58,28 @@ print("X_red.type", type(X_red[0][0]))
 np.save("saved_pca/X4", X_red)
 np.save("saved_pca/Y4", Y)
 
-# Xval = []
-# Yval = np.genfromtxt("validation_rewards.csv",delimiter=',',dtype="uint8")
-# folder_cnt = 0
-# for folder in sorted(glob.glob("validation_dataset/*")):
-# 	x = np.zeros(0)
-# 	for img in sorted(glob.glob(folder + "/*.png")):
-# 		im = Image.open(img).convert("L")
-# 		data = np.asarray(im).flatten()
-# 		data = data.reshape(1,data.shape[0]) / 255.0
-# 		x = np.append(x, ipca.transform(data).flatten(),axis=0)
-# 		# Xval.append(ipca.transform(data).flatten())
-# 	Xval.append(x)
-# 	folder_cnt += 1
-# 	print("folder_cnt:",folder_cnt)
-# 	sys.stdout.flush()
-# 	# if(folder_cnt == 5):
-# 	# 	break
+# validation data reduction
 
-# Xval = np.asarray(Xval)
-# Yval = np.asarray(Yval)[:,1]
-# print("Xval.shape", Xval.shape, "Yval.shape", Yval.shape)
-# np.save("saved_pca/Xval", Xval)
-# np.save("saved_pca/Yval", Yval)
+Xval = []
+Yval = np.genfromtxt("validation_rewards.csv",delimiter=',',dtype="uint8")
+folder_cnt = 0
+for folder in sorted(glob.glob("validation_dataset/*")):
+	x = np.zeros(0)
+	for img in sorted(glob.glob(folder + "/*.png")):
+		im = Image.open(img).convert("L")
+		data = np.asarray(im).flatten()
+		data = data.reshape(1,data.shape[0]) / 255.0
+		x = np.append(x, ipca.transform(data).flatten(),axis=0)
+		# Xval.append(ipca.transform(data).flatten())
+	Xval.append(x)
+	folder_cnt += 1
+	print("folder_cnt:",folder_cnt)
+	sys.stdout.flush()
+	# if(folder_cnt == 5):
+	# 	break
+
+Xval = np.asarray(Xval)
+Yval = np.asarray(Yval)[:,1]
+print("Xval.shape", Xval.shape, "Yval.shape", Yval.shape)
+np.save("saved_pca/Xval", Xval)
+np.save("saved_pca/Yval", Yval)

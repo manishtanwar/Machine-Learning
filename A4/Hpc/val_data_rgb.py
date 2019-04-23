@@ -31,8 +31,8 @@ for folder in sorted(glob.glob("validation_dataset/*")):
     print("folder_cnt:",folder_cnt)
     sys.stdout.flush()
     # break
-    # if(folder_cnt == 5):
-    #     break
+    if(folder_cnt == 5800):
+        break
 
 Yval = Yval[0:folder_cnt]
 Yval = Yval[:,1]

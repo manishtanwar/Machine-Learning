@@ -40,6 +40,7 @@ import random
 # print(X_test.shape, X_test[0][0], type(X_test[0][0]))
 
 batch_base = index = 0
-x = np.load("batch_cnn/X" + str(batch_base + index) + ".npy")
-x = np.asarray(x, dtype=np.float32)/ 255.
+# x = np.load("batch_cnn/X" + str(batch_base + index) + ".npy")
+# x = np.asarray(x, dtype=np.float32)/ 255.
+x = np.asarray(np.load("batch_cnn/X" + str(batch_base + index) + ".npy"), dtype=np.float32)/ 255.
 print(x.shape, x[0][0][0][0], type(x[0][0][0][0]))
