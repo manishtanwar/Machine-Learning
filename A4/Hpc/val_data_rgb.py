@@ -23,12 +23,14 @@ h = 210
 for folder in sorted(glob.glob("validation_dataset/*")):
     for img in sorted(glob.glob(folder + "/*.png")):
         im_rgb = Image.open(img).crop((3,27,w-3,h))
-        data_rgb = np.asarray(im_rgb)
+        data_rgb = np.asarray(im_rgb, dtype=np.float32)/255.0
+        # print(data_rgb.shape, data_rgb[0][0][0], type(data_rgb[0][0][0]))
         Xval.append(data_rgb)
         # break
     folder_cnt += 1
     print("folder_cnt:",folder_cnt)
     sys.stdout.flush()
+    # break
     # if(folder_cnt == 5):
     #     break
 

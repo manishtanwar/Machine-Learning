@@ -1,10 +1,12 @@
 {
     "files.exclude": {
+		"**/batch_cnn": true,
 		"**/cnn_data_saved": true,
 		"**/cnn_data_saved_small": true,
 		"**/cnn_models": true,
 		"**/saved": true,
 		"**/saved_pca": true,
+		"**/saved_pca_unn": true,
 		"**/saved_small": true,
 		"**/saved_val": true,
 		"**/train_dataset": true,
