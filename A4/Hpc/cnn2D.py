@@ -16,12 +16,12 @@ from keras.layers import LeakyReLU
 # seed(3)
 # set_random_seed(3)
 
-# 2.66% 1
-# seq_per_episode = 13
 batch_size = 512
-no_batches = 500
-batch_base = 0
+no_batches = 700
+# total batches = 5672 of size 128
+batch_base = 1000
 # 3498
+
 def f_score(y_true, y_pred):
 	tp = tn = fp = fn = 0
 	for i in range(y_true.shape[0]):
@@ -60,8 +60,8 @@ class Data_generator(keras.utils.Sequence):
 		x = np.asarray(np.load("batch_cnn/X" + str(batch_base + index*4) + ".npy"), dtype=np.float32)/ 255.
 		y = np.load("batch_cnn/Y" + str(batch_base + index*4) + ".npy")
 		for i in range(index*4 + 1, (index+1)*4):
-			x = np.append(x, np.asarray(np.load("batch_cnn/X" + str(batch_base + index) + ".npy"), dtype=np.float32)/ 255., axis=0)
-			y = np.append(y, np.load("batch_cnn/Y" + str(batch_base + index) + ".npy"), axis=0)
+			x = np.append(x, np.asarray(np.load("batch_cnn/X" + str(batch_base + i) + ".npy"), dtype=np.float32)/ 255., axis=0)
+			y = np.append(y, np.load("batch_cnn/Y" + str(batch_base + i) + ".npy"), axis=0)
 		return x,y
 
 	def on_epoch_end(self):
@@ -102,8 +102,8 @@ X_test = np.asarray(np.load("cnn_data_saved/val_crop/X_val.npy"))
 Y_test = np.asarray(np.load("cnn_data_saved/val_crop/Y_val.npy"))
 
 checkpointer = ModelCheckpoint(filepath='callback_best.hdf5', verbose=1, save_best_only=True)
-model.fit_generator(generator = training_generator, validation_data=(X_test, Y_test), epochs=5, class_weight=class_weight, use_multiprocessing=True, workers=20)
-model.save('cnn_models/model_base3k_batches800_epochs5_gpu1')
+model.fit_generator(generator = training_generator, validation_data=(X_test, Y_test), epochs=10, class_weight=class_weight, use_multiprocessing=True, workers=20)
+model.save('cnn_models/model_base1k_batches1k_epochs10_bs512')
 # model = load_model('model_cnn')
 
 y_pred = model.predict_classes(X_test)

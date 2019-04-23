@@ -64,8 +64,8 @@ class Data_generator(keras.utils.Sequence):
 		x = np.asarray(np.load("batch_cnn/X" + str(batch_base + index*4) + ".npy"), dtype=np.float32)/ 255.
 		y = np.load("batch_cnn/Y" + str(batch_base + index*4) + ".npy")
 		for i in range(index*4 + 1, (index+1)*4):
-			x = np.append(x, np.asarray(np.load("batch_cnn/X" + str(batch_base + index) + ".npy"), dtype=np.float32)/ 255., axis=0)
-			y = np.append(y, np.load("batch_cnn/Y" + str(batch_base + index) + ".npy"), axis=0)
+			x = np.append(x, np.asarray(np.load("batch_cnn/X" + str(batch_base + i) + ".npy"), dtype=np.float32)/ 255., axis=0)
+			y = np.append(y, np.load("batch_cnn/Y" + str(batch_base + i) + ".npy"), axis=0)
 		return x,y
 
 	def on_epoch_end(self):

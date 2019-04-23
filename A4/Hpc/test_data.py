@@ -85,7 +85,7 @@ def f1(Y_true, Y_pred):
 	precision = true_positives / (predicted_positives + K.epsilon())
 	return 2*((precision*recall)/(precision+recall+K.epsilon()))
 
-model = load_model('cnn_models/model_base3k_batches800_epochs5', custom_objects={'f1': f1})
+model = load_model('cnn_models/model_base1k_batches1k_epochs10', custom_objects={'f1': f1})
 
 def generate_test_data(Xt):
 	ele = Xt[0]
