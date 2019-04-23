@@ -1,13 +1,15 @@
 {
     "files.exclude": {
-        "**/cnn_data_saved": true,
-        "**/cnn_data_saved_small": true,
-        "**/saved": true,
-        "**/saved_small": true,
-        "**/saved_val": true,
-        "**/train_dataset": true,
-        "**/validation_dataset": true
-    },
+		"**/cnn_data_saved": true,
+		"**/cnn_data_saved_small": true,
+		"**/cnn_models": true,
+		"**/saved": true,
+		"**/saved_pca": true,
+		"**/saved_small": true,
+		"**/saved_val": true,
+		"**/train_dataset": true,
+		"**/validation_dataset": true
+	},
     "editor.detectIndentation": false,
     "editor.insertSpaces": false
 }
