@@ -61,13 +61,13 @@ def generate_train_seq(X, Y):
 
 
 def linear_svm(X, Y):
-	clf = svm.SVC(kernel='linear', max_iter=50000)
+	clf = svm.SVC(kernel='linear', max_iter=10000)
 	clf.fit(X,Y)
 	joblib.dump(clf, "saved_pca/svm_model_linear")
 	return clf
 
 def gaussian_svm(X, Y):
-	clf = svm.SVC(kernel='rbf', max_iter=50000, gamma='auto')
+	clf = svm.SVC(kernel='rbf', max_iter=10000, gamma='auto')
 	clf.fit(X,Y)
 	joblib.dump(clf, "saved_pca/svm_model_gaussian")
 	return clf

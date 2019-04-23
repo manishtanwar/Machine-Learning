@@ -11,6 +11,10 @@ from keras import backend as K
 from keras.callbacks import ModelCheckpoint
 from keras.layers import LeakyReLU
 
+import os
+
+os.environ["CUDA_VISIBLE_DEVICES"]="0"
+
 # from tensorflow import set_random_seed
 # from numpy.random import seed
 # seed(3)
@@ -19,7 +23,7 @@ from keras.layers import LeakyReLU
 # 2.66% 1
 # seq_per_episode = 13
 batch_size = 512
-no_batches = 500
+no_batches = 279
 batch_base = 0
 # 3498
 def f_score(y_true, y_pred):
@@ -102,8 +106,8 @@ X_test = np.asarray(np.load("cnn_data_saved/val_crop/X_val.npy"))
 Y_test = np.asarray(np.load("cnn_data_saved/val_crop/Y_val.npy"))
 
 checkpointer = ModelCheckpoint(filepath='callback_best.hdf5', verbose=1, save_best_only=True)
-model.fit_generator(generator = training_generator, validation_data=(X_test, Y_test), epochs=5, class_weight=class_weight, use_multiprocessing=True, workers=20)
-model.save('cnn_models/model_base3k_batches800_epochs5_gpu1')
+model.fit_generator(generator = training_generator, validation_data=(X_test, Y_test), epochs=25, class_weight=class_weight, use_multiprocessing=True, workers=20)
+model.save('cnn_models/model_full_epochs25')
 # model = load_model('model_cnn')
 
 y_pred = model.predict_classes(X_test)
