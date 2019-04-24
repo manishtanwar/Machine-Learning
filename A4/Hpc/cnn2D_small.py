@@ -1,3 +1,9 @@
+# -------------------------- set gpu using tf ---------------------------
+import tensorflow as tf
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
+session = tf.Session(config=config)
+
 import keras
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Flatten, Conv2D, MaxPooling2D, Conv3D, MaxPooling2D
@@ -6,10 +12,8 @@ import sys
 import numpy as np
 import random 
 from sklearn.metrics import f1_score
-import tensorflow as tf
 from keras import backend as K
 from keras.callbacks import ModelCheckpoint
-from keras.layers import LeakyReLU
 
 # from tensorflow import set_random_seed
 # from numpy.random import seed
@@ -61,27 +65,23 @@ class Data_generator(keras.utils.Sequence):
 		y = np.load("batch_cnn/Y" + str(batch_base + index) + ".npy")
 		return x,y
 
-	def on_epoch_end(self):
-		self.indexes = np.arange(no_batches * batch_size)
-		if(self.shuffle):
-			np.random.shuffle(self.indexes)
+	# def on_epoch_end(self):
+		# self.indexes = np.arange(no_batches * batch_size)
+		# if(self.shuffle):
+		# 	np.random.shuffle(self.indexes)
 
 def get_model():
 	model = Sequential()
 	# (210,160,15)
-	model.add(Conv2D(32, (3,3), strides=2, input_shape = (183,154,15)))
-	model.add(LeakyReLU())
+	model.add(Conv2D(32, (3,3), strides=2, activation='relu', input_shape = (183,154,15)))
 	model.add(MaxPooling2D(pool_size=(2,2),strides=2))
 
-	model.add(Conv2D(64, (3,3), strides=2))
-	model.add(LeakyReLU())
+	model.add(Conv2D(64, (3,3), strides=2, activation='relu'))
 	model.add(MaxPooling2D(pool_size=(2,2),strides=2))
 
 	model.add(Flatten())
-	model.add(Dense(2048))
-	model.add(LeakyReLU())
+	model.add(Dense(2048, activation='relu'))
 
-	# model.add(Dense(2, activation='relu'))
 	model.add(Dense(1, activation='sigmoid'))
 
 	model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy', f1])
@@ -98,9 +98,9 @@ training_generator = Data_generator(batch_size)
 X_test = np.asarray(np.load("cnn_data_saved/val_crop/X_val.npy"))
 Y_test = np.asarray(np.load("cnn_data_saved/val_crop/Y_val.npy"))
 
-checkpointer = ModelCheckpoint(filepath='callback_best.hdf5', verbose=1, save_best_only=True)
-model.fit_generator(generator = training_generator, validation_data=(X_test, Y_test), epochs=5, callbacks=[checkpointer], class_weight=class_weight, use_multiprocessing=True, workers=20)
-model.save('cnn_models/model_base3k_batches800_epochs5_gpu1')
+checkpointer = ModelCheckpoint(filepath='cnn_models/callback/base5k_bcnt150_bsize512_cpu.hdf5', verbose=1, save_best_only=True)
+model.fit_generator(generator = training_generator, validation_data=(X_test, Y_test), callbacks=[checkpointer], epochs=10, class_weight=class_weight, use_multiprocessing=True, workers=6)
+model.save('cnn_models/base5k_bcnt150_bsize512_cpu')
 # model = load_model('model_cnn')
 
 y_pred = model.predict_classes(X_test)

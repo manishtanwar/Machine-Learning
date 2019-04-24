@@ -17,7 +17,7 @@ def generate_test_data(Xt,Yt):
 		X.append(ele)
 	return (np.asarray(X), np.asarray(Yt))
 
-start_folder = 0
+start_folder = 5800
 folder_cnt = 0
 w = 160
 h = 210
@@ -35,8 +35,8 @@ for folder in sorted(glob.glob("validation_dataset/*")):
 	print("folder_cnt:",folder_cnt)
 	sys.stdout.flush()
 	# break
-	if(folder_cnt == 5800):
-	    break
+	# if(folder_cnt == 5800):
+	#     break
 
 Yval = Yval[start_folder:folder_cnt]
 Yval = Yval[:,1]
@@ -48,6 +48,7 @@ print("Xval[0].shape", Xval[0].shape)
 print("Yval.shape", Yval.shape)
 # print(Yval)
 sys.stdout.flush()
+# print(Yval)
 
-np.save("cnn_data_saved/val_crop/X_val", Xval)
-np.save("cnn_data_saved/val_crop/Y_val", Yval)
+np.save("cnn_data_saved/val_crop/X_val1", Xval)
+np.save("cnn_data_saved/val_crop/Y_val1", Yval)

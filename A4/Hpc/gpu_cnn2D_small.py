@@ -1,3 +1,9 @@
+# -------------------------- set gpu using tf ---------------------------
+import tensorflow as tf
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
+session = tf.Session(config=config)
+
 import keras
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Flatten, Conv2D, MaxPooling2D, Conv3D, MaxPooling2D
@@ -6,7 +12,6 @@ import sys
 import numpy as np
 import random 
 from sklearn.metrics import f1_score
-import tensorflow as tf
 from keras import backend as K
 from keras.callbacks import ModelCheckpoint
 
@@ -15,12 +20,12 @@ from keras.callbacks import ModelCheckpoint
 # seed(3)
 # set_random_seed(3)
 
-batch_size = 512
-no_batches = 150
-# total batches = 5670 of size 128
-batch_base = 5000
+# 2.66% 1
+# seq_per_episode = 13
+batch_size = 128
+no_batches = 800
+batch_base = 3000
 # 3498
-
 def f_score(y_true, y_pred):
 	tp = tn = fp = fn = 0
 	for i in range(y_true.shape[0]):
@@ -56,11 +61,8 @@ class Data_generator(keras.utils.Sequence):
 		return no_batches
 	
 	def __getitem__(self, index):
-		x = np.asarray(np.load("batch_cnn/X" + str(batch_base + index*4) + ".npy"), dtype=np.float32)/ 255.
-		y = np.load("batch_cnn/Y" + str(batch_base + index*4) + ".npy")
-		for i in range(index*4 + 1, (index+1)*4):
-			x = np.append(x, np.asarray(np.load("batch_cnn/X" + str(batch_base + i) + ".npy"), dtype=np.float32)/ 255., axis=0)
-			y = np.append(y, np.load("batch_cnn/Y" + str(batch_base + i) + ".npy"), axis=0)
+		x = np.asarray(np.load("batch_cnn/X" + str(batch_base + index) + ".npy"), dtype=np.float32)/ 255.
+		y = np.load("batch_cnn/Y" + str(batch_base + index) + ".npy")
 		return x,y
 
 	# def on_epoch_end(self):
@@ -96,9 +98,9 @@ training_generator = Data_generator(batch_size)
 X_test = np.asarray(np.load("cnn_data_saved/val_crop/X_val.npy"))
 Y_test = np.asarray(np.load("cnn_data_saved/val_crop/Y_val.npy"))
 
-checkpointer = ModelCheckpoint(filepath='cnn_models/callback/base5k_bcnt150_bsize512_cpu.hdf5', verbose=1, save_best_only=True)
+checkpointer = ModelCheckpoint(filepath='cnn_models/callback/base3k_bcnt800_bsize128.hdf5', verbose=1, save_best_only=True)
 model.fit_generator(generator = training_generator, validation_data=(X_test, Y_test), callbacks=[checkpointer], epochs=10, class_weight=class_weight, use_multiprocessing=True, workers=6)
-model.save('cnn_models/base5k_bcnt150_bsize512_cpu')
+model.save('cnn_models/base3k_bcnt800_bsize128')
 # model = load_model('model_cnn')
 
 y_pred = model.predict_classes(X_test)

@@ -15,3 +15,4 @@ test_dataset.zip
 validation_dataset_old/*
 test_dataset_old/*
 batch_cnn_old/*
+old_stuff/*
