@@ -1,6 +1,6 @@
 import keras
 from keras.models import Sequential
-from keras.layers import Dense, Activation, Flatten, Conv2D, MaxPooling2D, Conv3D, MaxPooling2D
+from keras.layers import Dense, Activation, Flatten, Conv2D, MaxPooling2D, Dropout
 from keras.models import load_model
 import sys
 import numpy as np
@@ -9,7 +9,6 @@ from sklearn.metrics import f1_score
 import tensorflow as tf
 from keras import backend as K
 from keras.callbacks import ModelCheckpoint
-from keras.layers import LeakyReLU
 
 # from tensorflow import set_random_seed
 # from numpy.random import seed
@@ -18,8 +17,8 @@ from keras.layers import LeakyReLU
 
 batch_size = 512
 no_batches = 400
-# total batches = 5672 of size 128
-batch_base = 0
+# total batches = 5670 of size 128
+batch_base = 3600
 # 3498
 
 def f_score(y_true, y_pred):
@@ -64,27 +63,24 @@ class Data_generator(keras.utils.Sequence):
 			y = np.append(y, np.load("batch_cnn/Y" + str(batch_base + i) + ".npy"), axis=0)
 		return x,y
 
-	def on_epoch_end(self):
-		self.indexes = np.arange(no_batches * batch_size)
-		if(self.shuffle):
-			np.random.shuffle(self.indexes)
+	# def on_epoch_end(self):
+		# self.indexes = np.arange(no_batches * batch_size)
+		# if(self.shuffle):
+		# 	np.random.shuffle(self.indexes)
 
 def get_model():
 	model = Sequential()
 	# (210,160,15)
-	model.add(Conv2D(32, (3,3), strides=2, input_shape = (183,154,15)))
-	model.add(LeakyReLU())
+	model.add(Conv2D(32, (3,3), strides=2, activation='relu', input_shape = (183,154,15)))
 	model.add(MaxPooling2D(pool_size=(2,2),strides=2))
 
-	model.add(Conv2D(64, (3,3), strides=2))
-	model.add(LeakyReLU())
+	model.add(Conv2D(64, (3,3), strides=2, activation='relu'))
 	model.add(MaxPooling2D(pool_size=(2,2),strides=2))
 
 	model.add(Flatten())
-	model.add(Dense(2048))
-	model.add(LeakyReLU())
+	model.add(Dense(2048, activation='relu'))
+	model.add(Dropout(0.35))
 
-	# model.add(Dense(2, activation='relu'))
 	model.add(Dense(1, activation='sigmoid'))
 
 	model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy', f1])
@@ -92,18 +88,18 @@ def get_model():
 	return model
 
 class_weight = {0: 1.0,
-                1: 10.0/3.0}
+                1: 7.0/3.0}
 
 model = get_model()
 training_generator = Data_generator(batch_size)
 
 # here X_test is noramlized
-X_test = np.asarray(np.load("cnn_data_saved/val_crop/X_val.npy"))
-Y_test = np.asarray(np.load("cnn_data_saved/val_crop/Y_val.npy"))
+X_test = np.asarray(np.load("cnn_data_saved/val_crop/X_val1.npy"))
+Y_test = np.asarray(np.load("cnn_data_saved/val_crop/Y_val1.npy"))
 
-checkpointer = ModelCheckpoint(filepath='callback_bestlogin1_morelossy.hdf5', verbose=1, save_best_only=True)
-model.fit_generator(generator = training_generator, validation_data=(X_test, Y_test), callbacks=[checkpointer], epochs=10, class_weight=class_weight, use_multiprocessing=True, workers=20)
-model.save('cnn_models/model_base0_batches400_epochs10_bs512_morelossy')
+checkpointer = ModelCheckpoint(filepath='cnn_models/callback/drop_base3600_bcnt400_bsize512_cpu.hdf5', verbose=1, save_best_only=True)
+model.fit_generator(generator = training_generator, validation_data=(X_test, Y_test), callbacks=[checkpointer], epochs=10, class_weight=class_weight, use_multiprocessing=True, workers=6)
+model.save('cnn_models/drop_base3600_bcnt400_bsize512_cpu')
 # model = load_model('model_cnn')
 
 y_pred = model.predict_classes(X_test)

@@ -1,6 +1,7 @@
+screen -r 32750 ncpus=10 -l walltime=12:00:00 drop_base3600_bcnt400_bsize512_cpu
 
-screen -r 11079 ncpus=12 -l walltime=06:00:00
-screen -r 31709 ncpus=12 -l walltime=08:00:00
+screen -r 11079 ncpus=12 -l walltime=06:00:00 drop_base5k_bcnt150_bsize512_cpu
+screen -r 31709 ncpus=12 -l walltime=08:00:00 drop_base0_bcnt400_bsize512_cpu
 
 base2k_bcnt400_bsize512
 base5k_bcnt150_bsize512_cpu
