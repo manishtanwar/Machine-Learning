@@ -1,6 +1,7 @@
 {
     "files.exclude": {
 		"**/batch_cnn": true,
+		"**/batch_cnn_old": true,
 		"**/cnn_data_saved": true,
 		"**/cnn_data_saved_small": true,
 		"**/cnn_models": true,
@@ -9,8 +10,11 @@
 		"**/saved_pca_unn": true,
 		"**/saved_small": true,
 		"**/saved_val": true,
+		"**/test_dataset": true,
+		"**/test_dataset_old": true,
 		"**/train_dataset": true,
-		"**/validation_dataset": true
+		"**/validation_dataset": true,
+		"**/validation_dataset_old": true
 	},
     "editor.detectIndentation": false,
     "editor.insertSpaces": false

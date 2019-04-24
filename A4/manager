@@ -1,0 +1,11 @@
+screen -r 12776.pts-63.gpulogin01 R    	ncpus=12:ngpus=1 -l walltime=10:00:00
+screen -r 15473.pts-68.gpulogin01 R    	ncpus=6:ngpus=1 -l walltime=10:00:00
+screen -r 27349.pts-76.gpulogin01 R 	ncpus=12 -l walltime=02:00:00	
+screen -r 12660.pts-63.gpulogin01 Q 	ncpus=15 -l walltime=08:00:00
+
+screen -r 26583.pts-32.gpulogin02 R		ncpus=12 -l walltime=10:00:00
+screen -r 27122.pts-27.gpulogin02 Q		ncpus=6:ngpus=1 -l walltime=06:00:00
+screen -r 26527.pts-33.gpulogin02 Q		ncpus=12:ngpus=1 -l walltime=08:00:00
+screen -r 23935.pts-27.gpulogin02 R    	ncpus=6:ngpus=1 -l walltime=08:00:00
+screen -r 1714.pts-33.gpulogin02  Q		ncpus=4:ngpus=1 -l walltime=10:00:00
+screen -r 18188.pts-4.gpulogin02  Q		ncpus=15 -l walltime=02:00:00

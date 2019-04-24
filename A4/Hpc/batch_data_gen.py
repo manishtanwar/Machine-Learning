@@ -19,12 +19,12 @@ batch_size = 128
 w = 160
 h = 210
 cur = 0
-file_no = 4516
+file_no = 0
 
 def go(X,Y):
 	global file_no
-	np.save("batch_cnn/X" + str(file_no),X)
-	np.save("batch_cnn/Y" + str(file_no),Y)
+	np.save("batch_cnn/5/X" + str(file_no),X)
+	np.save("batch_cnn/5/Y" + str(file_no),Y)
 	file_no += 1
 	X.clear()
 	Y.clear()
@@ -40,11 +40,11 @@ for folder in sorted(glob.glob("train_dataset/*")):
 		im = Image.open(img).crop((3,27,w-3,h))
 		data = np.asarray(im)
 		X_folder.append(data)
-	for img in range(7,y_folder.shape[0]):
+	for img in range(6,y_folder.shape[0]):
 		if(y_folder[img] == 1):
 			if(decision(1./5.)):
 				continue
-			start_index = img-7
+			start_index = img-6
 			y_label = y_folder[img]
 			img_list = np.arange(start_index, start_index+7)
 			for i in range(0,6):
@@ -63,7 +63,7 @@ for folder in sorted(glob.glob("train_dataset/*")):
 						go(X,Y)
 						cur = 0
 		elif(decision(1./20.)):
-			start_index = img-7
+			start_index = img-6
 			y_label = y_folder[img]
 			img_list = np.arange(start_index, start_index+7)
 			for i in range(0,6):

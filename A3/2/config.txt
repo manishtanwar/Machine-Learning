@@ -2,8 +2,24 @@
 10
 100
 2
-25 25
-sigmoid
+100 50
+relu
+fixed
+
+85
+10
+100
+2
+40 40
+relu
+fixed
+
+85
+10
+100
+2
+100 50
+relu
 variable
 
 85

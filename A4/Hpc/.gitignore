@@ -12,3 +12,6 @@ cnn_models/*
 saved_pca_unn/*
 train_dataset.zip
 test_dataset.zip
+validation_dataset_old/*
+test_dataset_old/*
+batch_cnn_old/*

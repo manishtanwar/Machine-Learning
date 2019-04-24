@@ -40,7 +40,7 @@ def read_input(file):
 (X,Y) = read_input(train_file)
 # print(X.shape, Y.shape)
 
-classifier = DecisionTreeClassifier(max_depth=4, min_samples_split=10, min_samples_leaf=30)
+classifier = DecisionTreeClassifier(max_depth=1, min_samples_split=10, min_samples_leaf=30)
 classifier = classifier.fit(X, Y)
 
 def test(file):

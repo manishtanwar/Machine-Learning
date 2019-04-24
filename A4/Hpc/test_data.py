@@ -85,7 +85,9 @@ def f1(Y_true, Y_pred):
 	precision = true_positives / (predicted_positives + K.epsilon())
 	return 2*((precision*recall)/(precision+recall+K.epsilon()))
 
-model = load_model('cnn_models/model_base1k_batches1k_epochs10', custom_objects={'f1': f1})
+model1 = load_model('cnn_models/model_base1k_batches1k_epochs10', custom_objects={'f1': f1})
+model2 = load_model('cnn_models/model_base1k_batches3k_epochs10_bs512', custom_objects={'f1': f1})
+model3 = load_model('cnn_models/model_base3k_batches800_epochs5', custom_objects={'f1': f1})
 
 def generate_test_data(Xt):
 	ele = Xt[0]
@@ -106,7 +108,11 @@ for folder in sorted(glob.glob("test_dataset/*")):
 		data_rgb = np.asarray(im_rgb, dtype=np.float32)/255.0
 		data_point.append(data_rgb)
 	x = generate_test_data(data_point)[np.newaxis,:]
-	Y_pred.append(model.predict_classes(x))
+	pred = model1.predict_classes(x) + model2.predict_classes(x) + model3.predict_classes(x)
+	if(pred >= 2):
+		Y_pred.append(1)
+	else:
+		Y_pred.append(0)
 	folder_cnt += 1
 	# if(folder_cnt == 10):
 	# 	break
