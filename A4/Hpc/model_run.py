@@ -20,8 +20,8 @@ def f1(Y_true, Y_pred):
 	return 2*((precision*recall)/(precision+recall+K.epsilon()))
 
 # here X_test is noramlized already
-X_test = np.asarray(np.load("cnn_data_saved/val_crop/X_val.npy"))
-Y_test = np.asarray(np.load("cnn_data_saved/val_crop/Y_val.npy"))
+X_test = np.asarray(np.load("cnn_data_saved/val_crop/X_val1.npy"))
+Y_test = np.asarray(np.load("cnn_data_saved/val_crop/Y_val1.npy"))
 
 # *********** multiple models
 
@@ -42,7 +42,7 @@ y_pred_sum = y_pred1 + y_pred2 + y_pred3
 y_pred = np.where(y_pred_sum >= 2, 1, 0)
 # print(y_pred_sum, y_pred)
 '''
-model = load_model('cnn_models/base2k_bcnt300_bsize512_cpu', custom_objects={'f1': f1})
+model = load_model('cnn_models/drop_base_f2_bcnt250_bsize512', custom_objects={'f1': f1})
 y_pred = model.predict_classes(X_test)[:,0]
 
 accuracy = (sum(Y_test == y_pred)) / y_pred.shape[0]

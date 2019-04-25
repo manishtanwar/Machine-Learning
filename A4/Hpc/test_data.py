@@ -89,7 +89,7 @@ def f1(Y_true, Y_pred):
 # model2 = load_model('cnn_models/model_base1k_batches3k_epochs10_bs512', custom_objects={'f1': f1})
 # model3 = load_model('cnn_models/model_base3k_batches800_epochs5', custom_objects={'f1': f1})
 
-model1 = load_model('cnn_models/base2k_bcnt300_bsize512_cpu', custom_objects={'f1': f1})
+model1 = load_model('cnn_models/drop_base_f2_bcnt250_bsize512', custom_objects={'f1': f1})
 
 def generate_test_data(Xt):
 	ele = Xt[0]
