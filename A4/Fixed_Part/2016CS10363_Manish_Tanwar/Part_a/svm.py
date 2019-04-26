@@ -17,11 +17,11 @@ def generate_train_seq(X, Y):
 		y_folder = Y[folder]
 		X_folder = X[start : start + y_folder.shape[0] + 1]
 		start += y_folder.shape[0] + 1
-		for img in range(7,y_folder.shape[0]):
+		for img in range(6,y_folder.shape[0]):
 			if(y_folder[img] == 1):
 				if(decision(1./5.)):
 					continue
-				start_index = img-7
+				start_index = img-6
 				y_label = y_folder[img]
 				img_list = np.arange(start_index, start_index+7)
 				for i in range(0,6):
@@ -36,7 +36,7 @@ def generate_train_seq(X, Y):
 						Yo.append(y_label)
 						positive_cnt += 1
 			elif(decision(1./20.)):
-				start_index = img-7
+				start_index = img-6
 				y_label = y_folder[img]
 				img_list = np.arange(start_index, start_index+7)
 				for i in range(0,6):

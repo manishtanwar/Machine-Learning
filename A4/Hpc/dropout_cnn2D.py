@@ -18,7 +18,7 @@ from keras.callbacks import ModelCheckpoint
 batch_size = 512
 no_batches = 300
 # total batches = 5670 of size 128
-batch_base = 3600
+batch_base = 4400
 # 3498
 
 def f_score(y_true, y_pred):
@@ -97,9 +97,9 @@ training_generator = Data_generator(batch_size)
 X_test = np.asarray(np.load("cnn_data_saved/val_crop/X_val1.npy"))
 Y_test = np.asarray(np.load("cnn_data_saved/val_crop/Y_val1.npy"))
 
-checkpointer = ModelCheckpoint(filepath='cnn_models/callback/drop_base3600_bcnt300_bsize512.hdf5', verbose=1, save_best_only=True)
+checkpointer = ModelCheckpoint(filepath='cnn_models/callback/drop_base4400_bcnt300_bsize512.hdf5', verbose=1, save_best_only=True)
 model.fit_generator(generator = training_generator, validation_data=(X_test, Y_test), callbacks=[checkpointer], epochs=10, class_weight=class_weight, use_multiprocessing=True, workers=6)
-model.save('cnn_models/drop_base3600_bcnt300_bsize512')
+model.save('cnn_models/drop_base4400_bcnt300_bsize512')
 # model = load_model('model_cnn')
 
 y_pred = model.predict_classes(X_test)

@@ -6,6 +6,7 @@
 		"**/cnn_data_saved_small": true,
 		"**/cnn_models": true,
 		"**/old_stuff": true,
+		"**/Pll": true,
 		"**/saved": true,
 		"**/saved_pca": true,
 		"**/saved_pca_unn": true,

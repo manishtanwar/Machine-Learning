@@ -10,7 +10,7 @@ def decision(p):
 
 X = []
 Y = []
-start_folder = 200
+start_folder = 0
 folder_cnt = 0
 positive_cnt = 0
 negative_cnt = 0
@@ -19,7 +19,7 @@ batch_size = 128
 w = 160
 h = 210
 cur = 0
-file_no = 0
+file_no = 2267
 
 def go(X,Y):
 	global file_no
@@ -30,14 +30,16 @@ def go(X,Y):
 	Y.clear()
 
 # 183 * 154
-for folder in sorted(glob.glob("train_dataset/*")):
+# (162, 154)
+for folder in sorted(glob.glob("../train_dataset/*")):
 	if(folder_cnt < start_folder):
 		folder_cnt += 1
 		continue
 	y_folder = np.genfromtxt(folder + "/rew.csv",delimiter=',',dtype="uint8")
 	X_folder = []
 	for img in sorted(glob.glob(folder + "/*.png")):
-		im = Image.open(img).crop((3,27,w-3,h))
+		# im = Image.open(img).crop((3,27,w-3,h))
+		im = Image.open(img).crop((3,27,w-3,h-21)).convert("L")
 		data = np.asarray(im)
 		X_folder.append(data)
 	for img in range(6,y_folder.shape[0]):
@@ -52,9 +54,9 @@ for folder in sorted(glob.glob("train_dataset/*")):
 					if(decision(1./3.)):
 						continue
 					final_list = np.delete(img_list,[i,j])
-					stacked = X_folder[final_list[0]]
+					stacked = X_folder[final_list[0]][:,:,np.newaxis]
 					for k in range(4):
-						stacked = np.append(stacked, X_folder[final_list[k+1]], axis=2)
+						stacked = np.append(stacked, X_folder[final_list[k+1]][:,:,np.newaxis], axis=2)
 					X.append(stacked)
 					Y.append(y_label)
 					positive_cnt += 1
@@ -71,9 +73,11 @@ for folder in sorted(glob.glob("train_dataset/*")):
 					if(decision(1./4.)):
 						continue
 					final_list = np.delete(img_list,[i,j])
-					stacked = X_folder[final_list[0]]
+					stacked = X_folder[final_list[0]][:,:,np.newaxis]
+					# print(stacked.shape, X_folder[final_list[0]].shape)
 					for k in range(4):
-						stacked = np.append(stacked, X_folder[final_list[k+1]], axis=2)
+						stacked = np.append(stacked, X_folder[final_list[k+1]][:,:,np.newaxis], axis=2)
+					# print(stacked.shape)
 					X.append(stacked)
 					Y.append(y_label)
 					negative_cnt += 1

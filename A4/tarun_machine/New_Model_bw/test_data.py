@@ -14,6 +14,9 @@ from keras import backend as K
 from keras.callbacks import ModelCheckpoint
 from keras.layers import LeakyReLU
 
+import os
+os.environ["CUDA_VISIBLE_DEVICES"]="3"
+
 def f1(Y_true, Y_pred):
 	true_positives = K.sum(K.round(K.clip(Y_true * Y_pred, 0, 1)))
 	possible_positives = K.sum(K.round(K.clip(Y_true, 0, 1)))
@@ -22,36 +25,32 @@ def f1(Y_true, Y_pred):
 	precision = true_positives / (predicted_positives + K.epsilon())
 	return 2*((precision*recall)/(precision+recall+K.epsilon()))
 
-model = load_model('cnn_models/model_base3k_batches800_epochs5', custom_objects={'f1': f1})
+model = load_model('drop_base_f4_bcnt500_bsize512_bw', custom_objects={'f1': f1})
 
 def generate_test_data(Xt):
-	ele = Xt[0]
+	ele = Xt[0][:,:,np.newaxis]
 	for j in range(4):
-		ele = np.append(ele,Xt[j+1],axis=2)
+		ele = np.append(ele,Xt[j+1][:,:,np.newaxis],axis=2)
 	return ele
 
-start_folder = 0
-end_folder = 115000
 folder_cnt = 0
 w = 160
 h = 210
 Y_pred = np.zeros(0)
 X = []
-for folder in sorted(glob.glob("test_dataset/*")):
+for folder in sorted(glob.glob("../test_dataset/*")):
 	data_point = []
 	for img in sorted(glob.glob(folder + "/*.png")):
-		im_rgb = Image.open(img).crop((3,27,w-3,h))
+		im_rgb = Image.open(img).crop((3,27,w-3,h-21)).convert("L")
 		data_rgb = np.asarray(im_rgb, dtype=np.float32)/255.0
 		data_point.append(data_rgb)
 	X.append(generate_test_data(data_point))
 	folder_cnt += 1
-	if(folder_cnt == 100):
+	if(folder_cnt % 1000 == 0):
 		# print(np.asarray(X).shape)
 		Y_pred = np.append(Y_pred, model.predict_classes(np.asarray(X)).flatten(), axis=0)
 		X.clear()
 		print("folder_cnt:",folder_cnt)
-	# if(folder_cnt == 10):
-	# 	break
 	sys.stdout.flush()
 Y_pred = np.append(Y_pred, model.predict_classes(np.asarray(X)).flatten(), axis=0)
 print(Y_pred.shape)
@@ -92,9 +91,9 @@ for i in range(Y_pred.shape[0]):
 # model1 = load_model('cnn_models/drop_base_f2_bcnt250_bsize512', custom_objects={'f1': f1})
 
 # def generate_test_data(Xt):
-# 	ele = Xt[0]
+# 	ele = Xt[0][:,:,np.newaxis]
 # 	for j in range(4):
-# 		ele = np.append(ele,Xt[j+1],axis=2)
+# 		ele = np.append(ele,Xt[j+1][:,:,np.newaxis],axis=2)
 # 	return ele
 
 # start_folder = 0
@@ -106,7 +105,8 @@ for i in range(Y_pred.shape[0]):
 # for folder in sorted(glob.glob("test_dataset/*")):
 # 	data_point = []
 # 	for img in sorted(glob.glob(folder + "/*.png")):
-# 		im_rgb = Image.open(img).crop((3,27,w-3,h))
+# 		# im_rgb = Image.open(img).crop((3,27,w-3,h))
+# 		im = Image.open(img).crop((3,27,w-3,h-21)).convert("L")
 # 		data_rgb = np.asarray(im_rgb, dtype=np.float32)/255.0
 # 		data_point.append(data_rgb)
 # 	x = generate_test_data(data_point)[np.newaxis,:]

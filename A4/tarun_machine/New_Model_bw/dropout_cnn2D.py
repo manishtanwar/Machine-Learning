@@ -12,15 +12,15 @@ from keras.callbacks import ModelCheckpoint
 
 import os
 
-os.environ["CUDA_VISIBLE_DEVICES"]="3"
+os.environ["CUDA_VISIBLE_DEVICES"]="1"
 # from tensorflow import set_random_seed
 # from numpy.random import seed
 # seed(3)
 # set_random_seed(3)
 
 batch_size = 512
-no_batches = 250
-# total batches = 5670 of size 128
+no_batches = 1414
+# total batches = 5658 of size 128
 batch_base = 0
 # 3498
 
@@ -71,10 +71,11 @@ class Data_generator(keras.utils.Sequence):
 		# if(self.shuffle):
 		# 	np.random.shuffle(self.indexes)
 
+# (162, 154)
 def get_model():
 	model = Sequential()
 	# (210,160,15)
-	model.add(Conv2D(32, (3,3), strides=2, activation='relu', input_shape = (183,154,15)))
+	model.add(Conv2D(32, (3,3), strides=2, activation='relu', input_shape = (162,154,5)))
 	model.add(MaxPooling2D(pool_size=(2,2),strides=2))
 
 	model.add(Conv2D(64, (3,3), strides=2, activation='relu'))
@@ -99,10 +100,13 @@ training_generator = Data_generator(batch_size)
 # here X_test is noramlized
 X_test = np.asarray(np.load("X_val.npy"))
 Y_test = np.asarray(np.load("Y_val.npy"))
+# print(X_test.shape)
 
-checkpointer = ModelCheckpoint(filepath='drop_base_f3_bcnt250_bsize512.hdf5', verbose=1, save_best_only=True)
-model.fit_generator(generator = training_generator, validation_data=(X_test, Y_test), callbacks=[checkpointer], epochs=10, class_weight=class_weight, use_multiprocessing=True, workers=6)
-model.save('drop_base_f3_bcnt250_bsize512')
+filepath = "checkpoints/saved-model-{epoch:02d}-{val_acc:.2f}-{val_loss:.2f}.hdf5"
+# 'drop_base_f_bsize512_bw.hdf5'
+checkpointer = ModelCheckpoint(filepath=filepath, verbose=1, save_best_only=False)
+model.fit_generator(generator = training_generator, validation_data=(X_test, Y_test), callbacks=[checkpointer], epochs=25, class_weight=class_weight, use_multiprocessing=True, workers=6)
+model.save('drop_base_f_bsize512_bw')
 # model = load_model('model_cnn')
 
 y_pred = model.predict_classes(X_test)
