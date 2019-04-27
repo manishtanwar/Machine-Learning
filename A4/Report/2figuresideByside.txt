@@ -1,0 +1,12 @@
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=1.4\textwidth]{taupoint1.png}
+    \caption{Model Prediction: $\tau$ = 0.1}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=1.4\textwidth]{taupoint3.png}
+    \caption{Model Prediction: $\tau$=0.3}
+  \end{minipage}
+\end{figure}
